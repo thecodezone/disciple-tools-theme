@@ -7,13 +7,8 @@ if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
  */
 class DT_People_Groups_UI extends DT_Module_Base {
 
-    /**
-     * Define post type variables
-     * @todo update these variables with your post_type, module key, and names.
-     * @var string
-     */
     public $post_type = "peoplegroups";
-    public $module = "peoplegroups_base";
+    public $module = "peoplegroups_ui";
     public $single_name = 'People Group';
     public $plural_name = 'People Groups';
     public static function post_type(){
@@ -34,8 +29,10 @@ class DT_People_Groups_UI extends DT_Module_Base {
             return;
         }
 
+        add_filter( 'desktop_navbar_menu_options', [ $this, 'add_navigation_links' ], 30, 1 );
+        add_filter( 'dt_nav_add_post_menu', [ $this, 'dt_nav_add_post_menu' ], 30, 1 );
+
         //setup post type
-        add_action( 'after_setup_theme', [ $this, 'after_setup_theme' ], 100 );
         add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_set_roles_and_permissions' ], 20, 1 ); //after contacts
 
         //setup tiles and fields
@@ -57,15 +54,8 @@ class DT_People_Groups_UI extends DT_Module_Base {
         add_filter( "dt_user_list_filters", [ $this, "dt_user_list_filters" ], 10, 2 );
         add_filter( "dt_filter_access_permissions", [ $this, "dt_filter_access_permissions" ], 20, 2 );
 
-        add_filter( 'desktop_navbar_menu_options', [ $this, 'add_navigation_links' ], 30, 1 );
-        add_filter( 'dt_nav_add_post_menu', [ $this, 'dt_nav_add_post_menu' ], 30, 1 );
 
-    }
 
-    public function after_setup_theme(){
-        if ( class_exists( 'Disciple_Tools_Post_Type_Template' )) {
-            new Disciple_Tools_Post_Type_Template( $this->post_type, $this->single_name, $this->plural_name );
-        }
     }
 
     public function add_navigation_links( $tabs ) {
@@ -106,15 +96,12 @@ class DT_People_Groups_UI extends DT_Module_Base {
         foreach ( $expected_roles as $role => $role_value ){
             if ( isset( $expected_roles[$role]["permissions"]['access_contacts'] ) && $expected_roles[$role]["permissions"]['access_contacts'] ){
                 $expected_roles[$role]["permissions"]['access_' . $this->post_type ] = true;
-                $expected_roles[$role]["permissions"]['create_' . $this->post_type] = true;
+//                $expected_roles[$role]["permissions"]['create_' . $this->post_type] = true;
             }
         }
 
         if ( isset( $expected_roles["administrator"] ) ){
             $expected_roles["administrator"]["permissions"]['view_any_'.$this->post_type ] = true;
-        }
-        if ( isset( $expected_roles["dispatcher"] ) ){
-            $expected_roles["dispatcher"]["permissions"]['view_any_'.$this->post_type ] = true;
         }
         if ( isset( $expected_roles["dt_admin"] ) ){
             $expected_roles["dt_admin"]["permissions"]['view_any_'.$this->post_type ] = true;
@@ -123,11 +110,6 @@ class DT_People_Groups_UI extends DT_Module_Base {
         return $expected_roles;
     }
 
-    /**
-     * @todo define fields
-     * Documentation
-     * @link https://github.com/DiscipleTools/Documentation/blob/master/Theme-Core/fields.md
-     */
     public function dt_custom_fields_settings( $fields, $post_type ){
         if ( $post_type === $this->post_type ){
             /**
@@ -192,14 +174,19 @@ class DT_People_Groups_UI extends DT_Module_Base {
                 'description' => _x( 'Set the current status.', 'field description', 'disciple_tools' ),
                 'type'        => 'key_select',
                 'default'     => [
-                    'inactive' => [
-                        'label' => __( 'Inactive', 'disciple_tools' ),
-                        'description' => _x( 'No longer active.', 'field description', 'disciple_tools' ),
+                    'none' => [
+                        'label' => __( 'No Engagement', 'disciple_tools' ),
+                        'description' => _x( 'Unknown status.', 'field description', 'disciple_tools' ),
                         'color' => "#F43636"
                     ],
-                    'active'   => [
-                        'label' => __( 'Active', 'disciple_tools' ),
-                        'description' => _x( 'Is active.', 'field description', 'disciple_tools' ),
+                    'engaging'   => [
+                        'label' => __( 'Engaging', 'disciple_tools' ),
+                        'description' => _x( 'Unengaged Unreached', 'field description', 'disciple_tools' ),
+                        'color' => "#4CAF50"
+                    ],
+                    'reaching'   => [
+                        'label' => __( 'Reaching', 'disciple_tools' ),
+                        'description' => _x( 'Unengaged Unreached', 'field description', 'disciple_tools' ),
                         'color' => "#4CAF50"
                     ],
                 ],
@@ -222,20 +209,8 @@ class DT_People_Groups_UI extends DT_Module_Base {
                 'tile' => 'details',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/date-start.svg',
             ];
-            $fields['end_date'] = [
-                'name'        => __( 'End Date', 'disciple_tools' ),
-                'description' => '',
-                'type'        => 'date',
-                'default'     => '',
-                'tile' => 'details',
-                'icon' => get_template_directory_uri() . '/dt-assets/images/date-end.svg',
-            ];
 
 
-            /**
-             * @todo this section adds location support to this post type. remove if not needed.
-             * location elements
-             */
             $fields['location_grid'] = [
                 'name'        => __( 'Locations', 'disciple_tools' ),
                 'description' => _x( 'The general location where this contact is located.', 'Optional Documentation', 'disciple_tools' ),
@@ -269,10 +244,7 @@ class DT_People_Groups_UI extends DT_Module_Base {
             }
             // end locations
 
-            /**
-             * @todo this adds generational support to this post type. remove if not needed.
-             * generation and peer connection fields
-             */
+
             $fields["parents"] = [
                 "name" => __( 'Parents', 'disciple_tools' ),
                 'description' => '',
@@ -308,18 +280,6 @@ class DT_People_Groups_UI extends DT_Module_Base {
             ];
             // end generations
 
-            /**
-             * @todo this adds people groups support to this post type. remove if not needed.
-             * Connections to other post types
-             */
-            $fields["peoplegroups"] = [
-                "name" => __( 'People Groups', 'disciple_tools' ),
-                'description' => _x( 'The people groups connected to this record.', 'Optional Documentation', 'disciple_tools' ),
-                "type" => "connection",
-                "post_type" => $this->post_type,
-                "p2p_direction" => "to",
-                "p2p_key" => $this->post_type."_to_peoplegroups"
-            ];
         }
 
         /**

@@ -39,6 +39,7 @@ function group_search() {
 
           // add listener for select all button
           jQuery('#add_all_groups').show().on('click', function () {
+            jQuery('#add_all_groups').hide()
             div.prepend('<span><strong>DO NOT NAVIGATE WAY FROM THIS PAGE UNTIL INSTALL IS COMPLETE!</strong></span><br>')
             jQuery.each(jQuery('#results button'), function (i, v) {
               setTimeout(function () {

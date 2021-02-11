@@ -277,20 +277,6 @@ class Disciple_Tools_People_Groups
         <button class="button" id="search_button" onclick="group_search()">Get List</button>
         <br><br>
         <a id="add_all_groups" href="javascript:void(0)" style="display:none;">add all groups</a>
-        <script>
-            function add_all(){
-                jQuery.each(jQuery('#results button'), function(i,v){
-                    console.log(v.id)
-                    task(v.id);
-                })
-                function task(i) {
-                    setTimeout(function() {
-                        console.log(i);
-                        jQuery('#'+i).click()
-                    }, 4000 * i);
-                }
-            }
-        </script>
         <div id="results"></div>
         <?php
     }

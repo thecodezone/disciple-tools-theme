@@ -283,9 +283,8 @@ else {
             /**
              * dt-people-groups
              */
-            require_once( get_template_directory() . '/dt-people-groups/people-groups-post-type.php' );
-            $this->post_types['peoplegroups'] = Disciple_Tools_People_Groups_Post_Type::instance();
-            require_once( get_template_directory() . '/dt-people-groups/people-groups.php' );
+            require_once( get_template_directory() . '/dt-people-groups/loader.php' );
+            require_once( get_template_directory() . '/dt-people-groups/people-groups-admin.php' );
             if ( strpos( $url_path, 'people-groups' ) !== false ){
                 require_once( get_template_directory() . '/dt-people-groups/people-groups-endpoints.php' ); // builds rest endpoints
                 $this->endpoints['peoplegroups'] = Disciple_Tools_People_Groups_Endpoints::instance();

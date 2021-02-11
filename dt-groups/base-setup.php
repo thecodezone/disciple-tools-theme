@@ -195,8 +195,6 @@ class DT_Groups_Base extends DT_Module_Base {
             ];
 
 
-
-
             $fields['health_metrics'] = [
                 "name" => __( 'Church Health', 'disciple_tools' ),
                 'description' => _x( "Track the progress and health of a group/church.", 'Optional Documentation', 'disciple_tools' ),
@@ -404,6 +402,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 'description' => _x( 'The people groups represented by this group.', 'Optional Documentation', 'disciple_tools' ),
                 "type" => "connection",
                 "post_type" => "peoplegroups",
+                'tile' => 'details',
                 "p2p_direction" => "from",
                 "p2p_key" => "groups_to_peoplegroups"
             ];
@@ -570,17 +569,17 @@ class DT_Groups_Base extends DT_Module_Base {
             if ( ! empty( $group_preferences['four_fields'] ) ) : ?>
                 <!-- Four Fields -->
                 <section id="four-fields" class="xlarge-6 large-12 medium-6 cell">
-                    
+
                         <div class="section-body">
                             <!-- start collapse -->
                             <div style="background:url('<?php echo esc_attr( get_template_directory_uri() . '/dt-assets/images/four-fields.svg' ); ?>');background-size: 100% 100%;height: 379px;display: grid;grid-template-columns: 1fr 1fr 1fr;grid-template-rows: auto;justify-items: center;align-items: center;" id="four-fields-inputs">
-                                
+
                             </div>
                             <!-- end collapse -->
                         </div>
                 </section>
             <?php endif; ?>
-            
+
 
 
         <?php }

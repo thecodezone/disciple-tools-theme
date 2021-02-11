@@ -19,8 +19,8 @@ class Disciple_Tools_Post_Type_Template {
         add_action( 'init', [ $this, 'register_post_type' ] );
         add_action( 'init', [ $this, 'rewrite_init' ] );
         add_filter( 'post_type_link', [ $this, 'permalink' ], 1, 3 );
-        add_filter( 'desktop_navbar_menu_options', [ $this, 'add_navigation_links' ], 20 );
-        add_filter( 'dt_nav_add_post_menu', [ $this, 'dt_nav_add_post_menu' ], 10, 1 );
+        add_filter( 'desktop_navbar_menu_options', [ $this, 'add_navigation_links' ], 20, 1 );
+        add_filter( 'dt_nav_add_post_menu', [ $this, 'dt_nav_add_post_menu' ], 20, 1 );
         add_filter( 'dt_templates_for_urls', [ $this, 'add_template_for_url' ] );
         add_filter( 'dt_get_post_type_settings', [ $this, 'dt_get_post_type_settings' ], 10, 2 );
         add_filter( 'dt_registered_post_types', [ $this, 'dt_registered_post_types' ], 10, 1 );
@@ -123,7 +123,7 @@ class Disciple_Tools_Post_Type_Template {
 
     public function dt_nav_add_post_menu( $links ){
         if ( current_user_can( "create_" . $this->post_type ) ){
-            $links[] = [
+            $links[$this->post_type] = [
                 'label' => sprintf( esc_html__( 'New %s', 'disciple_tools' ), esc_html( $this->singular ) ),
                 'link' => esc_url( site_url( '/' ) ) . esc_html( $this->post_type ) . '/new',
                 'icon' => get_template_directory_uri() . "/dt-assets/images/circle-add-plus.svg",

@@ -23,10 +23,10 @@ add_filter( 'dt_post_type_modules', function( $modules ){
         "description" => "People Groups"
     ];
     $modules["peoplegroups_ui"] = [
-        "name" => "People Groups",
+        "name" => "People Groups - User Interface",
         "enabled" => false,
         "locked" => false,
-        "prerequisites" => [ "contacts_base", "peoplegroups_base" ],
+        "prerequisites" => [ "peoplegroups_base" ],
         "post_type" => "peoplegroups",
         "description" => "People Groups Tab and UI"
     ];
@@ -37,5 +37,5 @@ add_filter( 'dt_post_type_modules', function( $modules ){
 require_once 'module-base.php';
 DT_People_Groups_Base::instance();
 
-//require_once 'module-ui.php';
-//DT_People_Groups_UI::instance();
+require_once 'module-ui.php';
+DT_People_Groups_UI::instance();

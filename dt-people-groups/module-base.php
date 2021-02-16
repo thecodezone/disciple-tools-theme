@@ -30,7 +30,7 @@ class DT_People_Groups_Base extends DT_Module_Base {
         }
 
         add_action( 'after_setup_theme', [ $this, 'after_setup_theme' ], 100 );
-        
+
         add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_set_roles_and_permissions' ], 20, 1 );
 
         add_action( 'p2p_init', [ $this, 'p2p_init' ] );
@@ -245,14 +245,20 @@ class DT_People_Groups_Base extends DT_Module_Base {
     }
 
     public function dt_set_roles_and_permissions( $expected_roles ){
+        if ( ! isset( $expected_roles["multiplier"] ) ){
+            $expected_roles["multiplier"] = [
+                "label" => __( 'Multiplier', 'disciple_tools' ),
+                "description" => "Interacts with Contacts and Groups",
+                "permissions" => []
+            ];
+        }
 
-        // give everyone ability to list
-//        foreach ( $expected_roles as $role => $role_value ){
-//            if ( isset( $expected_roles[$role]["permissions"]['access_contacts'] ) && $expected_roles[$role]["permissions"]['access_contacts'] ){
-//                $expected_roles[$role]["permissions"]['list_all_' . $this->post_type ] = true;
-//            }
-//        }
-
+        foreach ( $expected_roles as $role => $role_value ){
+            if ( isset( $expected_roles[$role]["permissions"]['access_contacts'] ) && $expected_roles[$role]["permissions"]['access_contacts'] ){
+                $expected_roles[$role]["permissions"]['list_all_' . $this->post_type ] = true;
+            }
+        }
+        
         return $expected_roles;
     }
 

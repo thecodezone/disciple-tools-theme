@@ -43,7 +43,7 @@ msgstr "فعال"
 msgid "New"
 msgstr "جدید"
 
-#: dt-contacts/access-module.php:172
+#: dt-contacts/access-module.php:173
 msgid "Waiting to be accepted"
 msgstr "منتظر تأیید بمانید"
 
@@ -51,65 +51,65 @@ msgstr "منتظر تأیید بمانید"
 msgid "View Duplicates"
 msgstr "مشاهدۀ نسخه‌های تکراری"
 
-#: archive-template.php:36
-#: archive-template.php:55
+#: archive-template.php:57
+#: archive-template.php:131
 msgid "Search"
 msgstr "جستجو"
 
-#: dt-contacts/base-setup.php:537
-#: dt-contacts/base-setup.php:545
-#: dt-contacts/base-setup.php:562
+#: dt-contacts/base-setup.php:538
+#: dt-contacts/base-setup.php:546
 #: dt-contacts/base-setup.php:563
+#: dt-contacts/base-setup.php:564
 msgid "Shared with me"
 msgstr "با من به اشتراک بگذار"
 
-#: archive-template.php:74
+#: archive-template.php:183
 msgid "Add new filter"
 msgstr "دسته‌بندی جدید اضافه کنید"
 
-#: dt-contacts/access-module.php:100
+#: dt-contacts/access-module.php:101
 #: dt-groups/base-setup.php:124
 #: dt-metrics/groups/tree.php:85
 #: dt-metrics/personal/group-tree.php:86
 msgid "Assigned To"
 msgstr "اختصاص داده شده به"
 
-#: archive-template.php:438
+#: archive-template.php:547
 #: dt-assets/functions/enqueue-scripts.php:307
 #: dt-posts/custom-post-type.php:161
 msgid "Creation Date"
 msgstr "تاریخ ایجاد"
 
-#: archive-template.php:429
+#: archive-template.php:538
 msgid "Filter for subassigned OR Assigned To"
 msgstr "دسته‌بندی اختصاص داده شده‎ها یا واگذار شده‌ها"
 
-#: archive-template.php:454
-#: archive-template.php:455
-#: template-settings.php:407
+#: archive-template.php:563
+#: archive-template.php:564
+#: template-settings.php:405
 msgid "No"
 msgstr "خیر"
 
-#: archive-template.php:461
-#: archive-template.php:462
-#: template-settings.php:406
+#: archive-template.php:570
+#: archive-template.php:571
+#: template-settings.php:404
 msgid "Yes"
 msgstr "بله"
 
-#: archive-template.php:469
-#: archive-template.php:480
+#: archive-template.php:578
+#: archive-template.php:589
 msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr "پاک کردن"
 
-#: archive-template.php:508
+#: archive-template.php:617
 #: dt-assets/functions/enqueue-scripts.php:272
 #: dt-assets/functions/enqueue-scripts.php:302
 #: template-merge-details.php:102
 #: template-merge-details.php:122
 #: template-merge-details.php:132
 #: template-merge-details.php:170
-#: template-settings.php:546
+#: template-settings.php:544
 msgid "Save"
 msgstr "ذخیره کردن"
 
@@ -128,7 +128,7 @@ msgstr "این مخاطب به یک کاربر ارتقاء داده شود"
 msgid "Link to an existing user"
 msgstr "این مخاطب با یک کاربر دیگر ادغام شود"
 
-#: dt-contacts/base-setup.php:355
+#: dt-contacts/base-setup.php:356
 msgid "Merge with another contact"
 msgstr "این مخاطب با یک مخاطب دیگر ادغام شود"
 
@@ -137,7 +137,7 @@ msgstr "این مخاطب با یک مخاطب دیگر ادغام شود"
 msgid "Following"
 msgstr "پیگیری"
 
-#: archive-template.php:278
+#: archive-template.php:387
 #: dt-assets/functions/details-bar.php:106
 #: dt-contacts/base-setup.php:162
 #: dt-groups/base-setup.php:96
@@ -148,6 +148,7 @@ msgstr "پیگیری کردن"
 msgid "Share"
 msgstr "اشتراک گذاری"
 
+#: archive-template.php:40
 #: dt-assets/parts/loop-activity-comment.php:80
 #: dt-assets/parts/loop-activity-comment.php:158
 msgid "Comments"
@@ -175,8 +176,8 @@ msgstr "انتقال انجام نشد. تنظیمات سایت-به-سایت ر
 #: template-merge-details.php:121
 #: template-merge-details.php:132
 #: template-merge-details.php:168
-#: template-settings.php:71
-#: template-settings.php:422
+#: template-settings.php:69
+#: template-settings.php:420
 msgid "Edit"
 msgstr "ویرایش"
 
@@ -201,11 +202,11 @@ msgstr "مرتب سازی برحسب"
 msgid "Date Modified"
 msgstr "تاریخ اصلاح"
 
-#: archive-template.php:301
+#: archive-template.php:410
 #: dt-contacts/base-setup.php:49
 #: dt-contacts/base-setup.php:252
 #: dt-contacts/dmm-module.php:303
-#: dt-groups/base-setup.php:649
+#: dt-groups/base-setup.php:650
 #: dt-mapping/columns/add-contacts-column.php:59
 #: dt-metrics/combined/hover-map.php:127
 #: dt-metrics/combined/locations-list.php:120
@@ -225,13 +226,13 @@ msgstr "تاریخ اصلاح"
 msgid "Contacts"
 msgstr "مخاطبین"
 
-#: archive-template.php:303
+#: archive-template.php:412
 #: dt-groups/base-setup.php:48
-#: dt-groups/base-setup.php:449
-#: dt-groups/base-setup.php:666
-#: dt-groups/base-setup.php:683
-#: dt-groups/base-setup.php:720
-#: dt-groups/base-setup.php:731
+#: dt-groups/base-setup.php:450
+#: dt-groups/base-setup.php:667
+#: dt-groups/base-setup.php:684
+#: dt-groups/base-setup.php:721
+#: dt-groups/base-setup.php:732
 #: dt-mapping/columns/add-groups-column.php:57
 #: dt-metrics/combined/hover-map.php:172
 #: dt-metrics/combined/locations-list.php:165
@@ -247,36 +248,35 @@ msgstr "گروه‌ها"
 
 #. Template Name of the plugin/theme
 #: dt-metrics/metrics.php:109
-#: dt-metrics/metrics.php:116
 msgid "Metrics"
 msgstr "گزارشات"
 
 #. Template Name of the plugin/theme
-#: dt-assets/functions/menu.php:57
-#: dt-assets/parts/nav-offcanvas-topbar.php:46
-#: dt-assets/parts/nav-offcanvas-topbar.php:110
+#: dt-assets/functions/menu.php:64
+#: dt-assets/parts/nav-offcanvas.php:48
+#: dt-assets/parts/nav-topbar.php:74
+#: dt-assets/parts/nav-topbar.php:179
 #: template-notifications.php:33
 #: template-settings.php:45
-#: template-settings.php:356
+#: template-settings.php:354
 msgid "Notifications"
 msgstr "اعلانات"
 
 #. Template Name of the plugin/theme
-#: dt-assets/functions/menu.php:60
+#: dt-assets/functions/menu.php:70
+#: dt-assets/functions/menu.php:76
 #: dt-assets/parts/modals/modal-help.php:157
-#: dt-assets/parts/nav-offcanvas-topbar.php:51
-#: dt-assets/parts/nav-offcanvas-topbar.php:123
+#: dt-assets/parts/nav-topbar.php:82
 #: template-notifications.php:59
 msgid "Settings"
 msgstr "تنظیمات"
 
-#: dt-assets/functions/menu.php:66
-#: dt-assets/parts/nav-offcanvas-topbar.php:126
+#: dt-assets/functions/menu.php:81
 msgid "Admin"
 msgstr "مدیریت"
 
-#: dt-assets/functions/menu.php:69
-#: dt-assets/parts/nav-offcanvas-topbar.php:136
+#: dt-assets/parts/nav-offcanvas.php:77
+#: dt-assets/parts/nav-topbar.php:202
 msgid "Log Off"
 msgstr "خروج"
 
@@ -285,15 +285,15 @@ msgstr "خروج"
 msgid "Please provide an update by posting a comment."
 msgstr "لطفاً با اظهار نظر بروزرسانی کنید."
 
-#: dt-contacts/access-module.php:605
+#: dt-contacts/access-module.php:606
 msgid "This contact has been assigned to you."
 msgstr "این مخاطب به شما اختصاص داده شده است."
 
-#: dt-contacts/access-module.php:606
+#: dt-contacts/access-module.php:607
 msgid "Accept"
 msgstr "تأیید"
 
-#: dt-contacts/access-module.php:607
+#: dt-contacts/access-module.php:608
 msgid "Decline"
 msgstr "لغو"
 
@@ -301,11 +301,11 @@ msgstr "لغو"
 msgid "This contact represents a user."
 msgstr "این مخاطب نمایانگر یک کاربر است."
 
-#: archive-template.php:204
-#: dt-contacts/access-module.php:410
+#: archive-template.php:313
+#: dt-contacts/access-module.php:411
 #: dt-metrics/groups/tree.php:86
 #: dt-metrics/personal/group-tree.php:87
-#: dt-posts/dt-posts.php:1365
+#: dt-posts/dt-posts.php:1388
 #: dt-users/template-user-management.php:74
 #: dt-users/template-user-management.php:159
 #: single-template.php:78
@@ -323,7 +323,7 @@ msgstr "رسانه های اجتماعی"
 #: dt-contacts/base-setup.php:219
 #: dt-core/configuration/config-site-defaults.php:455
 #: dt-groups/base-setup.php:385
-#: template-settings.php:132
+#: template-settings.php:130
 msgid "Address"
 msgstr "نشانی"
 
@@ -337,50 +337,50 @@ msgstr "مکان‌ها"
 #: dt-contacts/dmm-module.php:187
 #: dt-contacts/dmm-module.php:302
 #: dt-groups/base-setup.php:403
-#: dt-groups/base-setup.php:719
+#: dt-groups/base-setup.php:720
 #: dt-people-groups/people-groups-post-type.php:132
 msgid "People Groups"
 msgstr "قومیت ها"
 
-#: dt-contacts/access-module.php:193
+#: dt-contacts/access-module.php:194
 msgid "Age"
 msgstr "سن"
 
 #: dt-contacts/base-setup.php:264
-#: template-settings.php:509
+#: template-settings.php:507
 msgid "Gender"
 msgstr "جنسیت"
 
-#: archive-template.php:343
+#: archive-template.php:452
 #: dt-assets/parts/modals/modal-new-contact.php:7
 #: dt-assets/parts/modals/modal-new-contact.php:9
 #: dt-mapping/mapping.php:305
 #: dt-posts/custom-post-type.php:145
-#: template-settings.php:88
+#: template-settings.php:86
 msgid "Name"
 msgstr "نام"
 
-#: archive-template.php:93
+#: archive-template.php:202
 msgid "Sort"
 msgstr "مرتب سازی"
 
-#: archive-template.php:97
+#: archive-template.php:206
 msgid "Newest"
 msgstr "جدیدترین"
 
-#: archive-template.php:101
+#: archive-template.php:210
 msgid "Oldest"
 msgstr "قدیمی‌ترین"
 
-#: archive-template.php:105
+#: archive-template.php:214
 msgid "Most recently modified"
 msgstr "جدیدترین اصلاح شده‌ها"
 
-#: archive-template.php:109
+#: archive-template.php:218
 msgid "Least recently modified"
 msgstr "قدیمی‌ترین اصلاح شده‌ها"
 
-#: dt-contacts/access-module.php:111
+#: dt-contacts/access-module.php:112
 #: dt-metrics/contacts/seeker-path.php:25
 #: dt-metrics/contacts/seeker-path.php:62
 msgid "Seeker Path"
@@ -399,7 +399,7 @@ msgstr "نقاط قوّت ایمان"
 msgid "Group"
 msgstr "گروه"
 
-#: archive-template.php:353
+#: archive-template.php:462
 msgid "Loading..."
 msgstr "بارگیری ..."
 
@@ -409,8 +409,8 @@ msgstr "معلم گروه / تأسیس کنندۀ کلیسا"
 
 #: dt-groups/base-setup.php:262
 #: dt-users/template-user-management.php:313
-#: template-settings.php:314
-#: template-settings.php:333
+#: template-settings.php:312
+#: template-settings.php:331
 msgid "Start Date"
 msgstr "تاریخ شروع"
 
@@ -420,8 +420,8 @@ msgstr "تاریخ شروع کلیسا"
 
 #: dt-groups/base-setup.php:279
 #: dt-users/template-user-management.php:314
-#: template-settings.php:320
-#: template-settings.php:334
+#: template-settings.php:318
+#: template-settings.php:332
 msgid "End Date"
 msgstr "تاریخ پایان"
 
@@ -464,7 +464,7 @@ msgstr "حذف نظر:"
 #: dt-assets/parts/modals/modal-share.php:50
 #: dt-assets/parts/modals/modal-tasks.php:46
 #: dt-contacts/dmm-module.php:557
-#: dt-groups/base-setup.php:624
+#: dt-groups/base-setup.php:625
 msgid "Close"
 msgstr "بستن"
 
@@ -566,26 +566,24 @@ msgstr "این گروه به اشتراک گذاشته شد با:"
 msgid "This contact is shared with:"
 msgstr "این مخاطب به اشتراک گذاشته شد با:"
 
-#: dt-assets/parts/nav-offcanvas-topbar.php:37
-#: dt-assets/parts/nav-offcanvas-topbar.php:100
-#: dt-posts/custom-post-type.php:133
+#: dt-assets/functions/menu.php:57
 msgid "Add New"
 msgstr "جدید اضافه کردن"
 
-#: dt-contacts/access-module.php:157
+#: dt-contacts/access-module.php:158
 msgid "New Contact"
 msgstr "مخاطب جدید"
 
-#: dt-assets/parts/nav-offcanvas-topbar.php:93
+#: dt-assets/functions/menu.php:51
 #: template-settings.php:42
 msgid "Profile"
 msgstr "مشخصات کاربر"
 
-#: dt-assets/parts/nav-offcanvas-topbar.php:132
+#: dt-assets/functions/menu.php:91
 msgid "Help"
 msgstr "راهنمای سایت"
 
-#: dt-contacts/access-module.php:136
+#: dt-contacts/access-module.php:137
 #: dt-metrics/counter.php:139
 msgid "Ongoing Meetings"
 msgstr "جلسات در حال برگزاری"
@@ -610,7 +608,7 @@ msgstr "تاریخ غسل تعمید"
 msgid "Baptism Generation"
 msgstr "شجرۀ غسل تعمید"
 
-#: dt-contacts/access-module.php:321
+#: dt-contacts/access-module.php:322
 #: dt-metrics/contacts/sources.php:90
 #: dt-users/users.php:773
 msgid "Sources"
@@ -623,7 +621,7 @@ msgstr "لغو پیگیری"
 
 #: dt-contacts/base-setup.php:186
 #: dt-core/configuration/config-site-defaults.php:443
-#: template-settings.php:121
+#: template-settings.php:119
 msgid "Phone"
 msgstr "تلفن"
 
@@ -635,11 +633,11 @@ msgstr "محل کار"
 msgid "Home"
 msgstr "منزل"
 
-#: dt-contacts/base-setup.php:448
+#: dt-contacts/base-setup.php:449
 #: dt-core/configuration/config-site-defaults.php:459
 #: dt-core/configuration/config-site-defaults.php:469
-#: dt-groups/base-setup.php:732
-#: template-settings.php:154
+#: dt-groups/base-setup.php:733
+#: template-settings.php:152
 msgid "Other"
 msgstr "دیگر"
 
@@ -648,16 +646,16 @@ msgstr "دیگر"
 #: dt-core/configuration/config-site-defaults.php:256
 #: dt-core/configuration/config-site-defaults.php:447
 #: dt-users/user-management.php:158
-#: template-settings.php:108
+#: template-settings.php:106
 msgid "Email"
 msgstr "ایمیل"
 
-#: dt-contacts/access-module.php:298
+#: dt-contacts/access-module.php:299
 #: dt-contacts/base-setup.php:235
 msgid "Facebook"
 msgstr "فیسبوک"
 
-#: dt-contacts/access-module.php:302
+#: dt-contacts/access-module.php:303
 #: dt-contacts/base-setup.php:243
 msgid "Twitter"
 msgstr "توییتر"
@@ -827,7 +825,7 @@ msgid "To reset your password, visit the following address:"
 msgstr "برای تنظیم مجدد رمز عبور خود، به لینک زیر مراجعه فرمائید:"
 
 #: dt-users/template-user-management.php:326
-#: template-settings.php:101
+#: template-settings.php:99
 msgid "Roles"
 msgstr "سمَت‌ها"
 
@@ -837,7 +835,7 @@ msgstr "(بدون عنوان)"
 
 #: dt-groups/base-setup.php:246
 #: dt-groups/base-setup.php:308
-#: dt-groups/base-setup.php:667
+#: dt-groups/base-setup.php:668
 msgid "Leaders"
 msgstr "سرپرست‌ها"
 
@@ -1041,7 +1039,7 @@ msgctxt "Deleted Facebook: facebook.com/123"
 msgid "Deleted %1$s: %2$s"
 msgstr "‫%1$s حذف شد: %2$s"
 
-#: dt-posts/dt-posts.php:1196
+#: dt-posts/dt-posts.php:1219
 msgid "Post already shared with user."
 msgstr "سند ارسالی با کاربر مورد نظر به اشتراک گذاشته شده است."
 
@@ -1143,9 +1141,9 @@ msgstr "غسل‌های تعمید"
 msgid "Baptizers"
 msgstr "تعمید دهنده‌ها"
 
-#: dt-contacts/access-module.php:290
+#: dt-contacts/access-module.php:291
 #: dt-contacts/base-setup.php:128
-#: dt-contacts/base-setup.php:512
+#: dt-contacts/base-setup.php:513
 #: dt-metrics/metrics.php:80
 #: dt-metrics/personal/baptism-tree.php:26
 #: dt-metrics/personal/coaching-tree.php:26
@@ -1231,6 +1229,7 @@ msgstr "نمای کلی پروژه"
 msgid "Outreach"
 msgstr "بشارت"
 
+#: dt-contacts/access-module.php:383
 #: dt-metrics/combined/critical-path.php:86
 msgid "Follow Up"
 msgstr "پیگیری"
@@ -1374,11 +1373,11 @@ msgstr "مشاهدۀ سابقۀ مخاطب"
 msgid "Updated Needed"
 msgstr "بروزرسانی نیاز است"
 
-#: functions.php:472
+#: functions.php:483
 msgid "Disciple Tools theme requires PHP version 7.0 or greater. Your current version is:"
 msgstr "تم سایت نیازمند به PHP نسخۀ 7.0 یا بالاتر است.نسخه فعلی شما این است:"
 
-#: functions.php:474
+#: functions.php:485
 msgid "Please upgrade PHP or uninstall this theme"
 msgstr "لطفاً PHP را بروزرسانی کرده و یا این تم را حذف کنید"
 
@@ -1426,8 +1425,8 @@ msgid "Click merge to continue."
 msgstr "برای ادامه روی ادغام کلیک کنید."
 
 #: dt-groups/base-setup.php:299
-#: dt-groups/base-setup.php:595
-#: dt-groups/base-setup.php:728
+#: dt-groups/base-setup.php:596
+#: dt-groups/base-setup.php:729
 msgid "Member List"
 msgstr "لیست اعضا"
 
@@ -1480,102 +1479,102 @@ msgstr "علامت گذاری همۀ موارد"
 
 #: dt-users/template-user-management.php:296
 #: template-settings.php:44
-#: template-settings.php:301
+#: template-settings.php:299
 msgid "Availability"
 msgstr "دسترسی"
 
-#: template-settings.php:69
+#: template-settings.php:67
 msgid "Your Profile"
 msgstr "مشخصات شما"
 
-#: template-settings.php:82
-#: template-settings.php:442
+#: template-settings.php:80
+#: template-settings.php:440
 msgid "Username"
 msgstr "نام کاربری"
 
 #: dt-users/user-management.php:157
-#: template-settings.php:95
-#: template-settings.php:477
+#: template-settings.php:93
+#: template-settings.php:475
 msgid "Nickname (Display Name)"
 msgstr "نام مستعار (نامی که نمایش داده می‌شود)"
 
-#: template-settings.php:143
+#: template-settings.php:141
 msgid "Social"
 msgstr "اجتماعی"
 
-#: template-settings.php:168
+#: template-settings.php:166
 msgid "Language"
 msgstr "زبان"
 
-#: template-settings.php:174
+#: template-settings.php:172
 msgid "English"
 msgstr "انگلیسی"
 
-#: template-settings.php:178
-#: template-settings.php:501
+#: template-settings.php:176
+#: template-settings.php:499
 msgid "Biography"
 msgstr "زندگینامه"
 
-#: template-settings.php:362
+#: template-settings.php:360
 msgid "Type of Notification"
 msgstr "نوع اعلانات"
 
-#: dt-contacts/access-module.php:294
+#: dt-contacts/access-module.php:295
 #: dt-core/configuration/config-site-defaults.php:259
 msgid "Web"
 msgstr "وب"
 
-#: template-settings.php:375
+#: template-settings.php:373
 msgid "required"
 msgstr "ضروری"
 
-#: template-settings.php:398
+#: template-settings.php:396
 msgid "Follow all contacts"
 msgstr "پیگیری همۀ مخاطبین"
 
-#: template-settings.php:405
+#: template-settings.php:403
 msgid "Enable"
 msgstr "فعال"
 
-#: template-settings.php:436
+#: template-settings.php:434
 msgid "Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar). If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you."
 msgstr "این سایت بارگزاری تصاویر را پشتیبانی نمی‌کند. برای بارگزاری تصاویر، از سایت Gravatar که در سطح جهانی شناخته شده است استفاده می کنیم. اگر از نظر امنیتی نگران هستید، پیشنهاد می‌کنیم که از عکس شخصی استفاده نکنید و در عوض از تصاویر کارتونی، انتزاعی و یا عکس مستعار استفاده کنید."
 
-#: template-settings.php:437
+#: template-settings.php:435
 msgid "edit image on gravatar.com"
 msgstr "بارگزاری و ویرایش تصویر در سایت gravatar.com"
 
-#: template-settings.php:443
-#: template-settings.php:444
+#: template-settings.php:441
+#: template-settings.php:442
 msgid "Username cannot be changed"
 msgstr "نام کاربری قابل تغییر نیست"
 
-#: template-settings.php:111
-#: template-settings.php:448
+#: template-settings.php:109
+#: template-settings.php:446
 msgid "System Email"
 msgstr "ایمیل سیستم"
 
-#: template-settings.php:449
+#: template-settings.php:447
 msgid "User email can be changed by site administrator."
 msgstr "ایمیل کاربر فقط توسط مدیر سایت قابل تغییر است."
 
-#: template-settings.php:456
+#: template-settings.php:454
 msgid "Password"
 msgstr "رمز عبور"
 
-#: template-settings.php:457
+#: template-settings.php:455
 msgid "Use this email reset form to create a new password."
 msgstr "از طریق این لینک می‌توانید رمز عبور خود را تغییر داده و رمز جدید ایجاد کنید."
 
-#: template-settings.php:459
+#: template-settings.php:457
 msgid "go to password change form"
 msgstr "تغییر رمز عبور"
 
-#: template-settings.php:466
+#: template-settings.php:464
 msgid "First Name"
 msgstr "نام"
 
-#: template-settings.php:472
+#: template-settings.php:470
 msgid "Last Name"
 msgstr "نام خانوادگی"
 
@@ -1698,7 +1697,7 @@ msgstr "لیست"
 msgid "World"
 msgstr "جهان"
 
-#: dt-posts/custom-post-type.php:134
+#: dt-posts/custom-post-type.php:127
 #: template-new-post.php:32
 msgid "New %s"
 msgstr "%s جدید"
@@ -1709,7 +1708,7 @@ msgctxt "Location1 added to locations"
 msgid "%1$s added to locations"
 msgstr "‫%1$s به مکان‌ها اضافه شد"
 
-#: dt-groups/base-setup.php:730
+#: dt-groups/base-setup.php:731
 msgid "Four Fields"
 msgstr "چهار قسمت"
 
@@ -1739,23 +1738,23 @@ msgstr "من فقط به مخاطبین موجود رسیدگی می‌کنم"
 msgid "I have too many contacts"
 msgstr "من مخاطبین بسیار زیادی دارم"
 
-#: template-settings.php:304
+#: template-settings.php:302
 msgid "Set the dates you will be traveling or unavailable so the Dispatcher will know your availability to receive new contacts"
 msgstr "تاریخ‌هایی را که در سفر هستید و یا به هر دلیلی در دسترس نیستید ثبت کنید تا مسئول هماهنگی پیگیری‌ها از در دسترس بودن شما برای دریافت مخاطبین جدید اطلاع داشته باشد"
 
-#: template-settings.php:308
+#: template-settings.php:306
 msgid "Schedule Travel or Dates Unavailable"
 msgstr "برنامه‌ریزی تاریخ‌هایی را که در سفر هستید و یا در دسترس نیستید"
 
-#: template-settings.php:325
+#: template-settings.php:323
 msgid "Add Unavailable dates"
 msgstr "ثبت تاریخ‌ها"
 
-#: template-settings.php:339
+#: template-settings.php:337
 msgid "No Travel Scheduled"
 msgstr "هیچ برنامۀ ثبت شده‌ای برای سفر وجود ندارد"
 
-#: template-settings.php:400
+#: template-settings.php:398
 msgid "You will receive a notification for any update that happens in the system."
 msgstr "شما برای هر بروزرسانی که در سیستم اتفاق می افتد، یک اعلان دریافت خواهید کرد."
 
@@ -1821,16 +1820,16 @@ msgstr "به شما اختصاص داده شده است: %1$s."
 msgid "Child Group"
 msgstr "گروه متولد شده"
 
-#: dt-contacts/access-module.php:162
+#: dt-contacts/access-module.php:163
 msgid "Not Ready"
 msgstr "آماده نیست"
 
-#: archive-template.php:466
+#: archive-template.php:575
 msgctxt "The start date of a date range"
 msgid "Range Start"
 msgstr "شروع محدوده"
 
-#: archive-template.php:476
+#: archive-template.php:585
 msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "پایان محدوده"
@@ -1839,22 +1838,22 @@ msgstr "پایان محدوده"
 msgid "Locations you are responsible for"
 msgstr "محل‌هایی که مسئولیت آنها برعهدۀ شما است"
 
-#: dt-contacts/access-module.php:158
+#: dt-contacts/access-module.php:159
 msgctxt "Contact Status field description"
 msgid "The contact is new in the system."
 msgstr "این ‏‏مخاطب به تازگی در سیستم ثبت شده است."
 
-#: dt-contacts/access-module.php:163
+#: dt-contacts/access-module.php:164
 msgctxt "Contact Status field description"
 msgid "There is not enough information to move forward with the contact at this time."
 msgstr "در حال حاضر اطلاعات کافی برای حرکت به جلو با این مخاطب وجود ندارد."
 
-#: dt-contacts/access-module.php:168
+#: dt-contacts/access-module.php:169
 msgctxt "Contact Status field description"
 msgid "This contact needs to be assigned to a multiplier."
 msgstr "این مخاطب نیاز دارد که به یک مبشر اختصاص داده شود."
 
-#: dt-contacts/access-module.php:173
+#: dt-contacts/access-module.php:174
 msgctxt "Contact Status field description"
 msgid "The contact has been assigned to someone, but has not yet been accepted by that person."
 msgstr "مخاطب به شخصی اختصاص داده شده است ، اما هنوز توسط آن شخص پذیرفته نشده است."
@@ -1864,7 +1863,7 @@ msgctxt "Contact Status field description"
 msgid "The contact is progressing and/or continually being updated."
 msgstr "مخاطب در حال پیشرفت است و (یا) به طور مداوم بروز می‌شود."
 
-#: dt-contacts/access-module.php:179
+#: dt-contacts/access-module.php:180
 msgctxt "Contact Status field description"
 msgid "This contact is currently on hold (i.e. on vacation or not responding)."
 msgstr "این مخاطب در حال حاضر در لیست انتظار است. (به عنوان مثال در تعطیلات است و یا پاسخگو نیست.)"
@@ -1874,107 +1873,107 @@ msgctxt "Contact Status field description"
 msgid "This contact has made it known that they no longer want to continue or you have decided not to continue with him/her."
 msgstr "این مخاطب اعلام کرده است  كه دیگر نمی خواهد ادامه دهد و یا شما تصمیم گرفته‌اید كه با او ادامه ندهید."
 
-#: dt-contacts/access-module.php:112
+#: dt-contacts/access-module.php:113
 msgctxt "Seeker Path field description"
 msgid "Set the status of your progression with the contact. These are the steps that happen in a specific order to help a contact move forward."
 msgstr "وضعیت پیشرفت خود را با مخاطب مشخص کنید. اینها مراحلی هستند که به طور خاص کمک می‌کنند تا یک مخاطب به جلو حرکت کند."
 
-#: dt-contacts/access-module.php:243
+#: dt-contacts/access-module.php:244
 msgctxt "Reason Paused label"
 msgid "Contact on vacation"
 msgstr "مخاطب در تعطیلات است"
 
-#: dt-contacts/access-module.php:244
+#: dt-contacts/access-module.php:245
 msgctxt "Reason Paused label"
 msgid "Contact not responding"
 msgstr "مخاطب پاسخگو نیست"
 
-#: dt-contacts/access-module.php:245
+#: dt-contacts/access-module.php:246
 msgctxt "Reason Paused label"
 msgid "Contact not available"
 msgstr "مخاطب در دسترس نیست"
 
-#: dt-contacts/access-module.php:246
+#: dt-contacts/access-module.php:247
 msgctxt "Reason Paused label"
 msgid "Contact has little interest/hunger"
 msgstr "مخاطب علاقه و یا اشتیاق کمی دارد"
 
-#: dt-contacts/access-module.php:247
+#: dt-contacts/access-module.php:248
 msgctxt "Reason Paused label"
 msgid "Contact shows no initiative"
 msgstr "مخاطب هیچ گونه پیشرفتی نشان نمی‌دهد"
 
-#: dt-contacts/access-module.php:248
+#: dt-contacts/access-module.php:249
 msgctxt "Reason Paused label"
 msgid "Contact has questionable motives"
 msgstr "مخاطب مشکوک به نظر می‌رسد"
 
-#: dt-contacts/access-module.php:249
+#: dt-contacts/access-module.php:250
 msgctxt "Reason Paused label"
 msgid "Ball is in the contact's court"
 msgstr "مخاطب در مباحثات ما را مغلوب می‌کند"
 
-#: dt-contacts/access-module.php:250
+#: dt-contacts/access-module.php:251
 msgctxt "Reason Paused label"
 msgid "We want to see if/how the contact responds to automated text messages"
 msgstr "ما می خواهیم ببینیم در صورت ارسال پیام‌های متنی خودکار، مخاطب چگونه به آنها پاسخ می‌دهد"
 
-#: dt-contacts/access-module.php:262
+#: dt-contacts/access-module.php:263
 msgctxt "Reason Closed label"
 msgid "Duplicate"
 msgstr "تکراری است"
 
-#: dt-contacts/access-module.php:263
+#: dt-contacts/access-module.php:264
 msgctxt "Reason Closed label"
 msgid "Insufficient contact info"
 msgstr "اطلاعات مخاطب کافی نیست"
 
-#: dt-contacts/access-module.php:264
+#: dt-contacts/access-module.php:265
 msgctxt "Reason Closed label"
 msgid "Denies submitting contact request"
 msgstr "درخواست برقراری ارتباط را رد می‌کند"
 
-#: dt-contacts/access-module.php:266
+#: dt-contacts/access-module.php:267
 msgctxt "Reason Closed label"
 msgid "Only wants to argue or debate"
 msgstr "فقط می‌خواهد بحث و گفتگو کند"
 
-#: dt-contacts/access-module.php:267
+#: dt-contacts/access-module.php:268
 msgctxt "Reason Closed label"
 msgid "Just wanted media or book"
 msgstr "فقط درخواست کتاب و یا فایل‌ داشت"
 
-#: dt-contacts/access-module.php:268
+#: dt-contacts/access-module.php:269
 msgctxt "Reason Closed label"
 msgid "No longer interested"
 msgstr "دیگر علاقه‌ای به ادامه دادن ندارد"
 
-#: dt-contacts/access-module.php:269
+#: dt-contacts/access-module.php:270
 msgctxt "Reason Closed label"
 msgid "No longer responding"
 msgstr "دیگر پاسخ نمی‌دهد"
 
-#: dt-contacts/access-module.php:270
+#: dt-contacts/access-module.php:271
 msgctxt "Reason Closed label"
 msgid "Already in church or connected with others"
 msgstr "در حال حاضر عضو کلیسا شده و یا با دیگران ارتباط برقرار کرده است"
 
-#: dt-contacts/access-module.php:271
+#: dt-contacts/access-module.php:272
 msgctxt "Reason Closed label"
 msgid "Transferred contact to partner"
 msgstr "به سازمان و یا گروه دیگری وصل شد"
 
-#: dt-contacts/access-module.php:272
+#: dt-contacts/access-module.php:273
 msgctxt "Reason Closed label"
 msgid "Martyred"
 msgstr "فوت کرد"
 
-#: dt-contacts/access-module.php:273
+#: dt-contacts/access-module.php:274
 msgctxt "Reason Closed label"
 msgid "Moved or relocated"
 msgstr "جابجا شده و یا نقل مکان کرده است"
 
-#: dt-contacts/access-module.php:275
+#: dt-contacts/access-module.php:276
 msgctxt "Reason Closed label"
 msgid "Unknown"
 msgstr "نامشخص"
@@ -2035,7 +2034,7 @@ msgstr "واتساپ کار"
 msgid "Work WhatsApp is for distribution to contacts and seekers."
 msgstr "واتساپ کار محرمانه نیست و در اختیار مخاطبین و حق‌جویان قرار می‌گیرد."
 
-#: dt-contacts/access-module.php:306
+#: dt-contacts/access-module.php:307
 msgid "Transfer"
 msgstr "انتقال"
 
@@ -2120,16 +2119,16 @@ msgstr "با %s به اشتراک نگذاشت"
 msgid "Quick Actions"
 msgstr "عملیات سریع"
 
-#: archive-template.php:420
+#: archive-template.php:529
 msgctxt "input field placeholder"
 msgid "Type to search"
 msgstr "برای جستجو تایپ کنید"
 
-#: archive-template.php:186
+#: archive-template.php:295
 #: dt-assets/parts/modals/modal-share.php:27
-#: dt-contacts/access-module.php:571
+#: dt-contacts/access-module.php:572
 #: dt-contacts/user-module.php:145
-#: dt-groups/base-setup.php:491
+#: dt-groups/base-setup.php:492
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "جستجوی کاربران"
@@ -2146,16 +2145,16 @@ msgid "Write your comment or note here"
 msgstr "یادداشت و یا نظر خود را اینجا بنویسید"
 
 #: archive-template.php:33
-#: archive-template.php:54
-#: archive-template.php:262
+#: archive-template.php:108
+#: archive-template.php:371
 #: dt-contacts/base-setup.php:317
 #: dt-core/global-functions.php:419
 #: dt-core/global-functions.php:466
 #: dt-core/global-functions.php:509
-#: dt-groups/base-setup.php:526
+#: dt-groups/base-setup.php:527
 #: dt-people-groups/people-groups-post-type.php:133
 #: dt-posts/custom-post-type.php:18
-#: template-settings.php:264
+#: template-settings.php:262
 msgctxt "Search 'something'"
 msgid "Search %s"
 msgstr "جستجوی %s"
@@ -2221,7 +2220,7 @@ msgctxt "added to the end of a sentence"
 msgid "selected."
 msgstr "انتخاب شده."
 
-#: dt-groups/base-setup.php:614
+#: dt-groups/base-setup.php:615
 msgctxt "Add members modal"
 msgid "Add members from existing contacts"
 msgstr "اعضا را از مخاطبین موجود اضافه کنید"
@@ -2240,7 +2239,7 @@ msgctxt "No longer sub-assigned on contact1"
 msgid "No longer sub-assigned on %s"
 msgstr "مدتی است که به %s واگذار نشده است"
 
-#: dt-groups/base-setup.php:608
+#: dt-groups/base-setup.php:609
 msgid "To add new members, click on 'Create' or 'Select'."
 msgstr "برای اضافه کردن اعضا، روی \"ایجاد\" یا \"انتخاب\" کلیک کنید."
 
@@ -2248,24 +2247,24 @@ msgstr "برای اضافه کردن اعضا، روی \"ایجاد\" یا \"ا�
 msgid "Filters"
 msgstr "دسته‌بندی‌ها"
 
-#: archive-template.php:358
+#: archive-template.php:467
 msgid "Load More"
 msgstr "بارگذاری موارد بیشتر"
 
-#: archive-template.php:370
+#: archive-template.php:479
 msgid "Filter Name"
 msgstr "نام دسته‌بندی"
 
-#: archive-template.php:500
+#: archive-template.php:609
 #: dt-assets/parts/merge-details.php:70
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
 #: dt-assets/parts/modals/modal-new-contact.php:14
-#: dt-contacts/access-module.php:475
-#: dt-contacts/access-module.php:506
-#: dt-contacts/access-module.php:534
-#: dt-contacts/base-setup.php:372
-#: dt-contacts/base-setup.php:407
+#: dt-contacts/access-module.php:476
+#: dt-contacts/access-module.php:507
+#: dt-contacts/access-module.php:535
+#: dt-contacts/base-setup.php:373
+#: dt-contacts/base-setup.php:408
 #: dt-contacts/user-module.php:115
 #: dt-contacts/user-module.php:167
 #: single-template.php:345
@@ -2278,7 +2277,7 @@ msgstr "نام دسته‌بندی"
 msgid "Cancel"
 msgstr "لغو"
 
-#: archive-template.php:505
+#: archive-template.php:614
 msgid "Filter Records"
 msgstr "دسته‌بندی سوابق"
 
@@ -2374,16 +2373,16 @@ msgstr "دسته‌بندی خاصی موجود نیست. یک دسته‌بند
 msgid "No records found matching your filter."
 msgstr "هیچگونه سوابقی مطابق با دسته‌بندی ارائه شده، یافت نشد."
 
-#: dt-groups/base-setup.php:1025
-#: dt-groups/base-setup.php:1098
-#: dt-groups/base-setup.php:1106
+#: dt-groups/base-setup.php:1026
+#: dt-groups/base-setup.php:1099
+#: dt-groups/base-setup.php:1107
 #: template-notifications.php:47
 msgctxt "List Filters"
 msgid "All"
 msgstr "همه"
 
-#: dt-contacts/access-module.php:1078
 #: dt-contacts/access-module.php:1079
+#: dt-contacts/access-module.php:1080
 msgid "Subassigned only"
 msgstr "فقط واگذار شده"
 
@@ -2394,7 +2393,7 @@ msgstr "فقط واگذار شده"
 msgid "Coached by me"
 msgstr "تحت تعلیم من"
 
-#: dt-groups/base-setup.php:1017
+#: dt-groups/base-setup.php:1018
 msgctxt "List Filters"
 msgid "Assigned to me"
 msgstr "اختصاص داده شده به من"
@@ -2431,12 +2430,12 @@ msgid "No note set"
 msgstr "هیچ یادداشتی تنظیم نشده است"
 
 #: dt-assets/functions/enqueue-scripts.php:311
-#: dt-contacts/base-setup.php:487
+#: dt-contacts/base-setup.php:488
 msgctxt "All records"
 msgid "All %s"
 msgstr "همۀ %s"
 
-#: dt-assets/functions/menu.php:34
+#: dt-assets/functions/menu.php:45
 msgid "Disciple.Tools"
 msgstr "سایت"
 
@@ -2709,12 +2708,11 @@ msgstr "ذخیره سازی یادآوری"
 msgid "Existing tasks for this record:"
 msgstr "یادآوری‌های ذخیره شده:"
 
-#: dt-assets/parts/nav-offcanvas-topbar.php:85
+#: dt-assets/parts/nav-topbar.php:133
 msgid "Theme Update Available!"
 msgstr "برای تم سایت بروزرسانی وجود دارد!"
 
-#: dt-assets/functions/menu.php:63
-#: dt-assets/parts/nav-offcanvas-topbar.php:130
+#: dt-assets/functions/menu.php:86
 #: dt-mapping/columns/add-users-column.php:56
 #: dt-metrics/combined/hover-map.php:264
 #: dt-metrics/combined/locations-list.php:257
@@ -2723,45 +2721,45 @@ msgstr "برای تم سایت بروزرسانی وجود دارد!"
 msgid "Users"
 msgstr "کاربران"
 
-#: dt-contacts/access-module.php:101
+#: dt-contacts/access-module.php:102
 msgid "Select the main person who is responsible for reporting on this contact."
 msgstr "شخصی که مسئولیت این مخاطب را بر عهده دارد و گزارشات مربوط به او را ارائه می‌دهد، انتخاب کنید."
 
-#: dt-contacts/access-module.php:152
+#: dt-contacts/access-module.php:153
 #: dt-contacts/base-setup.php:281
 msgid "Contact Status"
 msgstr "وضعیت مخاطب"
 
-#: dt-contacts/access-module.php:167
+#: dt-contacts/access-module.php:168
 msgid "Dispatch Needed"
 msgstr "نیازمند هماهنگی برای پیگیری"
 
-#: dt-contacts/access-module.php:178
+#: dt-contacts/access-module.php:179
 msgid "Paused"
 msgstr "پیگیری متوقف شده است"
 
-#: dt-contacts/access-module.php:116
+#: dt-contacts/access-module.php:117
 msgid "Contact Attempt Needed"
 msgstr "به تلاش بیشتر نیاز دارد"
 
-#: dt-contacts/access-module.php:120
+#: dt-contacts/access-module.php:121
 msgid "Contact Attempted"
 msgstr "تلاش خود را می‌کند"
 
-#: dt-contacts/access-module.php:124
+#: dt-contacts/access-module.php:125
 #: dt-contacts/dmm-module.php:206
 msgid "Contact Established"
 msgstr "به ثبات رسیده است"
 
-#: dt-contacts/access-module.php:128
+#: dt-contacts/access-module.php:129
 msgid "First Meeting Scheduled"
 msgstr "اولین جلسه هماهنگ شد"
 
-#: dt-contacts/access-module.php:132
+#: dt-contacts/access-module.php:133
 msgid "First Meeting Complete"
 msgstr "اولین جلسه برگزار شد"
 
-#: dt-contacts/access-module.php:140
+#: dt-contacts/access-module.php:141
 msgid "Being Coached"
 msgstr "در حال تعلیم است"
 
@@ -2810,83 +2808,83 @@ msgstr "مرد"
 msgid "Female"
 msgstr "زن"
 
-#: dt-contacts/access-module.php:197
+#: dt-contacts/access-module.php:198
 msgid "Under 18 years old"
 msgstr "سن زیر ۱۸ سال"
 
-#: dt-contacts/access-module.php:198
+#: dt-contacts/access-module.php:199
 msgid "18-25 years old"
 msgstr "سن ۲۵-۱۸ سال"
 
-#: dt-contacts/access-module.php:199
+#: dt-contacts/access-module.php:200
 msgid "26-40 years old"
 msgstr "سن ۴۰-۲۶ سال"
 
-#: dt-contacts/access-module.php:200
+#: dt-contacts/access-module.php:201
 msgid "Over 40 years old"
 msgstr "سن بالای ۴۰ سال"
 
-#: dt-contacts/access-module.php:207
+#: dt-contacts/access-module.php:208
 msgid "Reason Not Ready"
 msgstr "دلیل اینکه هنوز آماده نیست"
 
-#: dt-contacts/access-module.php:208
+#: dt-contacts/access-module.php:209
 msgctxt "Optional Documentation"
 msgid "The main reason the contact is not ready to be assigned to a user."
 msgstr "این گزینه بیانگر آماده نبودن مخاطب برای اختصاص دادن به یک کاربر می‌باشد و اگر مخاطب به یک کاربر اختصاص داده شده است، نباید از گزینۀ \"هنوز آماده نیست\" استفاده کنید."
 
-#: dt-contacts/access-module.php:215
+#: dt-contacts/access-module.php:216
 msgid "Insufficient Contact Information"
 msgstr "اطلاعات مخاطب کافی نیست"
 
-#: dt-contacts/access-module.php:218
+#: dt-contacts/access-module.php:219
 msgid "Unknown Location"
 msgstr "مکان نامشخص است"
 
-#: dt-contacts/access-module.php:221
+#: dt-contacts/access-module.php:222
 msgid "Only wants media"
 msgstr "فقط کتاب یا فایل می‌خواهد"
 
-#: dt-contacts/access-module.php:224
+#: dt-contacts/access-module.php:225
 msgid "Outside Area"
 msgstr "خارج از منطقه"
 
-#: dt-contacts/access-module.php:227
+#: dt-contacts/access-module.php:228
 msgid "Needs Review"
 msgstr "نیاز به بررسی دارد"
 
-#: dt-contacts/access-module.php:230
+#: dt-contacts/access-module.php:231
 msgid "Waiting for Confirmation"
 msgstr "در انتظار تأیید"
 
-#: dt-contacts/access-module.php:238
+#: dt-contacts/access-module.php:239
 msgid "Reason Paused"
 msgstr "دلیل توقف پیگیری"
 
-#: dt-contacts/access-module.php:239
+#: dt-contacts/access-module.php:240
 msgctxt "Optional Documentation"
 msgid "A paused contact is one you are not currently interacting with but expect to in the future."
 msgstr "این گزینه بیانگر آن است که در حال حاضر با مخاطب ارتباطی ندارید ولی امیدوارید که در آینده این ارتباط از سر گرفته شود."
 
-#: dt-contacts/access-module.php:257
+#: dt-contacts/access-module.php:258
 msgid "Reason Closed"
 msgstr "دلیل غیرفعال کردن"
 
-#: dt-contacts/access-module.php:258
+#: dt-contacts/access-module.php:259
 msgctxt "Optional Documentation"
 msgid "A closed contact is one you can't or don't wish to interact with."
 msgstr "این گزینه بیانگر آن است که دیگر شما نمی‌توانید و یا نمی‌خواهید با او ارتباط برقرار کنید."
 
-#: dt-contacts/access-module.php:265
+#: dt-contacts/access-module.php:266
 msgctxt "Reason Closed label"
 msgid "Hostile, playing games or self gain"
 msgstr "رفتار خصمانه دارد و یا به‌ دنبال بازی دادن یا منافع شخصی خودش است"
 
-#: dt-contacts/access-module.php:282
+#: dt-contacts/access-module.php:283
 msgid "Accepted"
 msgstr "تأیید شد"
 
-#: dt-contacts/access-module.php:322
+#: dt-contacts/access-module.php:323
 msgctxt "Optional Documentation"
 msgid "The website, event or location this contact came from."
 msgstr "وب سایت، رخداد و یا محلی که مخاطب از آنجا آمده است."
@@ -2970,7 +2968,7 @@ msgctxt "Optional Documentation"
 msgid "The people groups represented by this group."
 msgstr "قومیت‌ها توسط این گروه نمایش داده می‌شوند."
 
-#: dt-groups/base-setup.php:450
+#: dt-groups/base-setup.php:451
 msgctxt "Optional Documentation"
 msgid "Groups this contact is a member of."
 msgstr "گروه‌هایی که این مخاطب عضو آنها است."
@@ -3028,7 +3026,7 @@ msgid "Select the main person who is responsible for reporting on this group."
 msgstr "شخصی را که مسئولیت گزارش دادن در مورد این گروه را بر عهده دارد، انتخاب کنید."
 
 #: dt-groups/base-setup.php:201
-#: dt-groups/base-setup.php:729
+#: dt-groups/base-setup.php:730
 msgid "Church Health"
 msgstr "وضعیت سلامت کلیسا"
 
@@ -3106,32 +3104,32 @@ msgid "Sharing the Gospel"
 msgstr "بشارت انجیل"
 
 #: dt-groups/base-setup.php:251
-#: dt-groups/base-setup.php:431
+#: dt-groups/base-setup.php:432
 msgid "Church Commitment"
 msgstr "متعهد به کلیسا شدن"
 
-#: dt-groups/base-setup.php:413
+#: dt-groups/base-setup.php:414
 msgid "Unbelievers"
 msgstr "بی‌ایمانان"
 
-#: dt-groups/base-setup.php:419
+#: dt-groups/base-setup.php:420
 msgid "Believers"
 msgstr "ایمانداران"
 
-#: dt-groups/base-setup.php:425
+#: dt-groups/base-setup.php:426
 msgid "Accountable"
 msgstr "پاسخگو است"
 
-#: dt-groups/base-setup.php:432
+#: dt-groups/base-setup.php:433
 msgctxt "Optional Documentation"
 msgid "Is this a church - yes or no?"
 msgstr "آیا این یک کلیسا است (بله یا خیر)؟"
 
-#: dt-groups/base-setup.php:437
+#: dt-groups/base-setup.php:438
 msgid "Multiplying"
 msgstr "تکثیر کننده"
 
-#: dt-groups/base-setup.php:438
+#: dt-groups/base-setup.php:439
 msgctxt "Optional Documentation"
 msgid "Number of people helping start other groups. How many members are multiplying?"
 msgstr "تعداد افرادی که برای شروع گروه‌های دیگر کمک می‌کنند. چند نفر از اعضا تکثیر کننده هستند؟"
@@ -3243,7 +3241,7 @@ msgid "Save Roles"
 msgstr "ذخیره سازی سمَت‌ها"
 
 #: dt-users/template-user-management.php:284
-#: template-settings.php:220
+#: template-settings.php:218
 msgid "Search Locations"
 msgstr "جستجوی مکان‌ها"
 
@@ -3335,29 +3333,29 @@ msgctxt "You set this task on contact1: task note"
 msgid "You set this task on %1$s: %2$s"
 msgstr "شما این یادآوری را در مورد %1$s تنظیم کردید: %2$s"
 
-#: dt-contacts/access-module.php:456
-#: dt-contacts/access-module.php:487
-#: dt-contacts/access-module.php:518
-#: dt-contacts/base-setup.php:386
+#: dt-contacts/access-module.php:457
+#: dt-contacts/access-module.php:488
+#: dt-contacts/access-module.php:519
+#: dt-contacts/base-setup.php:387
 msgid "Choose an option:"
 msgstr "یک گزینه را انتخاب کنید:"
 
-#: dt-contacts/access-module.php:478
-#: dt-contacts/access-module.php:509
-#: dt-contacts/access-module.php:537
-#: dt-contacts/base-setup.php:410
+#: dt-contacts/access-module.php:479
+#: dt-contacts/access-module.php:510
+#: dt-contacts/access-module.php:538
+#: dt-contacts/base-setup.php:411
 msgid "Confirm"
 msgstr "تأیید"
 
-#: dt-groups/base-setup.php:598
+#: dt-groups/base-setup.php:599
 msgid "Create"
 msgstr "ایجاد"
 
-#: dt-groups/base-setup.php:603
+#: dt-groups/base-setup.php:604
 msgid "Select"
 msgstr "انتخاب"
 
-#: dt-groups/base-setup.php:615
+#: dt-groups/base-setup.php:616
 msgctxt "Add members modal"
 msgid "In the 'Member List' field, type the name of an existing contact to add them to this group."
 msgstr "در قسمت \"لیست اعضا\" نام مخاطبین موجود در سایت را برای اضافه کرن به این گروه، تایپ کنید."
@@ -3420,14 +3418,14 @@ msgstr "نوع:"
 msgid "Type of Comment"
 msgstr "نوع نظر"
 
-#: dt-contacts/access-module.php:308
+#: dt-contacts/access-module.php:309
 msgid "Contacts transferred from a partnership with another Disciple.Tools site."
 msgstr "‏مخاطب از همکاری با سایت Disciple.Tools دیگر منتقل شده اند."
 
 #: dt-mapping/geocode-api/mapbox-api.php:286
 #: dt-mapping/geocode-api/mapbox-api.php:321
 #: dt-users/template-user-management.php:272
-#: template-settings.php:205
+#: template-settings.php:203
 msgid "add"
 msgstr "افزودن"
 
@@ -3539,7 +3537,7 @@ msgstr "۲ مخاطب به بروزرسانی نیاز دارند"
 msgid "Quick Action Buttons"
 msgstr "اقدام سریع دکمه"
 
-#: dt-groups/base-setup.php:650
+#: dt-groups/base-setup.php:651
 #: dt-metrics/groups/tree.php:83
 #: dt-metrics/personal/group-tree.php:84
 msgid "Members"
@@ -3601,17 +3599,17 @@ msgctxt "Optional Documentation"
 msgid "The group has committed to be church."
 msgstr ""
 
-#: dt-groups/base-setup.php:414
+#: dt-groups/base-setup.php:415
 msgctxt "Optional Documentation"
 msgid "Number of unbelievers in this group."
 msgstr "تعداد م ‫‫بی‌ایمانان این گروه."
 
-#: dt-groups/base-setup.php:420
+#: dt-groups/base-setup.php:421
 msgctxt "Optional Documentation"
 msgid "Number of believers in this group."
 msgstr "تعداد م ایماندار این گروه."
 
-#: dt-groups/base-setup.php:426
+#: dt-groups/base-setup.php:427
 msgctxt "Optional Documentation"
 msgid "Number of people in accountability group."
 msgstr ""
@@ -3663,7 +3661,7 @@ msgstr "نقشه ‫نقاط قوّت ایمان"
 msgid "Unable to update"
 msgstr "به‌روزرسانی امکان‌پذیر نبود"
 
-#: dt-contacts/access-module.php:274
+#: dt-contacts/access-module.php:275
 msgctxt "Reason Closed label"
 msgid "GDPR request"
 msgstr "درخواست GDPR"
@@ -3701,7 +3699,7 @@ msgstr "شریک"
 msgid "DT Site Name: %s"
 msgstr "نام سایت ‏‫Disciple.Tools"
 
-#: dt-metrics/combined/critical-path.php:169
+#: dt-metrics/charts-base.php:132
 msgid "No Results"
 msgstr "نتیجه ای یافت نشد"
 
@@ -3860,7 +3858,7 @@ msgstr "‫نمای درختی تعلیم من"
 msgid "My Groups Tree"
 msgstr "نمای درختی گروه های من"
 
-#: dt-contacts/base-setup.php:352
+#: dt-contacts/base-setup.php:353
 msgid "See duplicates"
 msgstr "موارد مشابه را مشاهده کنید"
 
@@ -3889,7 +3887,7 @@ msgctxt "This record duplicated and was merged into Contact2"
 msgid "This record is a duplicate and was merged into %2$s"
 msgstr "این ثبت کپی است و با %2$s ادغام شده است"
 
-#: dt-contacts/access-module.php:1403
+#: dt-contacts/access-module.php:1404
 #: dt-contacts/duplicates-merging.php:469
 #: dt-contacts/duplicates-merging.php:520
 msgid "Duplicate Checker"
@@ -3900,7 +3898,7 @@ msgctxt "User1 merged Contact1 into this record"
 msgid "%1$s merged %2$s into this record"
 msgstr "‫%2$s %1$s را در این ثبت ادغام کرد"
 
-#: dt-posts/dt-posts.php:970
+#: dt-posts/dt-posts.php:993
 msgid "D.T System"
 msgstr "سیستم Disciple.Tools"
 
@@ -3917,62 +3915,66 @@ msgid "View User"
 msgstr "مشاهده کاربران"
 
 #: template-settings.php:43
-#: template-settings.php:197
+#: template-settings.php:195
 msgid "Multiplier Preferences"
 msgstr ""
 
-#: template-settings.php:205
-#: template-settings.php:210
+#: template-settings.php:203
+#: template-settings.php:208
 msgid "Locations you are willing to be responsible for"
 msgstr ""
 
-#: template-settings.php:233
+#: template-settings.php:231
 msgid "Languages you are comfortable speaking"
 msgstr ""
 
-#: template-settings.php:254
+#: template-settings.php:252
 msgid "People Groups you wish to serve"
 msgstr ""
 
-#: template-settings.php:277
+#: template-settings.php:275
 msgid "Availability to receive contacts from the Dispatcher"
 msgstr ""
 
-#: template-settings.php:523
+#: template-settings.php:521
 msgid "System Language"
 msgstr "زبان سیستم"
 
-#: archive-template.php:63
+#: archive-template.php:172
 msgctxt "Contacts Filters"
 msgid "%s Filters"
 msgstr "دسته‌بندیها %s"
 
-#: archive-template.php:86
+#: archive-template.php:195
 msgctxt "Contacts List"
 msgid "%s List"
 msgstr "لیست %s"
 
-#: archive-template.php:117
+#: archive-template.php:226
 msgid "Fields"
 msgstr "قسمت ها"
 
-#: archive-template.php:123
+#: archive-template.php:232
 msgid "Bulk Edit"
 msgstr "ویرایش دسته ای"
 
-#: archive-template.php:129
+#: archive-template.php:238
 msgid "Choose which fields to display as columns in the list"
 msgstr ""
 
-#: archive-template.php:162
+#: archive-template.php:90
+#: archive-template.php:163
+#: archive-template.php:271
 msgid "Apply"
 msgstr "اعمال کن"
 
-#: archive-template.php:163
+#: archive-template.php:91
+#: archive-template.php:164
+#: archive-template.php:272
 msgid "reset to default"
 msgstr "بازنشانی به پیش‌فرض"
 
-#: archive-template.php:168
+#: archive-template.php:277
 msgid "Select all the  %1$s you want to update from the list, and update them below"
 msgstr "همه %1$s  مورد نظر برای به روزرسانی را از لیست انتخاب کنید و آنها را در زیر به روز کنید"
 
@@ -3980,7 +3982,7 @@ msgstr "همه %1$s  مورد نظر برای به روزرسانی را از ل
 msgid "Assign To"
 msgstr "محول کردن به"
 
-#: archive-template.php:250
+#: archive-template.php:359
 msgid "Share with:"
 msgstr "اشتراک گذاری با:"
 
@@ -3988,11 +3990,11 @@ msgstr "اشتراک گذاری با:"
 msgid "Request Update"
 msgstr "درخواست بروزرسانی"
 
-#: archive-template.php:283
+#: archive-template.php:392
 msgid "See More Options"
 msgstr "مشاهده گزینه های بیشتر"
 
-#: archive-template.php:284
+#: archive-template.php:393
 msgid "See Fewer Options"
 msgstr "مشاهده گزینه های کمتر"
 
@@ -4023,47 +4025,47 @@ msgstr "‫ثبت ایجاد کرد"
 msgid "Edit New Record"
 msgstr "ویرایش ‫ثبت جدید"
 
-#: dt-contacts/access-module.php:91
+#: dt-contacts/access-module.php:92
 msgid "Access"
 msgstr "دسترسی"
 
-#: dt-contacts/access-module.php:93
+#: dt-contacts/access-module.php:94
 msgid "Someone to follow-up with"
 msgstr ""
 
-#: dt-contacts/access-module.php:94
+#: dt-contacts/access-module.php:95
 msgid "Collaborators"
 msgstr "همکاران"
 
-#: dt-contacts/access-module.php:854
-#: dt-contacts/access-module.php:864
+#: dt-contacts/access-module.php:855
+#: dt-contacts/access-module.php:865
 msgid "My Follow-Up"
 msgstr ""
-
-#: dt-contacts/access-module.php:865
-#: dt-contacts/access-module.php:886
-#: dt-contacts/access-module.php:909
-#: dt-contacts/access-module.php:933
-msgid "Assigned to me"
-msgstr "اختصاص داده شده به من"
 
 #: dt-contacts/access-module.php:866
 #: dt-contacts/access-module.php:887
 #: dt-contacts/access-module.php:910
 #: dt-contacts/access-module.php:934
+msgid "Assigned to me"
+msgstr "اختصاص داده شده به من"
+
+#: dt-contacts/access-module.php:867
+#: dt-contacts/access-module.php:888
+#: dt-contacts/access-module.php:911
+#: dt-contacts/access-module.php:935
 msgid "Sub-assigned to me"
 msgstr "‫‫به من واگذار شده"
 
-#: dt-contacts/access-module.php:970
+#: dt-contacts/access-module.php:971
 msgctxt "All records"
 msgid "Follow-Up %s"
 msgstr "‫%s را ‫پیگیر"
 
-#: dt-contacts/access-module.php:978
+#: dt-contacts/access-module.php:979
 msgid "All Follow-Up"
 msgstr ""
 
-#: dt-contacts/access-module.php:1397
+#: dt-contacts/access-module.php:1398
 msgid "This record might be a duplicate of: "
 msgstr ""
 
@@ -4101,25 +4103,25 @@ msgctxt "connections to other records"
 msgid "Connections to other %s"
 msgstr "اتصالات به سایر %s"
 
-#: dt-contacts/base-setup.php:347
+#: dt-contacts/base-setup.php:348
 msgctxt "Change Record Type"
 msgid "Change %s Type"
 msgstr "نوع %s را تغییر دهید"
 
-#: dt-contacts/base-setup.php:481
+#: dt-contacts/base-setup.php:482
 msgid "Default Filters"
 msgstr "دسته‌بندی‌های پیش‌فرض"
 
-#: dt-contacts/base-setup.php:491
+#: dt-contacts/base-setup.php:492
 msgctxt "All records I can view"
 msgid "All %s I can view"
 msgstr "همه %s که می توانم ببینم"
 
-#: dt-contacts/base-setup.php:501
+#: dt-contacts/base-setup.php:502
 msgid "My Recently Viewed"
 msgstr "من اخیراً مشاهده کردم"
 
-#: dt-contacts/base-setup.php:506
+#: dt-contacts/base-setup.php:507
 msgid "Last 30 viewed"
 msgstr "آخرین ۳۰ مشاهده شده است"
 
@@ -4161,15 +4163,15 @@ msgctxt "Personal records"
 msgid "Connected %s"
 msgstr "متصل به %s"
 
-#: dt-groups/base-setup.php:684
+#: dt-groups/base-setup.php:685
 msgid "Coaches"
 msgstr ""
 
-#: dt-groups/base-setup.php:697
+#: dt-groups/base-setup.php:698
 msgid "Planted by"
 msgstr ""
 
-#: dt-groups/base-setup.php:698
+#: dt-groups/base-setup.php:699
 msgid "Planting"
 msgstr ""
 
@@ -4217,7 +4219,7 @@ msgstr "‫نقشه ها مخاطبی"
 msgid "Groups Maps"
 msgstr "‫نقشه های گروه ها"
 
-#: dt-posts/dt-posts.php:1366
+#: dt-posts/dt-posts.php:1389
 #: single-template.php:119
 msgid "Details"
 msgstr "جزئیات"
@@ -4284,6 +4286,7 @@ msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
 msgstr "مطمئنید می‌خواهید %s را حذف کنید؟"
 
+#: dt-assets/functions/menu.php:39
 #: template-metrics.php:25
 msgid "Menu"
 msgstr "منو"
@@ -4304,26 +4307,26 @@ msgstr "شروع"
 msgid "end"
 msgstr "پایان"
 
-#: dt-contacts/base-setup.php:340
-#: dt-contacts/base-setup.php:367
+#: dt-contacts/base-setup.php:341
+#: dt-contacts/base-setup.php:368
 msgctxt "Archive Contact"
 msgid "Archive %s"
 msgstr "بایگانی %s"
 
-#: dt-contacts/base-setup.php:368
+#: dt-contacts/base-setup.php:369
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
 msgstr "مطمئنید می‌خواهید %s را ‫بایگان کنید؟"
 
-#: dt-contacts/base-setup.php:375
+#: dt-contacts/base-setup.php:376
 msgid "Archive"
 msgstr "بایگانی"
 
-#: dt-contacts/base-setup.php:615
+#: dt-contacts/base-setup.php:616
 msgid "This %s is archived"
 msgstr "این %s بایگانی شده است"
 
-#: dt-contacts/base-setup.php:617
+#: dt-contacts/base-setup.php:618
 msgid "Restore"
 msgstr "بازیابی"
 
@@ -4344,7 +4347,7 @@ msgstr ""
 
 #: dt-contacts/base-setup.php:291
 msgid "Archived"
-msgstr ""
+msgstr "بایگانی شده"
 
 #: dt-groups/base-setup.php:317
 msgid "Leader Count"
@@ -4397,4 +4400,26 @@ msgstr ""
 msgid "over %s year ago"
 msgid_plural "over %s years ago"
 msgstr[0] ""
+
+#: archive-template.php:34
+#: archive-template.php:35
+#: archive-template.php:109
+#: archive-template.php:110
+msgid "Advanced Search"
+msgstr ""
+
+#: archive-template.php:61
+#: archive-template.php:134
+msgid "Choose which fields search"
+msgstr ""
+
+#: archive-template.php:70
+#: archive-template.php:143
+msgid "Search All Fields"
+msgstr ""
+
+#: archive-template.php:61
+#: archive-template.php:134
+msgid "Choose which fields to search"
+msgstr ""
 

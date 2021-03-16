@@ -404,7 +404,8 @@ class DT_Groups_Base extends DT_Module_Base {
                 "post_type" => "peoplegroups",
                 'tile' => 'details',
                 "p2p_direction" => "from",
-                "p2p_key" => "groups_to_peoplegroups"
+                "p2p_key" => "groups_to_peoplegroups",
+                "tile" => "details"
             ];
 
             /* 4 fields */

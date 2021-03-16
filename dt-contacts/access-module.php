@@ -79,6 +79,7 @@ class DT_Contacts_Access extends DT_Module_Base {
         ];
         $expected_roles["administrator"]["permissions"]["dt_all_access_contacts"] = true;
         $expected_roles["administrator"]["permissions"]["assign_any_contacts"] = true;
+        $expected_roles["dt_admin"]["permissions"]["dt_all_access_contacts"] = true;
         $expected_roles["dt_admin"]["permissions"]["assign_any_contacts"] = true;
 
         return $expected_roles;
@@ -379,7 +380,7 @@ class DT_Contacts_Access extends DT_Module_Base {
         }
         if ( $post_type === "contacts" ){
             $sections['followup'] = [
-                "label" => "Follow Up",
+                "label" => __( "Follow Up", 'disciple_tools' ),
                 "display_for" => [
                     "type" => [ "access" ],
                 ]

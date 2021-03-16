@@ -320,7 +320,6 @@ DT comments and activity
     }
     .detail-snippet {
         display:none;
-        max-width: 33%;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -343,6 +342,11 @@ DT comments and activity
     }
 }
 
+html[dir="rtl"] {
+    .input-group-field {
+        text-align: right;
+    }
+}
 
 
 /**

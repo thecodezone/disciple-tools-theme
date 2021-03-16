@@ -30,7 +30,6 @@ class DT_People_Groups_Base extends DT_Module_Base {
         }
 
         add_action( 'after_setup_theme', [ $this, 'after_setup_theme' ], 100 );
-
         add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_set_roles_and_permissions' ], 20, 1 );
 
         add_action( 'p2p_init', [ $this, 'p2p_init' ] );
@@ -78,11 +77,11 @@ class DT_People_Groups_Base extends DT_Module_Base {
                 'name' => __( 'Tasks', 'disciple_tools' ),
                 'type' => 'post_user_meta',
             ];
-            $fields["duplicate_data"] = [
-                "name" => 'Duplicates', //system string does not need translation
-                'type' => 'array',
-                'default' => [],
-            ];
+//            $fields["duplicate_data"] = [
+//                "name" => 'Duplicates', //system string does not need translation
+//                'type' => 'array',
+//                'default' => [],
+//            ];
             $fields['assigned_to'] = [
                 'name'        => __( 'Assigned To', 'disciple_tools' ),
                 'description' => __( "Select the main person who is responsible for reporting on this record.", 'disciple_tools' ),
@@ -93,12 +92,12 @@ class DT_People_Groups_Base extends DT_Module_Base {
                 "show_in_table" => 16,
                 'custom_display' => true,
             ];
-            $fields["requires_update"] = [
-                'name'        => __( 'Requires Update', 'disciple_tools' ),
-                'description' => '',
-                'type'        => 'boolean',
-                'default'     => false,
-            ];
+//            $fields["requires_update"] = [
+//                'name'        => __( 'Requires Update', 'disciple_tools' ),
+//                'description' => '',
+//                'type'        => 'boolean',
+//                'default'     => false,
+//            ];
             // end basic framework fields
 
 
@@ -123,27 +122,17 @@ class DT_People_Groups_Base extends DT_Module_Base {
                         'color' => "#4CAF50"
                     ],
                 ],
-                'tile'     => 'details',
+                'tile'     => '',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/status.svg',
                 "default_color" => "#366184",
                 "show_in_table" => 10,
+                "in_create_form" => true,
             ];
-
 
 
             /**
              * Common and recommended fields
              */
-            $fields['start_date'] = [
-                'name'        => __( 'Start Date', 'disciple_tools' ),
-                'description' => '',
-                'type'        => 'date',
-                'default'     => time(),
-                'tile' => 'details',
-                'icon' => get_template_directory_uri() . '/dt-assets/images/date-start.svg',
-            ];
-
-
             $fields['location_grid'] = [
                 'name'        => __( 'Locations', 'disciple_tools' ),
                 'description' => _x( 'The general location where this contact is located.', 'Optional Documentation', 'disciple_tools' ),
@@ -176,6 +165,53 @@ class DT_People_Groups_Base extends DT_Module_Base {
                 $fields["location_grid_meta"]["mapbox"] = true;
             }
             // end locations
+
+            $fields['rop3'] = [
+                'name'        => __( 'ROP3', 'disciple_tools' ),
+                'description' => '',
+                'type'        => 'text',
+                'default'     => '',
+                'tile' => 'details',
+            ];
+            $fields['jp_people_id_3'] = [
+                'name'        => __( 'JP People ID', 'disciple_tools' ),
+                'description' => '',
+                'type'        => 'text',
+                'default'     => '',
+                'tile' => '',
+            ];
+            $fields["subassigned"] = [
+                "name" => __( "Sub-assigned to", 'disciple_tools' ),
+                "description" => __( "Contact or User assisting the Assigned To user to follow up with the contact.", 'disciple_tools' ),
+                "type" => "connection",
+                "post_type" => "contacts",
+                "p2p_direction" => "to",
+                "p2p_key" => "peoplegroups_to_subassigned",
+                "tile" => "",
+                "custom_display" => false,
+                'icon' => get_template_directory_uri() . "/dt-assets/images/subassigned.svg",
+            ];
+
+            $fields["contacts"] = [
+                "name" => __( 'Contacts', 'disciple_tools' ),
+                'description' => _x( 'The people groups represented by this contact.', 'Optional Documentation', 'disciple_tools' ),
+                "type" => "connection",
+                "post_type" => "contacts",
+                "p2p_direction" => "to",
+                "p2p_key" => "contacts_to_peoplegroups",
+                'tile'     => 'other',
+                'icon' => get_template_directory_uri() . "/dt-assets/images/people-group.svg",
+            ];
+            $fields["groups"] = [
+                "name" => __( 'Groups', 'disciple_tools' ),
+                'description' => _x( 'The people groups represented by this group.', 'Optional Documentation', 'disciple_tools' ),
+                "type" => "connection",
+                "post_type" => "groups",
+                "p2p_direction" => "to",
+                "p2p_key" => "groups_to_peoplegroups",
+                'tile'     => 'other',
+                'icon' => get_template_directory_uri() . "/dt-assets/images/people-group.svg",
+            ];
 
 
             $fields["parents"] = [
@@ -233,6 +269,13 @@ class DT_People_Groups_Base extends DT_Module_Base {
                 ],
             ]
         );
+        p2p_register_connection_type(
+            [
+                'name'         => "peoplegroups_to_subassigned",
+                'from'         => $this->post_type,
+                'to'           => 'contacts',
+            ]
+        );
         /**
          * Peer connections
          */
@@ -245,20 +288,40 @@ class DT_People_Groups_Base extends DT_Module_Base {
     }
 
     public function dt_set_roles_and_permissions( $expected_roles ){
-        if ( ! isset( $expected_roles["multiplier"] ) ){
+
+        $expected_roles["peoplegroups_admin"] = [
+            "label" => __( 'People Groups Admin', 'disciple-tools-training' ),
+            "description" => __( 'Admin access to all people', 'disciple-tools-training' ),
+            "permissions" => []
+        ];
+        if ( !isset( $expected_roles["multiplier"] ) ){
             $expected_roles["multiplier"] = [
                 "label" => __( 'Multiplier', 'disciple_tools' ),
-                "description" => "Interacts with Contacts and Groups",
                 "permissions" => []
             ];
         }
 
+        // if the user can access contact they also can access this post type
         foreach ( $expected_roles as $role => $role_value ){
             if ( isset( $expected_roles[$role]["permissions"]['access_contacts'] ) && $expected_roles[$role]["permissions"]['access_contacts'] ){
-                $expected_roles[$role]["permissions"]['list_all_' . $this->post_type ] = true;
+                $expected_roles[$role]["permissions"]['access_' . $this->post_type ] = true;
+                $expected_roles[$role]["permissions"]['create_' . $this->post_type] = true;
             }
         }
-        
+
+        if ( isset( $expected_roles["administrator"] ) ){
+            $expected_roles["administrator"]["permissions"]['view_any_'.$this->post_type ] = true;
+            $expected_roles["administrator"]["permissions"][ 'dt_all_admin_' . $this->post_type] = true;
+        }
+        if ( isset( $expected_roles["dt_admin"] ) ){
+            $expected_roles["dt_admin"]["permissions"]['view_any_'.$this->post_type ] = true;
+            $expected_roles["dt_admin"]["permissions"][ 'dt_all_admin_' . $this->post_type] = true;
+        }
+        if ( isset( $expected_roles["peoplegroups_admin"] ) ){
+            $expected_roles["peoplegroups_admin"]["permissions"]['view_any_'.$this->post_type ] = true;
+            $expected_roles["peoplegroups_admin"]["permissions"][ 'dt_all_admin_' . $this->post_type] = true;
+        }
+
         return $expected_roles;
     }
 

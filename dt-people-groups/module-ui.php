@@ -29,14 +29,13 @@ class DT_People_Groups_UI extends DT_Module_Base {
             return;
         }
 
-        dt_write_log('test');
-
-        add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_set_roles_and_permissions' ], 30, 1 );
+//        add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_set_roles_and_permissions' ], 30, 1 );
 
         //setup tiles and fields
         add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles' ], 10, 2 );
         add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 20, 2 );
         add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
+        add_filter( 'dt_custom_fields_settings', [ $this, 'dt_custom_fields_settings' ], 10, 2 );
 
         // hooks
         add_action( "post_connection_removed", [ $this, "post_connection_removed" ], 10, 4 );
@@ -47,34 +46,43 @@ class DT_People_Groups_UI extends DT_Module_Base {
         add_action( "dt_comment_created", [ $this, "dt_comment_created" ], 10, 4 );
 
         //list
-        add_filter( "dt_user_list_filters", [ $this, "dt_user_list_filters" ], 10, 2 );
+        add_filter( "dt_user_list_filters", [ $this, "dt_user_list_filters" ], 20, 2 );
 
     }
 
     public function dt_set_roles_and_permissions( $expected_roles ){
 
-        foreach ( $expected_roles as $role => $role_value ){
-            if ( isset( $expected_roles[$role]["permissions"]['access_contacts'] ) && $expected_roles[$role]["permissions"]['access_contacts'] ){
-                $expected_roles[$role]["permissions"]['list_all_' . $this->post_type ] = true;
-            }
+//        foreach ( $expected_roles as $role => $role_value ){
+//            if ( isset( $expected_roles[$role]["permissions"]['access_contacts'] ) && $expected_roles[$role]["permissions"]['access_contacts'] ){
+//                $expected_roles[$role]["permissions"]['list_all_' . $this->post_type ] = true;
+//            }
+//        }
+//
+//        if ( isset( $expected_roles["administrator"] ) ){
+//            $expected_roles["administrator"]["permissions"]['view_any_'.$this->post_type ] = true;
+//            $expected_roles["administrator"]["permissions"]['access_'.$this->post_type ] = true;
+//        }
+//        if ( isset( $expected_roles["dt_admin"] ) ){
+//            $expected_roles["dt_admin"]["permissions"]['view_any_'.$this->post_type ] = true;
+//            $expected_roles["dt_admin"]["permissions"]['access_'.$this->post_type ] = true;
+//        }
+//        return $expected_roles;
+    }
+
+    public function dt_custom_fields_settings( $fields, $post_type ){
+        if ( $post_type === $this->post_type ){
+
+
         }
 
-        if ( isset( $expected_roles["administrator"] ) ){
-            $expected_roles["administrator"]["permissions"]['view_any_'.$this->post_type ] = true;
-            $expected_roles["administrator"]["permissions"]['access_'.$this->post_type ] = true;
-        }
-        if ( isset( $expected_roles["dt_admin"] ) ){
-            $expected_roles["dt_admin"]["permissions"]['view_any_'.$this->post_type ] = true;
-            $expected_roles["dt_admin"]["permissions"]['access_'.$this->post_type ] = true;
-        }
-        return $expected_roles;
+        return $fields;
     }
 
 
     public function dt_details_additional_tiles( $tiles, $post_type = "" ){
         if ( $post_type === $this->post_type ){
             $tiles["other"] = [ "label" => __( "Other", 'disciple_tools' ) ];
-            $tiles["profile"] = [ "profile" => __( "Profile", 'disciple_tools' ) ];
+            $tiles["jp"] = [ "label" => __( "Joshua Project", 'disciple_tools' ) ];
         }
         return $tiles;
     }
@@ -119,7 +127,17 @@ class DT_People_Groups_UI extends DT_Module_Base {
                 </div>
             </div>
             <div class="cell small-12 medium-4">
-                <?php render_field_for_display( "coaches", $record_fields, $record, true ); ?>
+                <?php render_field_for_display( "subassigned", $record_fields, $record, true ); ?>
+            </div>
+        <?php }
+
+
+        if ( $post_type === $this->post_type && $section === "jp" ){
+            $record = DT_Posts::get_post( $post_type, get_the_ID() );
+            $record_fields = DT_Posts::get_post_field_settings( $post_type );
+            ?>
+            <div class="cell small-12 medium-4">
+                <?php render_field_for_display( "jp_people_id_3", $record_fields, $record, true ); ?>
             </div>
         <?php }
 
@@ -152,53 +170,6 @@ class DT_People_Groups_UI extends DT_Module_Base {
             </div>
         <?php endif;
 
-
-
-//        if ( $post_type === $this->post_type && $section === "relationships" ) {
-//            $fields = DT_Posts::get_post_field_settings( $post_type );
-//            $post = DT_Posts::get_post( $this->post_type, get_the_ID() );
-//            ?>
-<!--            <div class="section-subheader members-header" style="padding-top: 10px;">-->
-<!--                <div style="padding-bottom: 5px; margin-right:10px; display: inline-block">-->
-<!--                    --><?php //esc_html_e( "Member List", 'disciple_tools' ) ?>
-<!--                </div>-->
-<!--                <button type="button" class="create-new-record" data-connection-key="members" style="height: 36px;">-->
-<!--                    --><?php //echo esc_html__( 'Create', 'disciple_tools' )?>
-<!--                    <img style="height: 14px; width: 14px" src="--><?php //echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?><!--"/>-->
-<!--                </button>-->
-<!--                <button type="button"-->
-<!--                        class="add-new-member">-->
-<!--                    --><?php //echo esc_html__( 'Select', 'disciple_tools' )?>
-<!--                    <img style="height: 16px; width: 16px" src="--><?php //echo esc_html( get_template_directory_uri() . '/dt-assets/images/add-group.svg' ) ?><!--"/>-->
-<!--                </button>-->
-<!--            </div>-->
-<!--            <div class="members-section" style="margin-bottom:10px">-->
-<!--                <div id="empty-members-list-message">--><?php //esc_html_e( "To add new members, click on 'Create' or 'Select'.", 'disciple_tools' ) ?><!--</div>-->
-<!--                <div class="member-list">-->
-<!---->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="reveal" id="add-new-group-member-modal" data-reveal style="min-height:500px">-->
-<!--                <h3>--><?php //echo esc_html_x( "Add members from existing contacts", 'Add members modal', 'disciple_tools' )?><!--</h3>-->
-<!--                <p>--><?php //echo esc_html_x( "In the 'Member List' field, type the name of an existing contact to add them to this group.", 'Add members modal', 'disciple_tools' )?><!--</p>-->
-<!---->
-<!--                --><?php //render_field_for_display( "members", $fields, $post, false ); ?>
-<!---->
-<!--                <div class="grid-x pin-to-bottom">-->
-<!--                    <div class="cell">-->
-<!--                        <hr>-->
-<!--                        <span style="float:right; bottom: 0;">-->
-<!--                    <button class="button" data-close aria-label="Close reveal" type="button">-->
-<!--                        --><?php //echo esc_html__( 'Close', 'disciple_tools' )?>
-<!--                    </button>-->
-<!--                </span>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <button class="close-button" data-close aria-label="Close modal" type="button">-->
-<!--                    <span aria-hidden="true">&times;</span>-->
-<!--                </button>-->
-<!--            </div>-->
-<!--        --><?php //}
     }
 
     /**
@@ -273,11 +244,8 @@ class DT_People_Groups_UI extends DT_Module_Base {
     // filter at the start of post creation
     public function dt_post_create_fields( $fields, $post_type ){
         if ( $post_type === $this->post_type ) {
-            /**
-             * @todo These set the initial value for fields if no value is given.
-             */
             if ( !isset( $fields["status"] ) ) {
-                $fields["status"] = "active";
+                $fields["status"] = "none";
             }
             if ( !isset( $fields["assigned_to"] ) ) {
                 $fields["assigned_to"] = sprintf( "user-%d", get_current_user_id() );
@@ -326,22 +294,18 @@ class DT_People_Groups_UI extends DT_Module_Base {
      * @link https://github.com/DiscipleTools/Documentation/blob/master/Theme-Core/list-query.md
      */
     private static function get_my_status(){
-        /**
-         * @todo adjust query to return count for update needed
-         */
         global $wpdb;
         $post_type = self::post_type();
         $current_user = get_current_user_id();
 
         $results = $wpdb->get_results( $wpdb->prepare( "
-            SELECT status.meta_value as status, count(pm.post_id) as count, count(un.post_id) as update_needed
+            SELECT status.meta_value as status, count(pm.post_id) as count
             FROM $wpdb->postmeta pm
             INNER JOIN $wpdb->posts a ON( a.ID = pm.post_id AND a.post_type = %s and a.post_status = 'publish' )
             INNER JOIN $wpdb->postmeta status ON ( status.post_id = pm.post_id AND status.meta_key = 'status' )
             INNER JOIN $wpdb->postmeta as assigned_to ON a.ID=assigned_to.post_id
               AND assigned_to.meta_key = 'assigned_to'
               AND assigned_to.meta_value = CONCAT( 'user-', %s )
-            LEFT JOIN $wpdb->postmeta un ON ( un.post_id = pm.post_id AND un.meta_key = 'requires_update' AND un.meta_value = '1' )
             GROUP BY status.meta_value, pm.meta_value
         ", $post_type, $current_user ), ARRAY_A);
 
@@ -350,28 +314,23 @@ class DT_People_Groups_UI extends DT_Module_Base {
 
     //list page filters function
     private static function get_all_status_types(){
-        /**
-         * @todo adjust query to return count for update needed
-         */
         global $wpdb;
         if ( current_user_can( 'view_any_'.self::post_type() ) ){
             $results = $wpdb->get_results($wpdb->prepare( "
-                SELECT status.meta_value as status, count(pm.post_id) as count, count(un.post_id) as update_needed
+                SELECT status.meta_value as status, count(pm.post_id) as count
                 FROM $wpdb->postmeta pm
                 INNER JOIN $wpdb->postmeta status ON( status.post_id = pm.post_id AND status.meta_key = 'status' )
                 INNER JOIN $wpdb->posts a ON( a.ID = pm.post_id AND a.post_type = %s and a.post_status = 'publish' )
-                LEFT JOIN $wpdb->postmeta un ON ( un.post_id = pm.post_id AND un.meta_key = 'requires_update' AND un.meta_value = '1' )
-                GROUP BY status.meta_value, pm.meta_value
+                GROUP BY status.meta_value
             ", self::post_type() ), ARRAY_A );
         } else {
             $results = $wpdb->get_results($wpdb->prepare("
-                SELECT status.meta_value as status, count(pm.post_id) as count, count(un.post_id) as update_needed
+                SELECT status.meta_value as status, count(pm.post_id) as count
                 FROM $wpdb->postmeta pm
                 INNER JOIN $wpdb->postmeta status ON( status.post_id = pm.post_id AND status.meta_key = 'status' )
                 INNER JOIN $wpdb->posts a ON( a.ID = pm.post_id AND a.post_type = %s and a.post_status = 'publish' )
                 LEFT JOIN $wpdb->dt_share AS shares ON ( shares.post_id = a.ID AND shares.user_id = %s )
                 LEFT JOIN $wpdb->postmeta assigned_to ON ( assigned_to.post_id = pm.post_id AND assigned_to.meta_key = 'assigned_to' && assigned_to.meta_value = %s )
-                LEFT JOIN $wpdb->postmeta un ON ( un.post_id = pm.post_id AND un.meta_key = 'requires_update' AND un.meta_value = '1' )
                 WHERE ( shares.user_id IS NOT NULL OR assigned_to.meta_value IS NOT NULL )
                 GROUP BY status.meta_value, pm.meta_value
             ", self::post_type(), get_current_user_id(), 'user-' . get_current_user_id() ), ARRAY_A);
@@ -382,137 +341,70 @@ class DT_People_Groups_UI extends DT_Module_Base {
 
     //build list page filters
     public static function dt_user_list_filters( $filters, $post_type ){
-        /**
-         * @todo process and build filter lists
-         */
-        if ( $post_type === self::post_type() ){
+
+        if ( $post_type === self::post_type() ) {
+
             $counts = self::get_my_status();
-            $fields = DT_Posts::get_post_field_settings( $post_type );
+            $fields = DT_Posts::get_post_field_settings($post_type);
+
             /**
-             * Setup my filters
+             * ALL
              */
-            $active_counts = [];
-            $update_needed = 0;
-            $status_counts = [];
-            $total_my = 0;
-            foreach ( $counts as $count ){
-                $total_my += $count["count"];
-                dt_increment( $status_counts[$count["status"]], $count["count"] );
-                if ( $count["status"] === "active" ){
-                    if ( isset( $count["update_needed"] ) ) {
-                        $update_needed += (int) $count["update_needed"];
-                    }
-                    dt_increment( $active_counts[$count["status"]], $count["count"] );
-                }
-            }
+            if (current_user_can('view_any_' . self::post_type())) {
 
-            $filters["tabs"][] = [
-                "key" => "assigned_to_me",
-                "label" => _x( "Assigned to me", 'List Filters', 'disciple_tools' ),
-                "count" => $total_my,
-                "order" => 20
-            ];
-            // add assigned to me filters
-            $filters["filters"][] = [
-                'ID' => 'my_all',
-                'tab' => 'assigned_to_me',
-                'name' => _x( "All", 'List Filters', 'disciple_tools' ),
-                'query' => [
-                    'assigned_to' => [ 'me' ],
-                    'sort' => 'status'
-                ],
-                "count" => $total_my,
-            ];
-            foreach ( $fields["status"]["default"] as $status_key => $status_value ) {
-                if ( isset( $status_counts[$status_key] ) ){
-                    $filters["filters"][] = [
-                        "ID" => 'my_' . $status_key,
-                        "tab" => 'assigned_to_me',
-                        "name" => $status_value["label"],
-                        "query" => [
-                            'assigned_to' => [ 'me' ],
-                            'status' => [ $status_key ],
-                            'sort' => '-post_date'
-                        ],
-                        "count" => $status_counts[$status_key]
-                    ];
-                    if ( $status_key === "active" ){
-                        if ( $update_needed > 0 ){
-                            $filters["filters"][] = [
-                                "ID" => 'my_update_needed',
-                                "tab" => 'assigned_to_me',
-                                "name" => $fields["requires_update"]["name"],
-                                "query" => [
-                                    'assigned_to' => [ 'me' ],
-                                    'status' => [ 'active' ],
-                                    'requires_update' => [ true ],
-                                ],
-                                "count" => $update_needed,
-                                'subfilter' => true
-                            ];
-                        }
-                    }
+                $counts = self::get_all_status_types();
+                dt_write_log($counts);
+                $active_counts = [];
+                $update_needed = 0;
+                $status_counts = [];
+                $total_all = 0;
+                foreach ($counts as $count) {
+                    $total_all += $count["count"];
+                    dt_increment($status_counts[$count["status"]], $count["count"]);
                 }
-            }
+                $filters["tabs"][] = [
+                    "key" => "all",
+                    "label" => _x("All", 'List Filters', 'disciple_tools'),
+                    "count" => 3,//$total_all,
+                    "order" => 10
+                ];
+                // add assigned to me filters
+                $filters["filters"][] = [
+                    'ID' => 'all',
+                    'tab' => 'all',
+                    'name' => _x("All", 'List Filters', 'disciple_tools'),
+                    'query' => [
+                        'sort' => '-post_date'
+                    ],
+                    "count" => $total_all
+                ];
 
-            $counts = self::get_all_status_types();
-            $active_counts = [];
-            $update_needed = 0;
-            $status_counts = [];
-            $total_all = 0;
-            foreach ( $counts as $count ){
-                $total_all += $count["count"];
-                dt_increment( $status_counts[$count["status"]], $count["count"] );
-                if ( $count["status"] === "active" ){
-                    if ( isset( $count["update_needed"] ) ) {
-                        $update_needed += (int) $count["update_needed"];
-                    }
-                    dt_increment( $active_counts[$count["status"]], $count["count"] );
-                }
-            }
-            $filters["tabs"][] = [
-                "key" => "all",
-                "label" => _x( "All", 'List Filters', 'disciple_tools' ),
-                "count" => $total_all,
-                "order" => 10
-            ];
-            // add assigned to me filters
-            $filters["filters"][] = [
-                'ID' => 'all',
-                'tab' => 'all',
-                'name' => _x( "All", 'List Filters', 'disciple_tools' ),
-                'query' => [
-                    'sort' => '-post_date'
-                ],
-                "count" => $total_all
-            ];
-
-            foreach ( $fields["status"]["default"] as $status_key => $status_value ) {
-                if ( isset( $status_counts[$status_key] ) ){
-                    $filters["filters"][] = [
-                        "ID" => 'all_' . $status_key,
-                        "tab" => 'all',
-                        "name" => $status_value["label"],
-                        "query" => [
-                            'status' => [ $status_key ],
-                            'sort' => '-post_date'
-                        ],
-                        "count" => $status_counts[$status_key]
-                    ];
-                    if ( $status_key === "active" ){
-                        if ( $update_needed > 0 ){
-                            $filters["filters"][] = [
-                                "ID" => 'all_update_needed',
-                                "tab" => 'all',
-                                "name" => $fields["requires_update"]["name"],
-                                "query" => [
-                                    'status' => [ 'active' ],
-                                    'requires_update' => [ true ],
-                                ],
-                                "count" => $update_needed,
-                                'subfilter' => true
-                            ];
-                        }
+                foreach ($fields["status"]["default"] as $status_key => $status_value) {
+                    if (isset($status_counts[$status_key])) {
+                        $filters["filters"][] = [
+                            "ID" => 'all_' . $status_key,
+                            "tab" => 'all',
+                            "name" => $status_value["label"],
+                            "query" => [
+                                'status' => [$status_key],
+                                'sort' => '-post_date'
+                            ],
+                            "count" => $status_counts[$status_key]
+                        ];
+//                        if ( $status_key === "none" ){
+//                            if ( $update_needed > 0 ){
+//                                $filters["filters"][] = [
+//                                    "ID" => 'all_update_needed',
+//                                    "tab" => 'all',
+//                                    "name" => $fields["requires_update"]["name"],
+//                                    "query" => [
+//                                        'status' => [ 'none' ],
+//                                        'requires_update' => [ true ],
+//                                    ],
+//                                    "count" => $update_needed,
+//                                    'subfilter' => true
+//                                ];
+//                            }
 //                        foreach ( $fields["type"]["default"] as $type_key => $type_value ) {
 //                            if ( isset( $active_counts[$type_key] ) ) {
 //                                $filters["filters"][] = [
@@ -520,7 +412,7 @@ class DT_People_Groups_UI extends DT_Module_Base {
 //                                    "tab" => 'all',
 //                                    "name" => $type_value["label"],
 //                                    "query" => [
-//                                        'status' => [ 'active' ],
+//                                        'status' => [ 'none' ],
 //                                        'sort' => 'name'
 //                                    ],
 //                                    "count" => $active_counts[$type_key],
@@ -528,10 +420,73 @@ class DT_People_Groups_UI extends DT_Module_Base {
 //                                ];
 //                            }
 //                        }
+//                        }
                     }
                 }
             }
-        }
+
+            /**
+             * MY
+             */
+            $active_counts = [];
+            $update_needed = 0;
+            $status_counts = [];
+            $total_my = 0;
+            foreach ($counts as $count) {
+                $total_my += $count["count"];
+                dt_increment($status_counts[$count["status"]], $count["count"]);
+            }
+
+            $filters["tabs"][] = [
+                "key" => "assigned_to_me",
+                "label" => _x("Assigned to me", 'List Filters', 'disciple_tools'),
+                "count" => $total_my,
+                "order" => 20
+            ];
+            // add assigned to me filters
+            $filters["filters"][] = [
+                'ID' => 'my_all',
+                'tab' => 'assigned_to_me',
+                'name' => _x("All", 'List Filters', 'disciple_tools'),
+                'query' => [
+                    'assigned_to' => ['me'],
+                    'sort' => 'status'
+                ],
+                "count" => $total_my,
+            ];
+            foreach ($fields["status"]["default"] as $status_key => $status_value) {
+                if (isset($status_counts[$status_key])) {
+                    $filters["filters"][] = [
+                        "ID" => 'my_' . $status_key,
+                        "tab" => 'assigned_to_me',
+                        "name" => $status_value["label"],
+                        "query" => [
+                            'assigned_to' => ['me'],
+                            'status' => [$status_key],
+                            'sort' => '-post_date'
+                        ],
+                        "count" => $status_counts[$status_key]
+                    ];
+//                    if ( $status_key === "none" ){
+//                        if ( $update_needed > 0 ){
+//                            $filters["filters"][] = [
+//                                "ID" => 'my_update_needed',
+//                                "tab" => 'assigned_to_me',
+//                                "name" => $fields["requires_update"]["name"],
+//                                "query" => [
+//                                    'assigned_to' => [ 'me' ],
+//                                    'status' => [ 'active' ],
+//                                    'requires_update' => [ true ],
+//                                ],
+//                                "count" => $update_needed,
+//                                'subfilter' => true
+//                            ];
+//                        }
+//                    }
+                }
+            }
+        } // post type filter
+
         return $filters;
     }
 
@@ -548,8 +503,21 @@ class DT_People_Groups_UI extends DT_Module_Base {
     // scripts
     public function scripts(){
         if ( is_singular( $this->post_type ) ){
-            // @todo add enqueue scripts
-            dt_write_log( __METHOD__ );
+            wp_enqueue_script( 'dt_people_groups', get_template_directory_uri() . '/dt-people-groups/module-ui.js', [
+                'jquery',
+                'details',
+                'lodash'
+            ], filemtime( get_template_directory() . '/dt-people-groups/module-ui.js' ), true );
+            wp_localize_script(
+                "dt_people_groups", "dtPeopleGroups", array(
+                    'root' => esc_url_raw( rest_url() ),
+                    'nonce' => wp_create_nonce( 'wp_rest' ),
+                    'current_user_login' => wp_get_current_user()->user_login,
+                    'current_user_id' => get_current_user_id(),
+                    'theme_uri' => get_template_directory_uri(),
+                    'images_uri' => disciple_tools()->admin_img_url,
+                )
+            );
         }
     }
 }

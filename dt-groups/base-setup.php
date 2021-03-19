@@ -405,7 +405,6 @@ class DT_Groups_Base extends DT_Module_Base {
                 'description' => _x( 'The people groups represented by this group.', 'Optional Documentation', 'disciple_tools' ),
                 "type" => "connection",
                 "post_type" => "peoplegroups",
-                'tile' => 'details',
                 "p2p_direction" => "from",
                 "p2p_key" => "groups_to_peoplegroups",
                 "tile" => "details"

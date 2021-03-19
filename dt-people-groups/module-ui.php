@@ -29,7 +29,7 @@ class DT_People_Groups_UI extends DT_Module_Base {
             return;
         }
 
-//        add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_set_roles_and_permissions' ], 30, 1 );
+        add_action( 'p2p_init', [ $this, 'p2p_init' ] );
 
         //setup tiles and fields
         add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles' ], 10, 2 );
@@ -71,22 +71,200 @@ class DT_People_Groups_UI extends DT_Module_Base {
 
     public function dt_custom_fields_settings( $fields, $post_type ){
         if ( $post_type === $this->post_type ){
+            $fields['tags'] = [
+                'name'        => __( 'Tags', 'disciple_tools' ),
+                'description' => _x( 'A useful way to group related items.', 'Optional Documentation', 'disciple_tools' ),
+                'type'        => 'multi_select',
+                'default'     => [],
+                'tile'        => 'other',
+                'custom_display' => true,
+            ];
+            $fields["follow"] = [
+                'name'        => __( 'Follow', 'disciple_tools' ),
+                'type'        => 'multi_select',
+                'default'     => [],
+                'section'     => 'misc',
+                'hidden'      => true
+            ];
+            $fields["unfollow"] = [
+                'name'        => __( 'Un-Follow', 'disciple_tools' ),
+                'type'        => 'multi_select',
+                'default'     => [],
+                'hidden'      => true
+            ];
+            $fields['tasks'] = [
+                'name' => __( 'Tasks', 'disciple_tools' ),
+                'type' => 'post_user_meta',
+            ];
+            $fields['assigned_to'] = [
+                'name'        => __( 'Assigned To', 'disciple_tools' ),
+                'description' => __( "Select the main person who is responsible for reporting on this record.", 'disciple_tools' ),
+                'type'        => 'user_select',
+                'default'     => '',
+                'tile' => 'status',
+                'icon' => get_template_directory_uri() . '/dt-assets/images/assigned-to.svg',
+                "show_in_table" => 16,
+                'custom_display' => true,
+            ];
 
+
+            $fields['status'] = [
+                'name'        => __( 'Status', 'disciple_tools' ),
+                'description' => _x( 'Set the current status.', 'field description', 'disciple_tools' ),
+                'type'        => 'key_select',
+                'default'     => [
+                    'none' => [
+                        'label' => __( 'No Engagement', 'disciple_tools' ),
+                        'description' => _x( 'Unknown status.', 'field description', 'disciple_tools' ),
+                        'color' => "#F43636"
+                    ],
+                    'engaging'   => [
+                        'label' => __( 'Engaging', 'disciple_tools' ),
+                        'description' => _x( 'Unengaged Unreached', 'field description', 'disciple_tools' ),
+                        'color' => "#4CAF50"
+                    ],
+                    'reaching'   => [
+                        'label' => __( 'Reaching', 'disciple_tools' ),
+                        'description' => _x( 'Unengaged Unreached', 'field description', 'disciple_tools' ),
+                        'color' => "#4CAF50"
+                    ],
+                ],
+                'tile'     => '',
+                'icon' => get_template_directory_uri() . '/dt-assets/images/status.svg',
+                "default_color" => "#366184",
+                "show_in_table" => 10,
+                "in_create_form" => true,
+            ];
+            $fields["subassigned"] = [
+                "name" => __( "Sub-assigned to", 'disciple_tools' ),
+                "description" => __( "Contact or User assisting the Assigned To user to follow up with the contact.", 'disciple_tools' ),
+                "type" => "connection",
+                "post_type" => "contacts",
+                "p2p_direction" => "to",
+                "p2p_key" => "peoplegroups_to_subassigned",
+                "tile" => "",
+                "custom_display" => false,
+                'icon' => get_template_directory_uri() . "/dt-assets/images/subassigned.svg",
+            ];
+
+            /**
+             * Common and recommended fields
+             */
+            $fields['location_grid'] = [
+                'name'        => __( 'Locations', 'disciple_tools' ),
+                'description' => _x( 'The general location where this contact is located.', 'Optional Documentation', 'disciple_tools' ),
+                'type'        => 'location',
+                'mapbox'    => false,
+                "in_create_form" => true,
+                "tile" => "details",
+                "icon" => get_template_directory_uri() . "/dt-assets/images/location.svg",
+            ];
+            $fields['location_grid_meta'] = [
+                'name'        => __( 'Locations', 'disciple_tools' ), //system string does not need translation
+                'description' => _x( 'The general location where this contact is located.', 'Optional Documentation', 'disciple_tools' ),
+                'type'        => 'location_meta',
+                "tile"      => "details",
+                'mapbox'    => false,
+                'hidden' => true
+            ];
+            $fields["contact_address"] = [
+                "name" => __( 'Address', 'disciple_tools' ),
+                "icon" => get_template_directory_uri() . "/dt-assets/images/house.svg",
+                "type" => "communication_channel",
+                "tile" => "details",
+                'mapbox'    => false,
+                "customizable" => false
+            ];
+            if ( DT_Mapbox_API::get_key() ){
+                $fields["contact_address"]["hidden"] = true;
+                $fields["contact_address"]["mapbox"] = true;
+                $fields["location_grid"]["mapbox"] = true;
+                $fields["location_grid_meta"]["mapbox"] = true;
+            }
+            // end locations
+
+
+            $fields["parents"] = [
+                "name" => __( 'Parents', 'disciple_tools' ),
+                'description' => '',
+                "type" => "connection",
+                "post_type" => $this->post_type,
+                "p2p_direction" => "from",
+                "p2p_key" => $this->post_type."_to_".$this->post_type,
+                'tile' => 'connections',
+                'icon' => get_template_directory_uri() . '/dt-assets/images/group-parent.svg',
+                'create-icon' => get_template_directory_uri() . '/dt-assets/images/add-group.svg',
+            ];
+            $fields["peers"] = [
+                "name" => __( 'Peers', 'disciple_tools' ),
+                'description' => '',
+                "type" => "connection",
+                "post_type" => $this->post_type,
+                "p2p_direction" => "any",
+                "p2p_key" => $this->post_type."_to_peers",
+                'tile' => 'connections',
+                'icon' => get_template_directory_uri() . '/dt-assets/images/group-peer.svg',
+                'create-icon' => get_template_directory_uri() . '/dt-assets/images/add-group.svg',
+            ];
+            $fields["children"] = [
+                "name" => __( 'Children', 'disciple_tools' ),
+                'description' => '',
+                "type" => "connection",
+                "post_type" => $this->post_type,
+                "p2p_direction" => "to",
+                "p2p_key" => $this->post_type."_to_".$this->post_type,
+                'tile' => 'connections',
+                'icon' => get_template_directory_uri() . '/dt-assets/images/group-child.svg',
+                'create-icon' => get_template_directory_uri() . '/dt-assets/images/add-group.svg',
+            ];
+            // end generations
 
         }
 
         return $fields;
     }
 
+    public function p2p_init(){
+        /**
+         * Parent and child connection
+         */
+        p2p_register_connection_type(
+            [
+                'name'         => $this->post_type."_to_".$this->post_type,
+                'from'         => $this->post_type,
+                'to'           => $this->post_type,
+                'title'        => [
+                    'from' => $this->plural_name . ' by',
+                    'to'   => $this->plural_name,
+                ],
+            ]
+        );
+        p2p_register_connection_type(
+            [
+                'name'         => "peoplegroups_to_subassigned",
+                'from'         => $this->post_type,
+                'to'           => 'contacts',
+            ]
+        );
+        /**
+         * Peer connections
+         */
+        p2p_register_connection_type( [
+            'name'         => $this->post_type."_to_peers",
+            'from'         => $this->post_type,
+            'to'           => $this->post_type,
+        ] );
+
+    }
+
 
     public function dt_details_additional_tiles( $tiles, $post_type = "" ){
         if ( $post_type === $this->post_type ){
             $tiles["other"] = [ "label" => __( "Other", 'disciple_tools' ) ];
-            $tiles["jp"] = [ "label" => __( "Joshua Project", 'disciple_tools' ) ];
+            $tiles["profile"] = [ "label" => __( "Profile", 'disciple_tools' ) ];
         }
         return $tiles;
     }
-
 
     public function dt_details_additional_section( $section, $post_type ){
         if ( $post_type === $this->post_type && $section === "status" ){
@@ -132,22 +310,20 @@ class DT_People_Groups_UI extends DT_Module_Base {
         <?php }
 
 
-        if ( $post_type === $this->post_type && $section === "jp" ){
+        if ( $post_type === $this->post_type && $section === "profile" ){
             $record = DT_Posts::get_post( $post_type, get_the_ID() );
             $record_fields = DT_Posts::get_post_field_settings( $post_type );
 
-            if ( isset( $record['jp_people_id_3'] ) && ! empty( $record['jp_people_id_3'] ) ) {
+            if ( isset( $record['rop3'] ) && ! empty( $record['rop3'] ) ) {
                 ?>
                 <script type="text/javascript">
                     let PEOPLE_GROUP_ID = '<?php echo $record['jp_people_id_3'] ?>'
                     let DOMAIN = 'https://api.joshuaproject.net';
-                    let ROP3 = 100226
+                    let ROP3 = '<?php echo $record['rop3'] ?>'
                     let API_KEY = 'vinskxSNWQKH';
                     jQuery(document).ready(function($) {
                         $.ajax({
                             // @link https://api.joshuaproject.net/v1/docs/available_api_requests#!/people_groups/getAllPeopleGroupWithFilters_get_0
-                            // url: DOMAIN+'/v1/people_groups/'+PEOPLE_GROUP_ID+'.json',
-                            // url: DOMAIN+'/v1/countries/TS.json',
                             url: DOMAIN+'/v1/people_groups.json',
                             dataType: 'json',
                             data: {api_key: API_KEY, rop3: ROP3},
@@ -155,6 +331,7 @@ class DT_People_Groups_UI extends DT_Module_Base {
                         })
                             .done(function(data) {
                                 console.log(data)
+
                                 // var unreached = data[0];
                                 // /* Set the text of each class to the appropriate data */
                                 // $('.country-name').text(unreached['Ctry']);
@@ -199,9 +376,6 @@ class DT_People_Groups_UI extends DT_Module_Base {
                 <?php
             }
             ?>
-            <div class="cell small-12 medium-4">
-                <?php render_field_for_display( "jp_people_id_3", $record_fields, $record, true ); ?>
-            </div>
             <?php
         }
 
@@ -409,26 +583,26 @@ class DT_People_Groups_UI extends DT_Module_Base {
         if ( $post_type === self::post_type() ) {
 
             $counts = self::get_my_status();
-            $fields = DT_Posts::get_post_field_settings($post_type);
+            $fields = DT_Posts::get_post_field_settings( $post_type );
 
             /**
              * ALL
              */
-            if (current_user_can('view_any_' . self::post_type())) {
+            if (current_user_can( 'view_any_' . self::post_type() )) {
 
                 $counts = self::get_all_status_types();
-                dt_write_log($counts);
+                dt_write_log( $counts );
                 $active_counts = [];
                 $update_needed = 0;
                 $status_counts = [];
                 $total_all = 0;
                 foreach ($counts as $count) {
                     $total_all += $count["count"];
-                    dt_increment($status_counts[$count["status"]], $count["count"]);
+                    dt_increment( $status_counts[$count["status"]], $count["count"] );
                 }
                 $filters["tabs"][] = [
                     "key" => "all",
-                    "label" => _x("All", 'List Filters', 'disciple_tools'),
+                    "label" => _x( "All", 'List Filters', 'disciple_tools' ),
                     "count" => 3,//$total_all,
                     "order" => 10
                 ];
@@ -436,7 +610,7 @@ class DT_People_Groups_UI extends DT_Module_Base {
                 $filters["filters"][] = [
                     'ID' => 'all',
                     'tab' => 'all',
-                    'name' => _x("All", 'List Filters', 'disciple_tools'),
+                    'name' => _x( "All", 'List Filters', 'disciple_tools' ),
                     'query' => [
                         'sort' => '-post_date'
                     ],
@@ -444,13 +618,13 @@ class DT_People_Groups_UI extends DT_Module_Base {
                 ];
 
                 foreach ($fields["status"]["default"] as $status_key => $status_value) {
-                    if (isset($status_counts[$status_key])) {
+                    if (isset( $status_counts[$status_key] )) {
                         $filters["filters"][] = [
                             "ID" => 'all_' . $status_key,
                             "tab" => 'all',
                             "name" => $status_value["label"],
                             "query" => [
-                                'status' => [$status_key],
+                                'status' => [ $status_key ],
                                 'sort' => '-post_date'
                             ],
                             "count" => $status_counts[$status_key]
@@ -498,12 +672,12 @@ class DT_People_Groups_UI extends DT_Module_Base {
             $total_my = 0;
             foreach ($counts as $count) {
                 $total_my += $count["count"];
-                dt_increment($status_counts[$count["status"]], $count["count"]);
+                dt_increment( $status_counts[$count["status"]], $count["count"] );
             }
 
             $filters["tabs"][] = [
                 "key" => "assigned_to_me",
-                "label" => _x("Assigned to me", 'List Filters', 'disciple_tools'),
+                "label" => _x( "Assigned to me", 'List Filters', 'disciple_tools' ),
                 "count" => $total_my,
                 "order" => 20
             ];
@@ -511,22 +685,22 @@ class DT_People_Groups_UI extends DT_Module_Base {
             $filters["filters"][] = [
                 'ID' => 'my_all',
                 'tab' => 'assigned_to_me',
-                'name' => _x("All", 'List Filters', 'disciple_tools'),
+                'name' => _x( "All", 'List Filters', 'disciple_tools' ),
                 'query' => [
-                    'assigned_to' => ['me'],
+                    'assigned_to' => [ 'me' ],
                     'sort' => 'status'
                 ],
                 "count" => $total_my,
             ];
             foreach ($fields["status"]["default"] as $status_key => $status_value) {
-                if (isset($status_counts[$status_key])) {
+                if (isset( $status_counts[$status_key] )) {
                     $filters["filters"][] = [
                         "ID" => 'my_' . $status_key,
                         "tab" => 'assigned_to_me',
                         "name" => $status_value["label"],
                         "query" => [
-                            'assigned_to' => ['me'],
-                            'status' => [$status_key],
+                            'assigned_to' => [ 'me' ],
+                            'status' => [ $status_key ],
                             'sort' => '-post_date'
                         ],
                         "count" => $status_counts[$status_key]

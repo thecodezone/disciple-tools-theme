@@ -36,7 +36,7 @@ jQuery(document).ready(function($){
     emptyTemplate: window.lodash.escape(window.wpApiShare.translations.no_records_found),
     callback: {
       onClick: function(node, a, item){
-        API.update_post('groups', post_id, {assigned_to: 'user-' + item.ID}).then(function (response) {
+        API.update_post('peoplegroups', post_id, {assigned_to: 'user-' + item.ID}).then(function (response) {
           window.lodash.set(post, "assigned_to", response.assigned_to)
           assigned_to_input.val(post.assigned_to.display)
           assigned_to_input.blur()

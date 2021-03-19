@@ -294,7 +294,7 @@ jQuery(document).ready(function($) {
           }
         },
         href: function (item) {
-          if (listing_post_type === 'peoplegroups') {
+          if (listing_post_type === 'peoplegroups' && typeof wpApiShare.post_type_modules.peoplegroups_ui === 'undefined') {
             return null;
           } else {
             return window.wpApiShare.site_url + `/${listing_post_type}/${item.ID}`

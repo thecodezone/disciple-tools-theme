@@ -135,11 +135,75 @@ class DT_People_Groups_UI extends DT_Module_Base {
         if ( $post_type === $this->post_type && $section === "jp" ){
             $record = DT_Posts::get_post( $post_type, get_the_ID() );
             $record_fields = DT_Posts::get_post_field_settings( $post_type );
+
+            if ( isset( $record['jp_people_id_3'] ) && ! empty( $record['jp_people_id_3'] ) ) {
+                ?>
+                <script type="text/javascript">
+                    let PEOPLE_GROUP_ID = '<?php echo $record['jp_people_id_3'] ?>'
+                    let DOMAIN = 'https://api.joshuaproject.net';
+                    let ROP3 = 100226
+                    let API_KEY = 'vinskxSNWQKH';
+                    jQuery(document).ready(function($) {
+                        $.ajax({
+                            // @link https://api.joshuaproject.net/v1/docs/available_api_requests#!/people_groups/getAllPeopleGroupWithFilters_get_0
+                            // url: DOMAIN+'/v1/people_groups/'+PEOPLE_GROUP_ID+'.json',
+                            // url: DOMAIN+'/v1/countries/TS.json',
+                            url: DOMAIN+'/v1/people_groups.json',
+                            dataType: 'json',
+                            data: {api_key: API_KEY, rop3: ROP3},
+                            type: 'GET'
+                        })
+                            .done(function(data) {
+                                console.log(data)
+                                // var unreached = data[0];
+                                // /* Set the text of each class to the appropriate data */
+                                // $('.country-name').text(unreached['Ctry']);
+                                // $('.pg-language').text(unreached['PrimaryLanguageName']);
+                                // $('.pg-name').text(unreached['PeopNameInCountry']);
+                                // $('.pg-religion').text(unreached['PrimaryReligion']);
+                                // $('.pg-scale').text(unreached['JPScale']);
+                                // $('.pg-scale-text').text(unreached['JPScaleText']);
+                                // /* Handle the two links that need URL's*/
+                                // $('.country-link').attr('href', unreached['CountryURL']);
+                                // $('.pg-link').attr('href', unreached['PeopleGroupURL']);
+                                // /* Append the images */
+                                // var pgSettings = {'height': '160px', 'width': '128px'};
+                                // var pgImg = $('<img/>').attr('src', unreached['PeopleGroupPhotoURL']).css(pgSettings);
+                                // $('#people-group-image').append(pgImg);
+                                // var scaleImg = $('<img/>').attr('src', unreached['JPScaleImageURL']);
+                                // $('#progress-scale-image').append(scaleImg);
+                                // /* Set the Percent Evangelical */
+                                // if (unreached['PercentEvangelical'] == null) {
+                                //     percent_evangelical = '0.00';
+                                // } else {
+                                //     percent_evangelical = parseFloat(unreached['PercentEvangelical']).toFixed(2);
+                                // };
+                                // $('.pg-evangelical').text(percent_evangelical+'%');
+                                // /* Set the Population */
+                                // $('.pg-population').text(numberWithCommas(unreached['Population']));
+                                // /* Fade in the widget */
+                                // $('div#jp_widget').fadeIn('slow');
+                            })
+                            .fail(function(jqXHR, textStatus, errorThrown) {
+                                var pTagSettings = {'color': 'red', 'font-weight': 'bold'};
+                                var pTag = $('<p/>').text('There was an error: '+errorThrown).css(pTagSettings);
+                                $('body').prepend(pTag);
+                            });
+                    });
+                    /* Number formating method. */
+                    function numberWithCommas(x) {
+                        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    }
+                </script>
+<!--                <img src="http://www.joshuaproject.net/profiles/photos/p15641.jpg">-->
+                <?php
+            }
             ?>
             <div class="cell small-12 medium-4">
                 <?php render_field_for_display( "jp_people_id_3", $record_fields, $record, true ); ?>
             </div>
-        <?php }
+            <?php
+        }
 
 
         if ( $post_type === $this->post_type && $section === "other" ) :

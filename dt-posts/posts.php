@@ -405,11 +405,11 @@ class Disciple_Tools_Posts
                 }
                 if ( $fields[$activity->meta_key]["type"] === "location_meta" ){
                     if ( $activity->meta_value === "value_deleted" ){
-                        $location_grid = Disciple_Tools_Mapping_Queries::get_by_grid_id( (int) $activity->old_value );
-                        $message = sprintf( _x( '%1$s removed from locations', 'Location1 removed from locations', 'disciple_tools' ), $location_grid ? $location_grid["name"] : $activity->old_value );
+                        $label = Disciple_Tools_Mapping_Queries::get_location_grid_meta_label( (int) $activity->old_value );
+                        $message = sprintf( _x( '%1$s removed from locations', 'Location1 removed from locations', 'disciple_tools' ), $label ?? $activity->old_value );
                     } else {
-                        $location_grid = Disciple_Tools_Mapping_Queries::get_by_grid_id( (int) $activity->meta_value );
-                        $message = sprintf( _x( '%1$s added to locations', 'Location1 added to locations', 'disciple_tools' ), $location_grid ? $location_grid["name"] : $activity->meta_value );
+                        $label = Disciple_Tools_Mapping_Queries::get_location_grid_meta_label( (int) $activity->meta_value );
+                        $message = sprintf( _x( '%1$s added to locations', 'Location1 added to locations', 'disciple_tools' ), $label ?? $activity->old_value );
                     }
                 }
             } else {
@@ -1953,6 +1953,11 @@ class Disciple_Tools_Posts
         if ( class_exists( "DT_Mapbox_API" ) && DT_Mapbox_API::get_key() && isset( $fields['location_grid_meta'] ) ) {
             $ids = dt_get_keys_map( $fields['location_grid'] ?? [], 'id' );
             foreach ( $fields['location_grid_meta'] as $meta ) {
+                foreach ( ( $fields['location_grid'] ?? [] ) as $index => $grid ){
+                    if ( (int) $grid["id"] === (int) $meta["grid_id"] ){
+                        $fields['location_grid'][$index]["matched_search"] = $meta["label"];
+                    }
+                }
                 if ( !in_array( (int) $meta['grid_id'], $ids ) ){
                     $fields['location_grid'][] = [
                         'id' => (int) $meta['grid_id'],
@@ -2039,7 +2044,7 @@ class Disciple_Tools_Posts
             "post_type" => $post->post_type,
             "post_date_gmt" => $post->post_date_gmt,
             "post_date" => $post->post_date,
-            "post_title" => $post->post_title,
+            "post_title" => wp_specialchars_decode( $post->post_title ),
             "permalink" => get_permalink( $post->ID )
         ];
         if ( $post->post_type === "peoplegroups" ){

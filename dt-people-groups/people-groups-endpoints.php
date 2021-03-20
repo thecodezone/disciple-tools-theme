@@ -181,7 +181,7 @@ class Disciple_Tools_People_Groups_Endpoints
 
         $params = $request->get_params();
         if ( isset( $params['s'] ) ) {
-            $people_groups = Disciple_Tools_People_Groups::search_csv( $params['s'] );
+            $people_groups = Disciple_Tools_People_Groups_Admin::search_csv( $params['s'] );
             return $people_groups;
         } else {
             return new WP_Error( __METHOD__, 'Missing required parameter `s`' );
@@ -192,7 +192,7 @@ class Disciple_Tools_People_Groups_Endpoints
 
         $params = $request->get_params();
         if ( isset( $params['rop3'] ) ) {
-            $people_groups = Disciple_Tools_People_Groups::search_csv_by_rop3( $params['rop3'] );
+            $people_groups = Disciple_Tools_People_Groups_Admin::search_csv_by_rop3( $params['rop3'] );
             return $people_groups;
         } else {
             return new WP_Error( __METHOD__, 'Missing required parameter `rop3`' );
@@ -212,7 +212,7 @@ class Disciple_Tools_People_Groups_Endpoints
 
         $params = $request->get_params();
         if ( isset( $params['rop3'] ) && isset( $params['country'] ) ) {
-            $result = Disciple_Tools_People_Groups::add_single_people_group( $params['rop3'], $params['country'] );
+            $result = Disciple_Tools_People_Groups_Admin::add_single_people_group( $params['rop3'], $params['country'] );
             return $result;
         } else {
             return new WP_Error( __METHOD__, 'Missing required parameter rop3 or country' );
@@ -223,7 +223,7 @@ class Disciple_Tools_People_Groups_Endpoints
 
         $params = $request->get_params();
         if ( isset( $params['rop3'] ) && isset( $params['country'] ) && isset( $params['post_id'] ) ) {
-            $result = Disciple_Tools_People_Groups::link_or_update( $params['rop3'], $params['country'], $params['post_id'] );
+            $result = Disciple_Tools_People_Groups_Admin::link_or_update( $params['rop3'], $params['country'], $params['post_id'] );
             return $result;
         } else {
             return new WP_Error( __METHOD__, 'Missing required parameter rop3 or country' );

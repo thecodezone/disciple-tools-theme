@@ -588,6 +588,18 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     }
 
     /**
+     * API key for Joshua Project
+     * @since 1.1.3
+     */
+    if ( ! function_exists( 'dt_joshua_project_key' ) ) {
+        function dt_joshua_project_key() : string {
+            $key = 'vinskxSNWQKH';
+            // @todo add key override to admin area
+            return $key;
+        }
+    }
+
+    /**
      * All code above here.
      */
 } // end if ( ! defined( 'DT_FUNCTIONS_READY' ) )

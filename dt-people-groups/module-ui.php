@@ -47,6 +47,7 @@ class DT_People_Groups_UI extends DT_Module_Base {
 
         //list
         add_filter( "dt_user_list_filters", [ $this, "dt_user_list_filters" ], 20, 2 );
+        add_filter( "dt_filter_access_permissions", [ $this, "dt_filter_access_permissions" ], 20, 2 );
 
     }
 
@@ -107,25 +108,19 @@ class DT_People_Groups_UI extends DT_Module_Base {
                 'custom_display' => true,
             ];
 
-
             $fields['status'] = [
                 'name'        => __( 'Status', 'disciple_tools' ),
                 'description' => _x( 'Set the current status.', 'field description', 'disciple_tools' ),
                 'type'        => 'key_select',
                 'default'     => [
-                    'none' => [
-                        'label' => __( 'No Engagement', 'disciple_tools' ),
-                        'description' => _x( 'Unknown status.', 'field description', 'disciple_tools' ),
+                    'inactive' => [
+                        'label' => __( 'Inactive', 'disciple_tools' ),
+                        'description' => _x( 'Inactive', 'field description', 'disciple_tools' ),
                         'color' => "#F43636"
                     ],
-                    'engaging'   => [
-                        'label' => __( 'Engaging', 'disciple_tools' ),
-                        'description' => _x( 'Unengaged Unreached', 'field description', 'disciple_tools' ),
-                        'color' => "#4CAF50"
-                    ],
-                    'reaching'   => [
-                        'label' => __( 'Reaching', 'disciple_tools' ),
-                        'description' => _x( 'Unengaged Unreached', 'field description', 'disciple_tools' ),
+                    'active'   => [
+                        'label' => __( 'Active', 'disciple_tools' ),
+                        'description' => _x( 'Active', 'field description', 'disciple_tools' ),
                         'color' => "#4CAF50"
                     ],
                 ],
@@ -260,8 +255,8 @@ class DT_People_Groups_UI extends DT_Module_Base {
 
     public function dt_details_additional_tiles( $tiles, $post_type = "" ){
         if ( $post_type === $this->post_type ){
-            $tiles["other"] = [ "label" => __( "Other", 'disciple_tools' ) ];
             $tiles["profile"] = [ "label" => __( "Profile", 'disciple_tools' ) ];
+            $tiles["other"] = [ "label" => __( "Other", 'disciple_tools' ) ];
         }
         return $tiles;
     }
@@ -317,7 +312,7 @@ class DT_People_Groups_UI extends DT_Module_Base {
             if ( isset( $record['rop3'] ) && ! empty( $record['rop3'] ) ) {
                 ?>
                 <script type="text/javascript">
-                    let PEOPLE_GROUP_ID = '<?php echo $record['jp_people_id_3'] ?>'
+                    //let PEOPLE_GROUP_ID = '<?php //echo $record['jp_people_id_3'] ?>//'
                     let DOMAIN = 'https://api.joshuaproject.net';
                     let ROP3 = '<?php echo $record['rop3'] ?>'
                     let API_KEY = 'vinskxSNWQKH';
@@ -407,76 +402,69 @@ class DT_People_Groups_UI extends DT_Module_Base {
                 </div>
             </div>
         <?php endif;
+    }
 
+    public static function dt_filter_access_permissions( $permissions, $post_type ){
+        if ( $post_type === self::post_type() ){
+            if ( DT_Posts::can_view_all( $post_type ) ){
+                $permissions = [];
+            }
+        }
+        return $permissions;
     }
 
     /**
      * action when a post connection is added during create or update
-     * @todo catch field changes and do additional processing
      *
      * The next three functions are added, removed, and updated of the same field concept
      */
     public function post_connection_added( $post_type, $post_id, $field_key, $value ){
         if ( $post_type === $this->post_type ){
-            if ( $field_key === "members" ){
-                // @todo change 'members'
-                // execute your code here, if field key match
-                dt_write_log( __METHOD__ . ' and field_key = members' );
+            if ( $field_key === "assigned_to" ){
+                DT_Posts::add_shared( $this->post_type, $post_id, (int) $value, null, false, false, true );
             }
-            if ( $field_key === "coaches" ){
-                // @todo change 'coaches'
-                // execute your code here, if field key match
-                dt_write_log( __METHOD__ . ' and field_key = coaches' );
-            }
-        }
-        if ( $post_type === "contacts" && $field_key === $this->post_type ){
-            // execute your code here, if a change is made in contacts and a field key is matched
-            dt_write_log( __METHOD__ . ' and post_type = contacts & field_key = coaches' );
         }
     }
 
     //action when a post connection is removed during create or update
     public function post_connection_removed( $post_type, $post_id, $field_key, $value ){
-        if ( $post_type === $this->post_type ){
-            // execute your code here, if connection removed
-            dt_write_log( __METHOD__ );
-        }
+//        if ( $post_type === $this->post_type ){
+//
+//        }
     }
 
     //filter at the start of post update
     public function dt_post_update_fields( $fields, $post_type, $post_id ){
         if ( $post_type === $this->post_type ){
-            // execute your code here
-            dt_write_log( __METHOD__ );
+            if ( isset( $fields['assigned_to'] ) ){
+                DT_Posts::add_shared( $this->post_type, $post_id, (int) $fields['assigned_to'], null, false, false, true );
+            }
+            if ( isset( $fields['rop3'] ) && ! empty( $fields['rop3'] ) ){
+                dt_write_log('rop3 changed');
+                $this->add_details_with_rop3( $post_id, $fields['rop3'] );
+
+
+            }
         }
         return $fields;
     }
 
-    //check to see if the group is marked as needing an update
-    //if yes: mark as updated
-    private static function check_requires_update( $record_id ){
-        if ( get_current_user_id() ){
-            $requires_update = get_post_meta( $record_id, "requires_update", true );
-            if ( $requires_update == "yes" || $requires_update == true || $requires_update == "1"){
-                //don't remove update needed if the user is a dispatcher (and not assigned to the groups.)
-                if ( DT_Posts::can_view_all( self::post_type() ) ){
-                    if ( dt_get_user_id_from_assigned_to( get_post_meta( $record_id, "assigned_to", true ) ) === get_current_user_id() ){
-                        update_post_meta( $record_id, "requires_update", false );
-                    }
-                } else {
-                    update_post_meta( $record_id, "requires_update", false );
-                }
-            }
+    public function add_details_with_rop3( $post_id, $rop3 ) {
+        $key = dt_joshua_project_key();
+        $raw_response = wp_remote_get('https://joshuaproject.net/api/v2/people_groups?api_key='.$key.'&ROP3='. $rop3);
+        if ( ! is_wp_error( $raw_response ) && isset( $raw_response['body'] ) ) {
+            $response = json_decode( $raw_response['body'], true );
+            $response = dt_recursive_sanitize_array($response);
+
+            dt_write_log($response);
         }
     }
 
+
     //filter when a comment is created
     public function dt_comment_created( $post_type, $post_id, $comment_id, $type ){
-        if ( $post_type === $this->post_type ){
-            if ( $type === "comment" ){
-                self::check_requires_update( $post_id );
-            }
-        }
+//        if ( $post_type === $this->post_type ){
+//        }
     }
 
     // filter at the start of post creation
@@ -510,9 +498,6 @@ class DT_People_Groups_UI extends DT_Module_Base {
     //action when a post has been created
     public function dt_post_created( $post_type, $post_id, $initial_fields ){
         if ( $post_type === $this->post_type ){
-            /**
-             * @todo action to hook for additional processing after a new record is created by the post type.
-             */
             do_action( "dt_'.$this->post_type.'_created", $post_id, $initial_fields );
 
             $post_array = DT_Posts::get_post( $this->post_type, $post_id, true, false );
@@ -527,7 +512,6 @@ class DT_People_Groups_UI extends DT_Module_Base {
     //list page filters function
 
     /**
-     * @todo adjust queries to support list counts
      * Documentation
      * @link https://github.com/DiscipleTools/Documentation/blob/master/Theme-Core/list-query.md
      */
@@ -537,15 +521,15 @@ class DT_People_Groups_UI extends DT_Module_Base {
         $current_user = get_current_user_id();
 
         $results = $wpdb->get_results( $wpdb->prepare( "
-            SELECT status.meta_value as status, count(pm.post_id) as count
-            FROM $wpdb->postmeta pm
-            INNER JOIN $wpdb->posts a ON( a.ID = pm.post_id AND a.post_type = %s and a.post_status = 'publish' )
-            INNER JOIN $wpdb->postmeta status ON ( status.post_id = pm.post_id AND status.meta_key = 'status' )
+            SELECT status.meta_value as status, count(a.ID) as count
+            FROM $wpdb->posts a
+            INNER JOIN $wpdb->postmeta status ON( status.post_id = a.ID AND status.meta_key = 'status' )
             INNER JOIN $wpdb->postmeta as assigned_to ON a.ID=assigned_to.post_id
-              AND assigned_to.meta_key = 'assigned_to'
-              AND assigned_to.meta_value = CONCAT( 'user-', %s )
-            GROUP BY status.meta_value, pm.meta_value
-        ", $post_type, $current_user ), ARRAY_A);
+                          AND assigned_to.meta_key = 'assigned_to'
+                          AND assigned_to.meta_value = CONCAT( 'user-', %s )
+            WHERE a.post_type = %s
+            GROUP BY status.meta_value;
+        ",  $current_user, $post_type ), ARRAY_A);
 
         return $results;
     }
@@ -553,25 +537,15 @@ class DT_People_Groups_UI extends DT_Module_Base {
     //list page filters function
     private static function get_all_status_types(){
         global $wpdb;
+
         if ( current_user_can( 'view_any_'.self::post_type() ) ){
             $results = $wpdb->get_results($wpdb->prepare( "
-                SELECT status.meta_value as status, count(pm.post_id) as count
-                FROM $wpdb->postmeta pm
-                INNER JOIN $wpdb->postmeta status ON( status.post_id = pm.post_id AND status.meta_key = 'status' )
-                INNER JOIN $wpdb->posts a ON( a.ID = pm.post_id AND a.post_type = %s and a.post_status = 'publish' )
-                GROUP BY status.meta_value
+                SELECT status.meta_value as status, count(a.ID) as count
+                FROM $wpdb->posts a
+                INNER JOIN $wpdb->postmeta status ON( status.post_id = a.ID AND status.meta_key = 'status' )
+                WHERE a.post_type = %s
+                GROUP BY status.meta_value;
             ", self::post_type() ), ARRAY_A );
-        } else {
-            $results = $wpdb->get_results($wpdb->prepare("
-                SELECT status.meta_value as status, count(pm.post_id) as count
-                FROM $wpdb->postmeta pm
-                INNER JOIN $wpdb->postmeta status ON( status.post_id = pm.post_id AND status.meta_key = 'status' )
-                INNER JOIN $wpdb->posts a ON( a.ID = pm.post_id AND a.post_type = %s and a.post_status = 'publish' )
-                LEFT JOIN $wpdb->dt_share AS shares ON ( shares.post_id = a.ID AND shares.user_id = %s )
-                LEFT JOIN $wpdb->postmeta assigned_to ON ( assigned_to.post_id = pm.post_id AND assigned_to.meta_key = 'assigned_to' && assigned_to.meta_value = %s )
-                WHERE ( shares.user_id IS NOT NULL OR assigned_to.meta_value IS NOT NULL )
-                GROUP BY status.meta_value, pm.meta_value
-            ", self::post_type(), get_current_user_id(), 'user-' . get_current_user_id() ), ARRAY_A);
         }
 
         return $results;
@@ -582,7 +556,6 @@ class DT_People_Groups_UI extends DT_Module_Base {
 
         if ( $post_type === self::post_type() ) {
 
-            $counts = self::get_my_status();
             $fields = DT_Posts::get_post_field_settings( $post_type );
 
             /**
@@ -591,9 +564,7 @@ class DT_People_Groups_UI extends DT_Module_Base {
             if (current_user_can( 'view_any_' . self::post_type() )) {
 
                 $counts = self::get_all_status_types();
-                dt_write_log( $counts );
-                $active_counts = [];
-                $update_needed = 0;
+
                 $status_counts = [];
                 $total_all = 0;
                 foreach ($counts as $count) {
@@ -603,7 +574,7 @@ class DT_People_Groups_UI extends DT_Module_Base {
                 $filters["tabs"][] = [
                     "key" => "all",
                     "label" => _x( "All", 'List Filters', 'disciple_tools' ),
-                    "count" => 3,//$total_all,
+                    "count" => $total_all,
                     "order" => 10
                 ];
                 // add assigned to me filters
@@ -629,36 +600,6 @@ class DT_People_Groups_UI extends DT_Module_Base {
                             ],
                             "count" => $status_counts[$status_key]
                         ];
-//                        if ( $status_key === "none" ){
-//                            if ( $update_needed > 0 ){
-//                                $filters["filters"][] = [
-//                                    "ID" => 'all_update_needed',
-//                                    "tab" => 'all',
-//                                    "name" => $fields["requires_update"]["name"],
-//                                    "query" => [
-//                                        'status' => [ 'none' ],
-//                                        'requires_update' => [ true ],
-//                                    ],
-//                                    "count" => $update_needed,
-//                                    'subfilter' => true
-//                                ];
-//                            }
-//                        foreach ( $fields["type"]["default"] as $type_key => $type_value ) {
-//                            if ( isset( $active_counts[$type_key] ) ) {
-//                                $filters["filters"][] = [
-//                                    "ID" => 'all_' . $type_key,
-//                                    "tab" => 'all',
-//                                    "name" => $type_value["label"],
-//                                    "query" => [
-//                                        'status' => [ 'none' ],
-//                                        'sort' => 'name'
-//                                    ],
-//                                    "count" => $active_counts[$type_key],
-//                                    'subfilter' => true
-//                                ];
-//                            }
-//                        }
-//                        }
                     }
                 }
             }
@@ -666,8 +607,7 @@ class DT_People_Groups_UI extends DT_Module_Base {
             /**
              * MY
              */
-            $active_counts = [];
-            $update_needed = 0;
+            $counts = self::get_my_status();
             $status_counts = [];
             $total_my = 0;
             foreach ($counts as $count) {
@@ -705,38 +645,12 @@ class DT_People_Groups_UI extends DT_Module_Base {
                         ],
                         "count" => $status_counts[$status_key]
                     ];
-//                    if ( $status_key === "none" ){
-//                        if ( $update_needed > 0 ){
-//                            $filters["filters"][] = [
-//                                "ID" => 'my_update_needed',
-//                                "tab" => 'assigned_to_me',
-//                                "name" => $fields["requires_update"]["name"],
-//                                "query" => [
-//                                    'assigned_to' => [ 'me' ],
-//                                    'status' => [ 'active' ],
-//                                    'requires_update' => [ true ],
-//                                ],
-//                                "count" => $update_needed,
-//                                'subfilter' => true
-//                            ];
-//                        }
-//                    }
                 }
             }
         } // post type filter
 
         return $filters;
     }
-
-    // access permission
-//    public static function dt_filter_access_permissions( $permissions, $post_type ){
-//        if ( $post_type === self::post_type() ){
-//            if ( DT_Posts::can_view_all( $post_type ) ){
-//                $permissions = [];
-//            }
-//        }
-//        return $permissions;
-//    }
 
     // scripts
     public function scripts(){

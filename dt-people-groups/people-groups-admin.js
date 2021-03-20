@@ -32,7 +32,7 @@ function group_search() {
 
           jQuery.each(data, function (i, v) {
             div.append(`
-                <dd>` + v[4] + ` ( ` + v[1] + ` | ` + v[3] + ` ) <button onclick="add_single_people_group('` + v[3] + `','` + v[1] + `')" id="button-` + v[3] + `">add</button> <span id="message-` + v[3] + `"></span></dd>
+                <dd>` + v[5] + ` ( ` + v[2] + ` | ` + v[4] + ` ) <button onclick="add_single_people_group('` + v[4] + `','` + v[2] + `')" id="button-` + v[3] + `">add</button> <span id="message-` + v[4] + `"></span></dd>
                 `)
           })
           div.append(`</dl>`)
@@ -119,7 +119,7 @@ function link_search() {
 
                 jQuery.each(data, function(i, v) {
                     div.append(`
-                <dd>`+ v[4] +` ( `+ v[1] + ` | ` + v[3] +` ) <button type="button" onclick="link_or_update('`+v[3]+`','`+v[1]+`','`+post_id+`')" id="button-`+v[3]+`">link</button> <span id="message-`+v[3]+`"></span></dd>
+                <dd>`+ v[6] +` ( `+ v[4] + ` | ` + v[1] +` ) <button type="button" onclick="link_or_update('`+v[4]+`','`+v[1]+`','`+post_id+`')" id="button-`+v[3]+`">link</button> <span id="message-`+v[3]+`"></span></dd>
                 `)
                 })
 

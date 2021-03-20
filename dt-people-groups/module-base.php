@@ -55,13 +55,6 @@ class DT_People_Groups_Base extends DT_Module_Base {
                 'default'     => '',
                 'tile' => 'profile',
             ];
-            $fields['jp_people_id_3'] = [
-                'name'        => __( 'JP People ID', 'disciple_tools' ),
-                'description' => '',
-                'type'        => 'text',
-                'default'     => '',
-                'tile' => '',
-            ];
 
 
             $fields["contacts"] = [
@@ -118,16 +111,19 @@ class DT_People_Groups_Base extends DT_Module_Base {
             $expected_roles["administrator"]["permissions"]['view_any_'.$this->post_type ] = true;
             $expected_roles["administrator"]["permissions"][ 'dt_all_admin_' . $this->post_type] = true;
             $expected_roles["administrator"]["permissions"]['update_any_'.$this->post_type ] = true;
+            $expected_roles["administrator"]["permissions"]['list_'.$this->post_type ] = true;
         }
         if ( isset( $expected_roles["dt_admin"] ) ){
             $expected_roles["dt_admin"]["permissions"]['view_any_'.$this->post_type ] = true;
             $expected_roles["dt_admin"]["permissions"]['update_any_'.$this->post_type ] = true;
             $expected_roles["dt_admin"]["permissions"][ 'dt_all_admin_' . $this->post_type] = true;
+            $expected_roles["dt_admin"]["permissions"]['list_'.$this->post_type ] = true;
         }
         if ( isset( $expected_roles["peoplegroups_admin"] ) ){
             $expected_roles["peoplegroups_admin"]["permissions"]['view_any_'.$this->post_type ] = true;
             $expected_roles["peoplegroups_admin"]["permissions"]['update_any_'.$this->post_type ] = true;
-            $expected_roles["dt_admin"]["permissions"][ 'dt_all_admin_' . $this->post_type] = true;
+            $expected_roles["peoplegroups_admin"]["permissions"][ 'dt_all_admin_' . $this->post_type] = true;
+            $expected_roles["peoplegroups_admin"]["permissions"]['list_'.$this->post_type ] = true;
         }
 
         return $expected_roles;

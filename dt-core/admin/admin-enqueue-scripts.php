@@ -76,12 +76,11 @@ function dt_options_scripts() {
         wp_enqueue_style( 'jquery-ui' );
 
         if ( isset( $_GET["tab"] ) && $_GET["tab"] === 'people-groups' ) {
-            wp_enqueue_script( 'dt_peoplegroups_scripts', get_template_directory_uri() . '/dt-people-groups/people-groups.js', [
+            wp_enqueue_script( 'dt_peoplegroups_scripts', get_template_directory_uri() . '/dt-people-groups/people-groups-admin.js', [
                 'jquery',
                 'jquery-ui-core',
-            ], filemtime( get_template_directory() . '/dt-people-groups/people-groups.js' ), true );
+            ], filemtime( get_template_directory() . '/dt-people-groups/people-groups-admin.js' ), true );
         }
-
         wp_localize_script(
             "dt_options_script", "dtOptionAPI", array(
                 'root' => esc_url_raw( rest_url() ),

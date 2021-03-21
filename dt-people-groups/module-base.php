@@ -55,7 +55,20 @@ class DT_People_Groups_Base extends DT_Module_Base {
                 'default'     => '',
                 'tile' => 'profile',
             ];
-
+            $fields['rog3'] = [
+                'name'        => __( 'ROP3', 'disciple_tools' ),
+                'description' => '',
+                'type'        => 'text',
+                'default'     => '',
+                'tile' => 'profile',
+            ];
+            $fields['peopleid3'] = [
+                'name'        => __( 'ROP3', 'disciple_tools' ),
+                'description' => '',
+                'type'        => 'text',
+                'default'     => '',
+                'tile' => 'profile',
+            ];
 
             $fields["contacts"] = [
                 "name" => __( 'Contacts', 'disciple_tools' ),
@@ -77,7 +90,6 @@ class DT_People_Groups_Base extends DT_Module_Base {
                 'tile'     => 'other',
                 'icon' => get_template_directory_uri() . "/dt-assets/images/people-group.svg",
             ];
-
         }
 
         return $fields;

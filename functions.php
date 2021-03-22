@@ -198,6 +198,7 @@ else {
                     'notifications'         => 'template-notifications.php',
                     'contacts/mergedetails' => 'template-merge-details.php',
                     'view-duplicates'       => 'template-view-duplicates.php',
+//                    'dashboard'             => 'template-dashboard.php'
                 ];
 
                 $template_for_url = apply_filters( 'dt_templates_for_urls', $template_for_url );
@@ -246,6 +247,11 @@ else {
 
             require_once( get_template_directory() . '/dt-core/admin/site-link-post-type.php' );
             Site_Link_System::instance( 100, 'dashicons-admin-links' );
+
+            /**
+             * Dashboard
+             */
+            require_once 'dt-dashboard/dashboard.php';
 
 
             /**

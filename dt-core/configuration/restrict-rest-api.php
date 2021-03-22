@@ -104,6 +104,7 @@ function dt_dra_only_allow_logged_in_rest_access( $access ) {
                 return new WP_Error( 'rest_cannot_access', 'Invalid token', [ 'status' => rest_authorization_required_code() ] );
             }
         }
+
     }
 
     /**

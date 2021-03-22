@@ -51,25 +51,6 @@ class DT_People_Groups_UI extends DT_Module_Base {
 
     }
 
-    public function dt_set_roles_and_permissions( $expected_roles ){
-
-//        foreach ( $expected_roles as $role => $role_value ){
-//            if ( isset( $expected_roles[$role]["permissions"]['access_contacts'] ) && $expected_roles[$role]["permissions"]['access_contacts'] ){
-//                $expected_roles[$role]["permissions"]['list_all_' . $this->post_type ] = true;
-//            }
-//        }
-//
-//        if ( isset( $expected_roles["administrator"] ) ){
-//            $expected_roles["administrator"]["permissions"]['view_any_'.$this->post_type ] = true;
-//            $expected_roles["administrator"]["permissions"]['access_'.$this->post_type ] = true;
-//        }
-//        if ( isset( $expected_roles["dt_admin"] ) ){
-//            $expected_roles["dt_admin"]["permissions"]['view_any_'.$this->post_type ] = true;
-//            $expected_roles["dt_admin"]["permissions"]['access_'.$this->post_type ] = true;
-//        }
-//        return $expected_roles;
-    }
-
     public function dt_custom_fields_settings( $fields, $post_type ){
         if ( $post_type === $this->post_type ){
             $fields['tags'] = [
@@ -77,8 +58,8 @@ class DT_People_Groups_UI extends DT_Module_Base {
                 'description' => _x( 'A useful way to group related items.', 'Optional Documentation', 'disciple_tools' ),
                 'type'        => 'multi_select',
                 'default'     => [],
-                'tile'        => 'other',
                 'custom_display' => true,
+                'tile' => 'other'
             ];
             $fields["follow"] = [
                 'name'        => __( 'Follow', 'disciple_tools' ),
@@ -97,16 +78,7 @@ class DT_People_Groups_UI extends DT_Module_Base {
                 'name' => __( 'Tasks', 'disciple_tools' ),
                 'type' => 'post_user_meta',
             ];
-            $fields['assigned_to'] = [
-                'name'        => __( 'Assigned To', 'disciple_tools' ),
-                'description' => __( "Select the main person who is responsible for reporting on this record.", 'disciple_tools' ),
-                'type'        => 'user_select',
-                'default'     => '',
-                'tile' => 'status',
-                'icon' => get_template_directory_uri() . '/dt-assets/images/assigned-to.svg',
-                "show_in_table" => 16,
-                'custom_display' => true,
-            ];
+
 
             $fields['status'] = [
                 'name'        => __( 'Status', 'disciple_tools' ),
@@ -124,11 +96,19 @@ class DT_People_Groups_UI extends DT_Module_Base {
                         'color' => "#4CAF50"
                     ],
                 ],
-                'tile'     => '',
+                'tile' => 'status',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/status.svg',
                 "default_color" => "#366184",
-                "show_in_table" => 10,
                 "in_create_form" => true,
+            ];
+            $fields['assigned_to'] = [
+                'name'        => __( 'Assigned To', 'disciple_tools' ),
+                'description' => __( "Select the main person who is responsible for reporting on this record.", 'disciple_tools' ),
+                'type'        => 'user_select',
+                'default'     => '',
+                'icon' => get_template_directory_uri() . '/dt-assets/images/assigned-to.svg',
+                'tile' => 'status',
+                'custom_display' => true,
             ];
             $fields["subassigned"] = [
                 "name" => __( "Sub-assigned to", 'disciple_tools' ),
@@ -137,8 +117,7 @@ class DT_People_Groups_UI extends DT_Module_Base {
                 "post_type" => "contacts",
                 "p2p_direction" => "to",
                 "p2p_key" => "peoplegroups_to_subassigned",
-                "tile" => "",
-                "custom_display" => false,
+                'tile' => 'status',
                 'icon' => get_template_directory_uri() . "/dt-assets/images/subassigned.svg",
             ];
 
@@ -264,146 +243,147 @@ class DT_People_Groups_UI extends DT_Module_Base {
     }
 
     public function dt_details_additional_section( $section, $post_type ){
-        if ( $post_type === $this->post_type && $section === "status" ){
-            $record = DT_Posts::get_post( $post_type, get_the_ID() );
+
+        if ( $post_type === $this->post_type ) {
+
             $record_fields = DT_Posts::get_post_field_settings( $post_type );
-            ?>
+            $record = DT_Posts::get_post( $post_type, get_the_ID() );
 
-            <div class="cell small-12 medium-4">
-                <?php render_field_for_display( "status", $record_fields, $record, true ); ?>
-            </div>
-            <div class="cell small-12 medium-4">
+            if ( isset( $record_fields["tags"]["tile"] ) && $record_fields["tags"]["tile"] === $section ) {
+                ?>
                 <div class="section-subheader">
-                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/assigned-to.svg' ?>">
-                    <?php echo esc_html( $record_fields["assigned_to"]["name"] )?>
-                    <button class="help-button" data-section="assigned-to-help-text">
-                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                    </button>
+                    <?php echo esc_html( $record_fields["tags"]["name"] ) ?>
                 </div>
-
-                <div class="assigned_to details">
-                    <var id="assigned_to-result-container" class="result-container assigned_to-result-container"></var>
-                    <div id="assigned_to_t" name="form-assigned_to" class="scrollable-typeahead">
+                <div class="tags">
+                    <var id="tags-result-container" class="result-container"></var>
+                    <div id="tags_t" name="form-tags" class="scrollable-typeahead typeahead-margin-when-active">
                         <div class="typeahead__container">
                             <div class="typeahead__field">
-                                    <span class="typeahead__query">
-                                        <input class="js-typeahead-assigned_to input-height"
-                                               name="assigned_to[query]" placeholder="<?php echo esc_html_x( "Search Users", 'input field placeholder', 'disciple_tools' ) ?>"
-                                               autocomplete="off">
-                                    </span>
+                                <span class="typeahead__query">
+                                    <input class="js-typeahead-tags input-height"
+                                           name="tags[query]"
+                                           placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $record_fields["tags"]['name'] ) )?>"
+                                           autocomplete="off">
+                                </span>
                                 <span class="typeahead__button">
-                                        <button type="button" class="search_assigned_to typeahead__image_button input-height" data-id="assigned_to_t">
-                                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
-                                        </button>
-                                    </span>
+                                    <button type="button" data-open="create-tag-modal" class="create-new-tag typeahead__image_button input-height">
+                                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/tag-add.svg' ) ?>"/>
+                                    </button>
+                                </span>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="cell small-12 medium-4">
-                <?php render_field_for_display( "subassigned", $record_fields, $record, true ); ?>
-            </div>
-        <?php }
+            <?php }
 
-
-        if ( $post_type === $this->post_type && $section === "profile" ){
-            $record = DT_Posts::get_post( $post_type, get_the_ID() );
-            $record_fields = DT_Posts::get_post_field_settings( $post_type );
-
-            if ( isset( $record['rop3'] ) && ! empty( $record['rop3'] ) ) {
+            if ( isset( $record_fields["assigned_to"]["tile"] ) && $record_fields["assigned_to"]["tile"] === $section ) {
                 ?>
-                <script type="text/javascript">
-                    //let PEOPLE_GROUP_ID = '<?php //echo $record['jp_people_id_3'] ?>//'
-                    let DOMAIN = 'https://api.joshuaproject.net';
-                    let ROP3 = '<?php echo $record['rop3'] ?>'
-                    let API_KEY = 'vinskxSNWQKH';
-                    jQuery(document).ready(function($) {
-                        $.ajax({
-                            // @link https://api.joshuaproject.net/v1/docs/available_api_requests#!/people_groups/getAllPeopleGroupWithFilters_get_0
-                            url: DOMAIN+'/v1/people_groups.json',
-                            dataType: 'json',
-                            data: {api_key: API_KEY, rop3: ROP3},
-                            type: 'GET'
-                        })
-                            .done(function(data) {
-                                console.log(data)
+                <div class="cell small-12 medium-4">
+                    <div class="section-subheader">
+                        <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/assigned-to.svg' ?>">
+                        <?php echo esc_html( $record_fields["assigned_to"]["name"] )?>
+                        <button class="help-button" data-section="assigned-to-help-text">
+                            <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                        </button>
+                    </div>
 
-                                // var unreached = data[0];
-                                // /* Set the text of each class to the appropriate data */
-                                // $('.country-name').text(unreached['Ctry']);
-                                // $('.pg-language').text(unreached['PrimaryLanguageName']);
-                                // $('.pg-name').text(unreached['PeopNameInCountry']);
-                                // $('.pg-religion').text(unreached['PrimaryReligion']);
-                                // $('.pg-scale').text(unreached['JPScale']);
-                                // $('.pg-scale-text').text(unreached['JPScaleText']);
-                                // /* Handle the two links that need URL's*/
-                                // $('.country-link').attr('href', unreached['CountryURL']);
-                                // $('.pg-link').attr('href', unreached['PeopleGroupURL']);
-                                // /* Append the images */
-                                // var pgSettings = {'height': '160px', 'width': '128px'};
-                                // var pgImg = $('<img/>').attr('src', unreached['PeopleGroupPhotoURL']).css(pgSettings);
-                                // $('#people-group-image').append(pgImg);
-                                // var scaleImg = $('<img/>').attr('src', unreached['JPScaleImageURL']);
-                                // $('#progress-scale-image').append(scaleImg);
-                                // /* Set the Percent Evangelical */
-                                // if (unreached['PercentEvangelical'] == null) {
-                                //     percent_evangelical = '0.00';
-                                // } else {
-                                //     percent_evangelical = parseFloat(unreached['PercentEvangelical']).toFixed(2);
-                                // };
-                                // $('.pg-evangelical').text(percent_evangelical+'%');
-                                // /* Set the Population */
-                                // $('.pg-population').text(numberWithCommas(unreached['Population']));
-                                // /* Fade in the widget */
-                                // $('div#jp_widget').fadeIn('slow');
-                            })
-                            .fail(function(jqXHR, textStatus, errorThrown) {
-                                var pTagSettings = {'color': 'red', 'font-weight': 'bold'};
-                                var pTag = $('<p/>').text('There was an error: '+errorThrown).css(pTagSettings);
-                                $('body').prepend(pTag);
-                            });
-                    });
-                    /* Number formating method. */
-                    function numberWithCommas(x) {
-                        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                    }
-                </script>
-<!--                <img src="http://www.joshuaproject.net/profiles/photos/p15641.jpg">-->
-                <?php
-            }
-            ?>
-            <?php
-        }
-
-
-        if ( $post_type === $this->post_type && $section === "other" ) :
-            $fields = DT_Posts::get_post_field_settings( $post_type );
-            ?>
-            <div class="section-subheader">
-                <?php echo esc_html( $fields["tags"]["name"] ) ?>
-            </div>
-            <div class="tags">
-                <var id="tags-result-container" class="result-container"></var>
-                <div id="tags_t" name="form-tags" class="scrollable-typeahead typeahead-margin-when-active">
-                    <div class="typeahead__container">
-                        <div class="typeahead__field">
-                            <span class="typeahead__query">
-                                <input class="js-typeahead-tags input-height"
-                                       name="tags[query]"
-                                       placeholder="<?php echo esc_html( sprintf( _x( "Search %s", "Search 'something'", 'disciple_tools' ), $fields["tags"]['name'] ) )?>"
-                                       autocomplete="off">
-                            </span>
-                            <span class="typeahead__button">
-                                <button type="button" data-open="create-tag-modal" class="create-new-tag typeahead__image_button input-height">
-                                    <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/tag-add.svg' ) ?>"/>
-                                </button>
-                            </span>
+                    <div class="assigned_to details">
+                        <var id="assigned_to-result-container" class="result-container assigned_to-result-container"></var>
+                        <div id="assigned_to_t" name="form-assigned_to" class="scrollable-typeahead">
+                            <div class="typeahead__container">
+                                <div class="typeahead__field">
+                                        <span class="typeahead__query">
+                                            <input class="js-typeahead-assigned_to input-height"
+                                                   name="assigned_to[query]" placeholder="<?php echo esc_html_x( "Search Users", 'input field placeholder', 'disciple_tools' ) ?>"
+                                                   autocomplete="off">
+                                        </span>
+                                    <span class="typeahead__button">
+                                            <button type="button" class="search_assigned_to typeahead__image_button input-height" data-id="assigned_to_t">
+                                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                                            </button>
+                                        </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        <?php endif;
+            <?php }
+
+
+
+
+            if ( $post_type === $this->post_type && $section === "profile" ){
+
+                if ( isset( $record['rop3'] ) && ! empty( $record['rop3'] ) ) {
+                    ?>
+                    <script type="text/javascript">
+                        //let PEOPLE_GROUP_ID = '<?php //echo $record['jp_people_id_3'] ?>//'
+                        let DOMAIN = 'https://api.joshuaproject.net';
+                        let ROP3 = '<?php echo $record['rop3'] ?>'
+                        let API_KEY = 'vinskxSNWQKH';
+                        jQuery(document).ready(function($) {
+                            $.ajax({
+                                // @link https://api.joshuaproject.net/v1/docs/available_api_requests#!/people_groups/getAllPeopleGroupWithFilters_get_0
+                                url: DOMAIN+'/v1/people_groups.json',
+                                dataType: 'json',
+                                data: {api_key: API_KEY, rop3: ROP3},
+                                type: 'GET'
+                            })
+                                .done(function(data) {
+                                    console.log(data)
+
+                                    // var unreached = data[0];
+                                    // /* Set the text of each class to the appropriate data */
+                                    // $('.country-name').text(unreached['Ctry']);
+                                    // $('.pg-language').text(unreached['PrimaryLanguageName']);
+                                    // $('.pg-name').text(unreached['PeopNameInCountry']);
+                                    // $('.pg-religion').text(unreached['PrimaryReligion']);
+                                    // $('.pg-scale').text(unreached['JPScale']);
+                                    // $('.pg-scale-text').text(unreached['JPScaleText']);
+                                    // /* Handle the two links that need URL's*/
+                                    // $('.country-link').attr('href', unreached['CountryURL']);
+                                    // $('.pg-link').attr('href', unreached['PeopleGroupURL']);
+                                    // /* Append the images */
+                                    // var pgSettings = {'height': '160px', 'width': '128px'};
+                                    // var pgImg = $('<img/>').attr('src', unreached['PeopleGroupPhotoURL']).css(pgSettings);
+                                    // $('#people-group-image').append(pgImg);
+                                    // var scaleImg = $('<img/>').attr('src', unreached['JPScaleImageURL']);
+                                    // $('#progress-scale-image').append(scaleImg);
+                                    // /* Set the Percent Evangelical */
+                                    // if (unreached['PercentEvangelical'] == null) {
+                                    //     percent_evangelical = '0.00';
+                                    // } else {
+                                    //     percent_evangelical = parseFloat(unreached['PercentEvangelical']).toFixed(2);
+                                    // };
+                                    // $('.pg-evangelical').text(percent_evangelical+'%');
+                                    // /* Set the Population */
+                                    // $('.pg-population').text(numberWithCommas(unreached['Population']));
+                                    // /* Fade in the widget */
+                                    // $('div#jp_widget').fadeIn('slow');
+                                })
+                                .fail(function(jqXHR, textStatus, errorThrown) {
+                                    var pTagSettings = {'color': 'red', 'font-weight': 'bold'};
+                                    var pTag = $('<p/>').text('There was an error: '+errorThrown).css(pTagSettings);
+                                    $('body').prepend(pTag);
+                                });
+                        });
+                        /* Number formating method. */
+                        function numberWithCommas(x) {
+                            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        }
+                    </script>
+    <!--                <img src="http://www.joshuaproject.net/profiles/photos/p15641.jpg">-->
+                    <?php
+                }
+                ?>
+                <?php
+            }
+
+
+
+
+
+        } // post type
     }
 
     public static function dt_filter_access_permissions( $permissions, $post_type ){

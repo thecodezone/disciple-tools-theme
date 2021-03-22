@@ -53,21 +53,28 @@ class DT_People_Groups_Base extends DT_Module_Base {
                 'description' => '',
                 'type'        => 'text',
                 'default'     => '',
-                'tile' => 'profile',
+                'tile' => 'details',
             ];
             $fields['rog3'] = [
-                'name'        => __( 'ROP3', 'disciple_tools' ),
+                'name'        => __( 'ROG3', 'disciple_tools' ),
                 'description' => '',
                 'type'        => 'text',
                 'default'     => '',
-                'tile' => 'profile',
+                'tile' => 'details',
             ];
             $fields['peopleid3'] = [
-                'name'        => __( 'ROP3', 'disciple_tools' ),
+                'name'        => __( 'PeopleID3', 'disciple_tools' ),
                 'description' => '',
                 'type'        => 'text',
                 'default'     => '',
-                'tile' => 'profile',
+                'tile' => 'details',
+            ];
+            $fields['country'] = [
+                'name'        => __( 'Country', 'disciple_tools' ),
+                'description' => '',
+                'type'        => 'text',
+                'default'     => '',
+                'tile' => 'details',
             ];
 
             $fields["contacts"] = [

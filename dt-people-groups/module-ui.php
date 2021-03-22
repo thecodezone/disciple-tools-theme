@@ -36,6 +36,7 @@ class DT_People_Groups_UI extends DT_Module_Base {
         add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 20, 2 );
         add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
         add_filter( 'dt_custom_fields_settings', [ $this, 'dt_custom_fields_settings' ], 10, 2 );
+        add_action( 'dt_render_field_for_display_template', [ $this, 'dt_render_field_for_display_template' ], 20, 4 );
 
         // hooks
         add_action( "post_connection_removed", [ $this, "post_connection_removed" ], 10, 4 );
@@ -242,14 +243,15 @@ class DT_People_Groups_UI extends DT_Module_Base {
         return $tiles;
     }
 
-    public function dt_details_additional_section( $section, $post_type ){
+
+    public function dt_render_field_for_display_template( $post, $field_type, $field_key, $required_tag ){
+        $post_type = $post["post_type"];
 
         if ( $post_type === $this->post_type ) {
 
             $record_fields = DT_Posts::get_post_field_settings( $post_type );
-            $record = DT_Posts::get_post( $post_type, get_the_ID() );
 
-            if ( isset( $record_fields["tags"]["tile"] ) && $record_fields["tags"]["tile"] === $section ) {
+            if ( $field_key === "tags" && isset( $record_fields[$field_key] ) && !empty( $record_fields[$field_key]["custom_display"] ) && empty( $record_fields[$field_key]["hidden"] ) ) {
                 ?>
                 <div class="section-subheader">
                     <?php echo esc_html( $record_fields["tags"]["name"] ) ?>
@@ -276,7 +278,7 @@ class DT_People_Groups_UI extends DT_Module_Base {
                 </div>
             <?php }
 
-            if ( isset( $record_fields["assigned_to"]["tile"] ) && $record_fields["assigned_to"]["tile"] === $section ) {
+            if ( $field_key === "assigned_to" && isset( $record_fields[$field_key] ) && !empty( $record_fields[$field_key]["custom_display"] ) && empty( $record_fields[$field_key]["hidden"] ) ) {
                 ?>
                 <div class="cell small-12 medium-4">
                     <div class="section-subheader">
@@ -307,83 +309,81 @@ class DT_People_Groups_UI extends DT_Module_Base {
                         </div>
                     </div>
                 </div>
-            <?php }
+            <?php
+            }
+        }
+    }
 
+    public function dt_details_additional_section( $section, $post_type ){
 
+        if ( $post_type === $this->post_type && $section === "profile" ){
 
-
-            if ( $post_type === $this->post_type && $section === "profile" ){
-
-                if ( isset( $record['rop3'] ) && ! empty( $record['rop3'] ) ) {
-                    ?>
-                    <script type="text/javascript">
-                        //let PEOPLE_GROUP_ID = '<?php //echo $record['jp_people_id_3'] ?>//'
-                        let DOMAIN = 'https://api.joshuaproject.net';
-                        let ROP3 = '<?php echo $record['rop3'] ?>'
-                        let API_KEY = 'vinskxSNWQKH';
-                        jQuery(document).ready(function($) {
-                            $.ajax({
-                                // @link https://api.joshuaproject.net/v1/docs/available_api_requests#!/people_groups/getAllPeopleGroupWithFilters_get_0
-                                url: DOMAIN+'/v1/people_groups.json',
-                                dataType: 'json',
-                                data: {api_key: API_KEY, rop3: ROP3},
-                                type: 'GET'
-                            })
-                                .done(function(data) {
-                                    console.log(data)
-
-                                    // var unreached = data[0];
-                                    // /* Set the text of each class to the appropriate data */
-                                    // $('.country-name').text(unreached['Ctry']);
-                                    // $('.pg-language').text(unreached['PrimaryLanguageName']);
-                                    // $('.pg-name').text(unreached['PeopNameInCountry']);
-                                    // $('.pg-religion').text(unreached['PrimaryReligion']);
-                                    // $('.pg-scale').text(unreached['JPScale']);
-                                    // $('.pg-scale-text').text(unreached['JPScaleText']);
-                                    // /* Handle the two links that need URL's*/
-                                    // $('.country-link').attr('href', unreached['CountryURL']);
-                                    // $('.pg-link').attr('href', unreached['PeopleGroupURL']);
-                                    // /* Append the images */
-                                    // var pgSettings = {'height': '160px', 'width': '128px'};
-                                    // var pgImg = $('<img/>').attr('src', unreached['PeopleGroupPhotoURL']).css(pgSettings);
-                                    // $('#people-group-image').append(pgImg);
-                                    // var scaleImg = $('<img/>').attr('src', unreached['JPScaleImageURL']);
-                                    // $('#progress-scale-image').append(scaleImg);
-                                    // /* Set the Percent Evangelical */
-                                    // if (unreached['PercentEvangelical'] == null) {
-                                    //     percent_evangelical = '0.00';
-                                    // } else {
-                                    //     percent_evangelical = parseFloat(unreached['PercentEvangelical']).toFixed(2);
-                                    // };
-                                    // $('.pg-evangelical').text(percent_evangelical+'%');
-                                    // /* Set the Population */
-                                    // $('.pg-population').text(numberWithCommas(unreached['Population']));
-                                    // /* Fade in the widget */
-                                    // $('div#jp_widget').fadeIn('slow');
-                                })
-                                .fail(function(jqXHR, textStatus, errorThrown) {
-                                    var pTagSettings = {'color': 'red', 'font-weight': 'bold'};
-                                    var pTag = $('<p/>').text('There was an error: '+errorThrown).css(pTagSettings);
-                                    $('body').prepend(pTag);
-                                });
-                        });
-                        /* Number formating method. */
-                        function numberWithCommas(x) {
-                            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                        }
-                    </script>
-    <!--                <img src="http://www.joshuaproject.net/profiles/photos/p15641.jpg">-->
-                    <?php
-                }
+            if ( isset( $record['rop3'] ) && ! empty( $record['rop3'] ) ) {
                 ?>
+                <script type="text/javascript">
+                    //let PEOPLE_GROUP_ID = '<?php //echo $record['jp_people_id_3'] ?>//'
+                    let DOMAIN = 'https://api.joshuaproject.net';
+                    let ROP3 = '<?php echo $record['rop3'] ?>'
+                    let API_KEY = 'vinskxSNWQKH';
+                    jQuery(document).ready(function($) {
+                        $.ajax({
+                            // @link https://api.joshuaproject.net/v1/docs/available_api_requests#!/people_groups/getAllPeopleGroupWithFilters_get_0
+                            url: DOMAIN+'/v1/people_groups.json',
+                            dataType: 'json',
+                            data: {api_key: API_KEY, rop3: ROP3},
+                            type: 'GET'
+                        })
+                            .done(function(data) {
+                                console.log(data)
+
+                                // var unreached = data[0];
+                                // /* Set the text of each class to the appropriate data */
+                                // $('.country-name').text(unreached['Ctry']);
+                                // $('.pg-language').text(unreached['PrimaryLanguageName']);
+                                // $('.pg-name').text(unreached['PeopNameInCountry']);
+                                // $('.pg-religion').text(unreached['PrimaryReligion']);
+                                // $('.pg-scale').text(unreached['JPScale']);
+                                // $('.pg-scale-text').text(unreached['JPScaleText']);
+                                // /* Handle the two links that need URL's*/
+                                // $('.country-link').attr('href', unreached['CountryURL']);
+                                // $('.pg-link').attr('href', unreached['PeopleGroupURL']);
+                                // /* Append the images */
+                                // var pgSettings = {'height': '160px', 'width': '128px'};
+                                // var pgImg = $('<img/>').attr('src', unreached['PeopleGroupPhotoURL']).css(pgSettings);
+                                // $('#people-group-image').append(pgImg);
+                                // var scaleImg = $('<img/>').attr('src', unreached['JPScaleImageURL']);
+                                // $('#progress-scale-image').append(scaleImg);
+                                // /* Set the Percent Evangelical */
+                                // if (unreached['PercentEvangelical'] == null) {
+                                //     percent_evangelical = '0.00';
+                                // } else {
+                                //     percent_evangelical = parseFloat(unreached['PercentEvangelical']).toFixed(2);
+                                // };
+                                // $('.pg-evangelical').text(percent_evangelical+'%');
+                                // /* Set the Population */
+                                // $('.pg-population').text(numberWithCommas(unreached['Population']));
+                                // /* Fade in the widget */
+                                // $('div#jp_widget').fadeIn('slow');
+                            })
+                            .fail(function(jqXHR, textStatus, errorThrown) {
+                                var pTagSettings = {'color': 'red', 'font-weight': 'bold'};
+                                var pTag = $('<p/>').text('There was an error: '+errorThrown).css(pTagSettings);
+                                $('body').prepend(pTag);
+                            });
+                    });
+                    /* Number formating method. */
+                    function numberWithCommas(x) {
+                        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    }
+                </script>
+<!--                <img src="http://www.joshuaproject.net/profiles/photos/p15641.jpg">-->
                 <?php
             }
+            ?>
+            <?php
+        }
 
 
-
-
-
-        } // post type
     }
 
     public static function dt_filter_access_permissions( $permissions, $post_type ){

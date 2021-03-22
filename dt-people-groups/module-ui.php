@@ -33,7 +33,6 @@ class DT_People_Groups_UI extends DT_Module_Base {
 
         //setup tiles and fields
         add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles' ], 50, 2 );
-        add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 20, 2 );
         add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
         add_filter( 'dt_custom_fields_settings', [ $this, 'dt_custom_fields_settings' ], 10, 2 );
         add_action( 'dt_render_field_for_display_template', [ $this, 'dt_render_field_for_display_template' ], 20, 4 );
@@ -232,7 +231,6 @@ class DT_People_Groups_UI extends DT_Module_Base {
 
     }
 
-
     public function dt_details_additional_tiles( $tiles, $post_type = "" ){
         if ( $post_type === $this->post_type ){
             $tiles["other"] = [ "label" => __( "Other", 'disciple_tools' ) ];
@@ -240,9 +238,8 @@ class DT_People_Groups_UI extends DT_Module_Base {
         return $tiles;
     }
 
-
     public function dt_render_field_for_display_template( $post, $field_type, $field_key, $required_tag ){
-        $post_type = $post["post_type"];
+        $post_type = $post["post_type"] ?? '';
 
         if ( $post_type === $this->post_type ) {
 

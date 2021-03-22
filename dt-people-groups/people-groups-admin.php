@@ -304,6 +304,11 @@ class Disciple_Tools_People_Groups_Admin
         <script>
             jQuery(document).ready(function(){
                 jQuery('#install_unreached').on('click', function(e){
+                    jQuery('#install_unreached').prop('disabled', true )
+                    let results = jQuery('#results')
+
+                    results.append(`Loading 7459 Unreached People Groups (3-9 minutes, don't close this window.)<br>`)
+
                     /* build */
                     window.offsets = []
                     let total = 7433
@@ -322,15 +327,14 @@ class Disciple_Tools_People_Groups_Admin
                         }
                         send_offset()
                         window.yint++
-                    }, 3000);
-
+                    }, 5000);
 
                     function send_offset(){
-                        jQuery('#results').append(`Test ${window.yint}<span id="load${window.yint}">...loading</span><br>`)
+                        results.append(`Loading ${window.yint} <span class="loading-spinner active" id="load${window.yint}"></span><br>`)
 
                         jQuery.ajax({
                             type: "POST",
-                            data: JSON.stringify({ action:'unreached', start: window.offsets[window.yint].start, end: window.offsets[window.yint].end }),
+                            data: JSON.stringify({ action:'unreached', id: window.yint,  start: window.offsets[window.yint].start, end: window.offsets[window.yint].end }),
                             contentType: "application/json; charset=utf-8",
                             dataType: "json",
                             url: '<?php echo esc_url_raw( rest_url() ) ?>dt/v1/people-groups/install',
@@ -339,117 +343,17 @@ class Disciple_Tools_People_Groups_Admin
                             },
                         })
                         .done(function (data) {
-                            console.log(data)
-                            jQuery('#load'+window.yint).remove()
+                            jQuery('#load'+data).remove()
                         })
                         .fail(function (err) {
                             console.log("error");
                             console.log(err);
                         })
                     }
-
-                    // return;
-                    //function setTimeout(
-                    //    function( start, end )
-                    //    {
-                    //        jQuery.ajax({
-                    //            type: "POST",
-                    //            data: JSON.stringify({ action:'unreached', start: start, end: end }),
-                    //            contentType: "application/json; charset=utf-8",
-                    //            dataType: "json",
-                    //            url: '<?php //echo esc_url_raw( rest_url() ) ?>//dt/v1/people-groups/install',
-                    //            beforeSend: function(xhr) {
-                    //                xhr.setRequestHeader('X-WP-Nonce', '<?php //echo wp_create_nonce( 'wp_rest' ) ?>//');
-                    //            },
-                    //        })
-                    //        .done(function (data) {
-                    //            console.log(data)
-                    //            jQuery('#results').append('<br>Added location details')
-                    //        })
-                    //        .fail(function (err) {
-                    //            console.log("error");
-                    //            console.log(err);
-                    //        })
-                    //    }, 1000);
-
-
-                    //jQuery.ajax({
-                    //    type: "POST",
-                    //    data: JSON.stringify({ action:'unreached'}),
-                    //    contentType: "application/json; charset=utf-8",
-                    //    dataType: "json",
-                    //    url: '<?php //echo esc_url_raw( rest_url() ) ?>//dt/v1/people-groups/install',
-                    //    beforeSend: function(xhr) {
-                    //        xhr.setRequestHeader('X-WP-Nonce', '<?php //echo wp_create_nonce( 'wp_rest' ) ?>//');
-                    //    },
-                    //})
-                    //.done(function (data) {
-                    //    jQuery('#results').append('<br>Added base records')
-                    //    console.log(data)
-                    //
-                    //    /* add_locations */
-                    //    jQuery.ajax({
-                    //        type: "POST",
-                    //        data: JSON.stringify({action:'add_locations', data: data }),
-                    //        contentType: "application/json; charset=utf-8",
-                    //        dataType: "json",
-                    //        url: '<?php //echo esc_url_raw( rest_url() ) ?>//dt/v1/people-groups/install',
-                    //        beforeSend: function(xhr) {
-                    //            xhr.setRequestHeader('X-WP-Nonce', '<?php //echo wp_create_nonce( 'wp_rest' ) ?>//');
-                    //        },
-                    //    })
-                    //    .done(function (data) {
-                    //        console.log(data)
-                    //        jQuery('#results').append('<br>Added location details')
-                    //    })
-                    //    .fail(function (err) {
-                    //        console.log("error");
-                    //        console.log(err);
-                    //    })
-                    //
-                    //    /* add_rop3 */
-                    //    jQuery.ajax({
-                    //        type: "POST",
-                    //        data: JSON.stringify({action:'add_meta', data: data }),
-                    //        contentType: "application/json; charset=utf-8",
-                    //        dataType: "json",
-                    //        url: '<?php //echo esc_url_raw( rest_url() ) ?>//dt/v1/people-groups/install',
-                    //        beforeSend: function(xhr) {
-                    //            xhr.setRequestHeader('X-WP-Nonce', '<?php //echo wp_create_nonce( 'wp_rest' ) ?>//');
-                    //        },
-                    //    })
-                    //        .done(function (data) {
-                    //            console.log(data)
-                    //            jQuery('#results').append('<br>Added meta')
-                    //        })
-                    //        .fail(function (err) {
-                    //            console.log("error");
-                    //            console.log(err);
-                    //        })
-                    //
-                    //})
-                    //.fail(function (err) {
-                    //    console.log("error");
-                    //    console.log(err);
-                    //})
                 })
             })
         </script>
-        <br>
-        <table class="widefat">
-            <thead>
-            <tr>
-                <th colspan="2">All People Groups</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>
 
-                </td>
-            </tr>
-            </tbody>
-        </table>
         <?php
     }
 }
@@ -478,30 +382,12 @@ class Disciple_Tools_People_Groups_Endpoints
                 'callback' => [ $this, 'install' ],
             ]
         );
-//        register_rest_route(
-//            $this->namespace, '/people-groups/compact', [
-//                'methods'  => 'GET',
-//                'callback' => [ $this, 'get_people_groups_compact' ],
-//            ]
-//        );
-//        register_rest_route(
-//            $this->namespace, '/people-groups/search_csv_by_rop3', [
-//                'methods'  => 'POST',
-//                'callback' => [ $this, 'search_csv_by_rop3' ],
-//            ]
-//        );
-//        register_rest_route(
-//            $this->namespace, '/people-groups/add_single_people_group', [
-//                'methods'  => 'POST',
-//                'callback' => [ $this, 'add_single_people_group' ],
-//            ]
-//        );
-//        register_rest_route(
-//            $this->namespace, '/people-groups/link_or_update', [
-//                'methods'  => 'POST',
-//                'callback' => [ $this, 'link_or_update' ],
-//            ]
-//        );
+        register_rest_route(
+            $this->namespace, '/people-groups/compact', [
+                'methods'  => 'GET',
+                'callback' => [ $this, 'get_people_groups_compact' ],
+            ]
+        );
     }
 
     public function install( WP_REST_Request $request ) {
@@ -512,33 +398,40 @@ class Disciple_Tools_People_Groups_Endpoints
 
         switch( $params['action'] ) {
             case 'unreached';
-                return $this->add_unreached_v2( $params['start'], $params['end'] );
-
-            case 'add_locations';
-                return $this->add_locations( $params['data'] );
-
-            case 'add_meta';
-                return $this->add_meta( $params['data'] );
+                return $this->add_unreached( $params['start'], $params['end'], $params['id'] );
 
             default:
                 return [];
         }
     }
 
-    public function add_unreached_v2( $start, $end ){
+    public function add_unreached( $start, $end, $id ){
+        global $wpdb;
         $data = [];
         $list = Disciple_Tools_People_Groups_Admin::get_jp_unreached();
+
+        $installed = $wpdb->get_results("SELECT post_id, meta_value FROM $wpdb->postmeta WHERE meta_key = 'pg_unique_key';", ARRAY_A );
+        $keys = [];
+        foreach( $installed as $item ) {
+            $keys[$item['meta_value']] = $item['post_id'];
+        }
+
         foreach( $list as $index => $row ) {
             if ( $index >= $start && $index <= $end ) {
+
+                $unique_key = $row[1] . '_'. $row[3] . '_'. $row[4]; // rog3+peopleid3+rop3
+                if ( isset( $keys[$unique_key] ) ) {
+                    continue;
+                }
+
                 $title = esc_sql( $row[5] . ' ('.$row[4]. ', '. $row[2].')' );
 
                 $fields = [
                     "title" => $title,
                     "status" => "inactive",
                     'rop3' => $row[4],
-                    'rog3' => $row[1],
-                    'peopleid3' => $row[3],
-                    'country' => $row[2]
+                    'country' => $row[1],
+                    'pg_unique_key' => $unique_key,
                 ];
                 $value = [
                     "values" => [
@@ -559,105 +452,7 @@ class Disciple_Tools_People_Groups_Endpoints
                 break;
             }
         }
-        return $data;
-    }
-
-    public function add_unreached(){
-        global $wpdb;
-        $list = Disciple_Tools_People_Groups_Admin::get_jp_unreached();
-
-        $date = date('Y-m-d', time() );
-        $user_id = get_current_user_id();
-
-        $data = [];
-        foreach( $list as $row ) {
-            $title = esc_sql( $row[5] . ' ('.$row[4]. ', '. $row[2].')' );
-            $key = $row[1].$row[3].$row[4];
-            $id = $wpdb->query( "INSERT INTO $wpdb->posts
-            (
-            post_author,
-            post_date,
-            post_date_gmt,
-            post_content,
-            post_title,
-            post_excerpt,
-            post_status,
-            comment_status,
-            ping_status,
-            post_name,
-            to_ping,
-            pinged,
-            post_content_filtered,
-            post_parent,
-            post_modified,
-            post_modified_gmt,
-            guid,
-            post_type,
-            post_mime_type,
-            comment_count
-            )
-            VALUES
-            (
-            '$user_id',
-            '$date',
-            '$date',
-            '$key',
-            '$title',
-            '',
-            'publish',
-            'closed',
-            'closed',
-            '',
-            '',
-            '',
-            '',
-            0,
-            '$date',
-            '$date',
-            '',
-            'peoplegroups',
-            '',
-            0);");
-
-            $data[$row[0]] = $wpdb->insert_id;
-        }
-
-        return $data;
-    }
-
-    public function add_locations( $data ){
-        global $wpdb;
-        $list = Disciple_Tools_People_Groups_Admin::get_jp_unreached();
-
-        foreach( $list as $row ) {
-            if ( isset( $data[$row[0]] ) ) {
-                $pid = $data[$row[0]];
-                $grid_id = $row[11];
-                $wpdb->query( "INSERT INTO $wpdb->postmeta ( post_id, meta_key, meta_value ) VALUES ( $pid, 'location_grid', $grid_id );" );
-            }
-        }
-
-        return true;
-    }
-
-    public function add_meta( $data ){
-
-        global $wpdb;
-        $list = Disciple_Tools_People_Groups_Admin::get_jp_unreached();
-
-        foreach( $list as $row ) {
-            if ( isset( $data[$row[0]] ) ) {
-                $pid = $data[$row[0]];
-                $wpdb->query(
-                    "INSERT INTO $wpdb->postmeta ( post_id, meta_key, meta_value )
-                           VALUES ( $pid, 'rog3', {$row[1]} ),
-                                  ( $pid, 'rop3', {$row[4]} ),
-                                  ( $pid, 'peopleid3', {$row[3]} );"
-                );
-            }
-        }
-
-        return true;
+        return $id;
     }
 
     /**
@@ -742,62 +537,5 @@ class Disciple_Tools_People_Groups_Endpoints
         ];
     }
 
-    /**
-     * @param \WP_REST_Request $request
-     *
-     * @return array|WP_Error
-     */
-    public function search_csv( WP_REST_Request $request ) {
-
-        $params = $request->get_params();
-        if ( isset( $params['s'] ) ) {
-            $people_groups = Disciple_Tools_People_Groups_Admin::search_csv( $params['s'] );
-            return $people_groups;
-        } else {
-            return new WP_Error( __METHOD__, 'Missing required parameter `s`' );
-        }
-    }
-
-    public function search_csv_by_rop3( WP_REST_Request $request ) {
-
-        $params = $request->get_params();
-        if ( isset( $params['rop3'] ) ) {
-            $people_groups = Disciple_Tools_People_Groups_Admin::search_csv_by_rop3( $params['rop3'] );
-            return $people_groups;
-        } else {
-            return new WP_Error( __METHOD__, 'Missing required parameter `rop3`' );
-        }
-    }
-
-    /**
-     * @param \WP_REST_Request $request
-     *
-     * @return array|WP_Error
-     */
-    public function add_single_people_group( WP_REST_Request $request ) {
-
-        if ( ! user_can( get_current_user_id(), 'manage_dt' ) ) {
-            return new WP_Error( __METHOD__, 'You do not have permission to add people groups', [] );
-        }
-
-        $params = $request->get_params();
-        if ( isset( $params['rop3'] ) && isset( $params['country'] ) ) {
-            $result = Disciple_Tools_People_Groups_Admin::add_single_people_group( $params['rop3'], $params['country'] );
-            return $result;
-        } else {
-            return new WP_Error( __METHOD__, 'Missing required parameter rop3 or country' );
-        }
-    }
-
-    public function link_or_update( WP_REST_Request $request ) {
-
-        $params = $request->get_params();
-        if ( isset( $params['rop3'] ) && isset( $params['country'] ) && isset( $params['post_id'] ) ) {
-            $result = Disciple_Tools_People_Groups_Admin::link_or_update( $params['rop3'], $params['country'], $params['post_id'] );
-            return $result;
-        } else {
-            return new WP_Error( __METHOD__, 'Missing required parameter rop3 or country' );
-        }
-    }
 }
 Disciple_Tools_People_Groups_Endpoints::instance();

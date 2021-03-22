@@ -255,7 +255,9 @@ class DT_People_Groups_UI extends DT_Module_Base {
 
     public function dt_details_additional_tiles( $tiles, $post_type = "" ){
         if ( $post_type === $this->post_type ){
-            $tiles["profile"] = [ "label" => __( "Profile", 'disciple_tools' ) ];
+            if ( get_post_meta(get_the_ID(), 'rop3', true ) ) {
+                $tiles["profile"] = [ "label" => __( "Profile", 'disciple_tools' ) ];
+            }
             $tiles["other"] = [ "label" => __( "Other", 'disciple_tools' ) ];
         }
         return $tiles;

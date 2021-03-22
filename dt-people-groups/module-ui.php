@@ -36,6 +36,7 @@ class DT_People_Groups_UI extends DT_Module_Base {
         add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 20, 2 );
         add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
         add_filter( 'dt_custom_fields_settings', [ $this, 'dt_custom_fields_settings' ], 10, 2 );
+        add_action( 'dt_render_field_for_display_template', [ $this, 'dt_render_field_for_display_template' ], 20, 4 );
 
         // hooks
         add_action( "post_connection_removed", [ $this, "post_connection_removed" ], 10, 4 );
@@ -239,14 +240,15 @@ class DT_People_Groups_UI extends DT_Module_Base {
         return $tiles;
     }
 
-    public function dt_details_additional_section( $section, $post_type ){
+
+    public function dt_render_field_for_display_template( $post, $field_type, $field_key, $required_tag ){
+        $post_type = $post["post_type"];
 
         if ( $post_type === $this->post_type ) {
 
             $record_fields = DT_Posts::get_post_field_settings( $post_type );
-            $record = DT_Posts::get_post( $post_type, get_the_ID() );
 
-            if ( isset( $record_fields["tags"]["tile"] ) && $record_fields["tags"]["tile"] === $section ) {
+            if ( $field_key === "tags" && isset( $record_fields[$field_key] ) && !empty( $record_fields[$field_key]["custom_display"] ) && empty( $record_fields[$field_key]["hidden"] ) ) {
                 ?>
                 <div class="section-subheader">
                     <?php echo esc_html( $record_fields["tags"]["name"] ) ?>
@@ -273,7 +275,7 @@ class DT_People_Groups_UI extends DT_Module_Base {
                 </div>
             <?php }
 
-            if ( isset( $record_fields["assigned_to"]["tile"] ) && $record_fields["assigned_to"]["tile"] === $section ) {
+            if ( $field_key === "assigned_to" && isset( $record_fields[$field_key] ) && !empty( $record_fields[$field_key]["custom_display"] ) && empty( $record_fields[$field_key]["hidden"] ) ) {
                 ?>
                 <div class="cell small-12 medium-4">
                     <div class="section-subheader">
@@ -305,7 +307,6 @@ class DT_People_Groups_UI extends DT_Module_Base {
                     </div>
                 </div>
             <?php }
-
 
         } // post type
     }

@@ -30,6 +30,14 @@ add_filter( 'dt_post_type_modules', function( $modules ){
         "post_type" => "peoplegroups",
         "description" => "People Groups Tab and UI"
     ];
+    $modules["peoplegroups_progress"] = [
+        "name" => "People Groups - Progress Tile",
+        "enabled" => false,
+        "locked" => false,
+        "prerequisites" => [ "peoplegroups_base" ],
+        "post_type" => "peoplegroups",
+        "description" => "People Groups Progress"
+    ];
 
     return $modules;
 }, 20, 1 );
@@ -39,3 +47,6 @@ DT_People_Groups_Base::instance();
 
 require_once 'module-ui.php';
 DT_People_Groups_UI::instance();
+
+require_once 'module-progress.php';
+DT_People_Groups_Progress::instance();

@@ -1403,6 +1403,25 @@ class Disciple_Tools_Posts
                         Location_Grid_Meta::delete_location_grid_meta( $post_id, 'grid_meta_id', $value["grid_meta_id"], $existing_post );
                     }
 
+                    // if preset values
+                    else if ( isset( $value['lng'], $value['lat'], $value['level'], $value['label'], $value['grid_id']) ){
+                        $location_meta_grid = [];
+
+                        Location_Grid_Meta::validate_location_grid_meta( $location_meta_grid );
+                        $location_meta_grid['post_id'] = $post_id;
+                        $location_meta_grid['post_type'] = $post_type;
+                        $location_meta_grid['lng'] = $value['lng'];
+                        $location_meta_grid['lat'] = $value['lat'];
+                        $location_meta_grid['level'] = $value['level'];
+                        $location_meta_grid['label'] = $value['label'];
+                        $location_meta_grid['grid_id'] = $value['grid_id'];
+
+                        $potential_error = Location_Grid_Meta::add_location_grid_meta( $post_id, $location_meta_grid );
+                        if ( is_wp_error( $potential_error ) ){
+                            return $potential_error;
+                        }
+                    }
+
                     // is new but has provided grid_id
                     else if ( isset( $value["grid_id"] ) && ! empty( $value["grid_id"] ) ) {
                         $grid = $geocoder->query_by_grid_id( $value["grid_id"] );
@@ -1413,10 +1432,30 @@ class Disciple_Tools_Posts
                             $location_meta_grid['post_id'] = $post_id;
                             $location_meta_grid['post_type'] = $post_type;
                             $location_meta_grid['grid_id'] = $grid["grid_id"];
-                            $location_meta_grid['lng'] = $grid["longitude"];
-                            $location_meta_grid['lat'] = $grid["latitude"];
-                            $location_meta_grid['level'] = $grid["level_name"];
-                            $location_meta_grid['label'] = $grid["name"];
+
+                            if ( isset( $value['lng'] ) ) {
+                                $location_meta_grid['lng'] = $value['lng'];
+                            } else {
+                                $location_meta_grid['lng'] = $grid["longitude"];
+                            }
+
+                            if ( isset( $value['lat'] ) ) {
+                                $location_meta_grid['lat'] = $value['lat'];
+                            } else {
+                                $location_meta_grid['lat'] = $grid["latitude"];
+                            }
+
+                            if ( isset( $value['level'] ) ) {
+                                $location_meta_grid['level'] = $value['level'];
+                            } else {
+                                $location_meta_grid['level'] = $grid["level_name"];
+                            }
+
+                            if ( isset( $value['label'] ) ) {
+                                $location_meta_grid['label'] = $value['label'];
+                            } else {
+                                $location_meta_grid['label'] = $grid["name"];
+                            }
 
                             $potential_error = Location_Grid_Meta::add_location_grid_meta( $post_id, $location_meta_grid );
                             if ( is_wp_error( $potential_error ) ){

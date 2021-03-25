@@ -18,7 +18,7 @@ add_filter( 'dt_post_type_modules', function( $modules ){
         "name" => "People Groups",
         "enabled" => true,
         "locked" => true,
-        "prerequisites" => [ "contacts_base" ],
+        "prerequisites" => [],
         "post_type" => "peoplegroups",
         "description" => "People Groups"
     ];
@@ -34,7 +34,7 @@ add_filter( 'dt_post_type_modules', function( $modules ){
         "name" => "People Groups - Progress Tile",
         "enabled" => false,
         "locked" => false,
-        "prerequisites" => [ "peoplegroups_base" ],
+        "prerequisites" => [  "peoplegroups_ui" ],
         "post_type" => "peoplegroups",
         "description" => "People Groups Progress"
     ];

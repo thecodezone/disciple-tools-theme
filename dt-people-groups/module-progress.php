@@ -40,33 +40,102 @@ class DT_People_Groups_Progress extends DT_Module_Base {
         if ( $post_type === $this->post_type ){
             $movement = [
                 'g0' => [
-                    'step' => 'G0',
-                    'title' => 'Present',
+                    'label' => '(G0) Presence',
                     'description' => 'Establishing presence in the people group.'
                 ],
-                'g0.1' => [
-                    'step' => 'G0.1',
-                    'title' => 'Apostolic effort in residence',
+                'g0_1' => [
+                    'label' => '- 0.1 Apostolic effort in residence',
                     'description' => ''
                 ],
-
-                'g0.2' => [
-                    'step' => 'G0.2',
-                    'title' => 'Commitment to work in local language',
+                'g0_2' => [
+                    'label' => '- 0.2 Commitment to work in local language',
                     'description' => ''
                 ],
-
-                'g0.3' => [
-                    'step' => 'G0.3',
-                    'title' => 'Commitment to long-term ministry',
+                'g0_3' => [
+                    'label' => '- 0.3 Commitment to long-term ministry',
+                    'description' => ''
+                ],
+                'g0_4' => [
+                    'label' => '- 0.4 Commitment to sowing with CPM vision',
                     'description' => ''
                 ],
                 'g1' => [
-                    'step' => 'G1',
-                    'title' => 'Moving purposefully',
+                    'label' => '(G1) Moving purposefully',
                     'description' => 'Team on site trying to consistently establish NEW 1st generation believers & churches.'
                 ],
-                'g1.1'
+                'g1_1' => [
+                    'label' => '- 1.1 Field 1/Field 2 activity but no results',
+                    'description' => ''
+                ],
+                'g1_2' => [
+                    'label' => '- 1.2 Have a new G1 believer',
+                    'description' => ''
+                ],
+                'g1_3' => [
+                    'label' => '- 1.3 Have some new G1 believers',
+                    'description' => ''
+                ],
+                'g1_4' => [
+                    'label' => '- 1.4 Have consistent G1 believers',
+                    'description' => ''
+                ],
+                'g1_5' => [
+                    'label' => '- 1.5 Have many consistent G1 believers',
+                    'description' => ''
+                ],
+                'g1_6' => [
+                    'label' => '- 1.6 Have one G1 church',
+                    'description' => ''
+                ],
+                'g1_7' => [
+                    'label' => '- 1.7 Have some G1 churches',
+                    'description' => ''
+                ],
+                'g1_8' => [
+                    'label' => '- 1.8 Have several G1 churches',
+                    'description' => ''
+                ],
+                'g1_9' => [
+                    'label' => '- 1.9 Close to G2 churches',
+                    'description' => ''
+                ],
+                'g2' => [
+                    'label' => '(G2) Focused',
+                    'description' => 'Some 2nd gen churches (G1 believers started them).'
+                ],
+                'g3' => [
+                    'label' => '(G3) Breakthough',
+                    'description' => 'Consistent G2 & some G3 churches.'
+                ],
+                'g4' => [
+                    'label' => '(G4) Emerging CPM',
+                    'description' => 'Consistent G3 & some G4 churches.'
+                ],
+                'g5' => [
+                    'label' => '(G5) CPM',
+                    'description' => 'Consistent 4th generation churches; multiple streams.'
+                ],
+                'g6' => [
+                    'label' => '(G6) Sustained CPM',
+                    'description' => 'Visionary, indigenous leadership leading the movement with little/no need for outsiders. Stood test of time.'
+                ],
+                'g7' => [
+                    'label' => '(G7) Multiplying CPMs',
+                    'description' => 'Catalyzing new CPMs in other unreached peoples and places.'
+                ],
+            ];
+
+
+            $fields['pg_progress'] = [
+                'name'        => __( 'Progress', 'disciple_tools' ),
+                'description' => _x( 'Set the current status.', 'field description', 'disciple_tools' ),
+                'type'        => 'multi_select',
+                'default'     => $movement,
+                'tile' => 'progress',
+                'icon' => get_template_directory_uri() . '/dt-assets/images/status.svg',
+                "default_color" => "#366184",
+                "hidden" => true,
+                "custom_display" => true,
             ];
 
         }
@@ -88,100 +157,28 @@ class DT_People_Groups_Progress extends DT_Module_Base {
         if ( $post_type === $this->post_type ) {
 
             if ( 'progress' === $section ) {
-
+                $post_fields = DT_Posts::get_post_field_settings( $post_type );
+                $post = DT_Posts::get_post( $post_type, get_the_ID() );
                 ?>
-                <div class="grid-x">
-                    <div class="cell">
-                        <button type="button" class="button hollow small" style="margin-bottom: 2px;">&#10003;</button> <strong>(G0) Present</strong>
+                <div class="small button-group" style="display: inline-block">
+                    <?php foreach ( $post_fields['pg_progress']["default"] as $option_key => $option_value ): ?>
+                    <div>
+                        <?php
+                        $class = ( in_array( $option_key, $post['pg_progress'] ?? [] ) ) ?
+                            "selected-select-button" : "empty-select-button"; ?>
+                        <button id="<?php echo esc_html( $option_key ) ?>" type="button" data-field-key="pg_progress"
+                                class="dt_multi_select <?php echo esc_html( $class ) ?> select-button button" style="text-align:left;">
+                            &#10003;
+                        </button>
+                        <?php echo esc_html( $post_fields['pg_progress']["default"][$option_key]["label"] ) ?>
                     </div>
-                    <div class="cell">
-                        <button type="button" class="button hollow small" style="margin-bottom: 2px;;">&#10003;</button> 0.1 Apostolic effort in residence
-                    </div>
-                    <div class="cell">
-                        <button type="button" class="button hollow small" style="margin-bottom: 2px;;">&#10003;</button> 0.2 Commitment to work in local language
-                    </div>
-                    <div class="cell">
-                        <button type="button" class="button hollow small" style="margin-bottom: 2px;">&#10003;</button> 0.3 Commitment to long-term ministry
-                    </div>
-                    <div class="cell">
-                        <button type="button" class="button hollow small" style="margin-bottom: 2px;">&#10003;</button> 0.4 Commitment to sowing with CPM vision
-                    </div>
-                    <div class="cell">
-                        <button type="button" class="button hollow small" style="margin-bottom: 2px;">&#10003;</button> <strong>(G1) Moving purposefully</strong>
-                    </div>
-                    <div class="cell">
-                        <em>Team on site trying to consistently establish NEW 1st generation believers & churches.</em>
-                    </div>
-
-                    <div class="cell">
-                        <button type="button" class="button hollow small" style="margin-bottom: 2px;">&#10003;</button> 1.1 Field 1/Field 2 activity but no results
-                    </div>
-                    <div class="cell">
-                        <button type="button" class="button hollow small" style="margin-bottom: 2px;">&#10003;</button> 1.2 Have some new G1 believers
-                    </div>
-                    <div class="cell">
-                        <button type="button" class="button hollow small" style="margin-bottom: 2px;">&#10003;</button> 1.3 Have some new G1 believers
-                    </div>
-                    <div class="cell">
-                        <button type="button" class="button hollow small" style="margin-bottom: 2px;">&#10003;</button> 1.4 have a consistent G1 believers
-                    </div>
-                    <div class="cell">
-                        <button type="button" class="button hollow small" style="margin-bottom: 2px;">&#10003;</button> 1.5 Have consistent G1 believers
-                    </div>
-                    <div class="cell">
-                        <button type="button" class="button hollow small" style="margin-bottom: 2px;">&#10003;</button> 1.6 have one or some G1 churches
-                    </div>
-                    <div class="cell">
-                        <button type="button" class="button hollow small" style="margin-bottom: 2px;">&#10003;</button> 1.7 have one or some G1 churches
-                    </div>
-                    <div class="cell">
-                        <button type="button" class="button hollow small" style="margin-bottom: 2px;">&#10003;</button> 1.8 Have several G1 churches
-                    </div>
-                    <div class="cell">
-                        <button type="button" class="button hollow small" style="margin-bottom: 2px;">&#10003;</button> 1.9 Close to G2 churches
-                    </div>
-                    <div class="cell">
-                        <button type="button" class="button hollow small" style="margin-bottom: 2px;">&#10003;</button> <strong>(G2) Focused</strong>
-                    </div>
-                    <div class="cell">
-                        <em>Some 2nd gen churches (G1 believers started them).</em>
-                    </div>
-                    <div class="cell">
-                        <button type="button" class="button hollow small" style="margin-bottom: 2px;">&#10003;</button> <strong>(G3) Breakthough</strong>
-                    </div>
-                    <div class="cell">
-                        <em>Consistent G2 & some G3 churches.</em>
-                    </div>
-                    <div class="cell">
-                        <button type="button" class="button hollow small" style="margin-bottom: 2px;">&#10003;</button> <strong>(G4) Emerging CPM</strong>
-                    </div>
-                    <div class="cell">
-                        <em>Consistent G3 & some G4 churches.</em>
-                    </div>
-                    <div class="cell">
-                        <button type="button" class="button hollow small" style="margin-bottom: 2px;">&#10003;</button> <strong>(G5) CPM</strong>
-                    </div>
-                    <div class="cell">
-                        <em>Consistent 4th generation churches; multiple streams.</em>
-                    </div>
-                    <div class="cell">
-                        <button type="button" class="button hollow small" style="margin-bottom: 2px;">&#10003;</button> <strong>(G6) Sustained CPM</strong>
-                    </div>
-                    <div class="cell">
-                        <em>Visionary, indigenous leadership leding the movement with little/no need for outsiders. Stood
-                            test of time.</em>
-                    </div>
-                    <div class="cell">
-                        <button type="button" class="button hollow small" style="margin-bottom: 2px;">&#10003;</button> <strong>(G7) Multiplying CPMs</strong>
-                    </div>
-                    <div class="cell">
-                        <em>Catalyzing new CPMs in other unreached peoples and places.</em>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
                 <?php
             }
 
-        } // post type
+         // post type
+        }
     }
 
 }

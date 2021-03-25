@@ -10,44 +10,61 @@ if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 class Disciple_Tools_Migration_0041 extends Disciple_Tools_Migration {
     public function up() {
         global $wpdb;
+
         $pg_not_upgraded = $wpdb->get_results("
-            SELECT ID
-            FROM $wpdb->posts p
-            WHERE post_type = 'peoplegroups'
-            AND p.ID NOT IN (
-                SELECT p1.ID
-                FROM $wpdb->posts p1
-                JOIN $wpdb->postmeta pm1 ON p1.ID=pm1.post_id AND meta_key = 'status'
-                WHERE p1.post_type = 'peoplegroups'
-             );", ARRAY_A);
+            SELECT p.ID, pm1.meta_value as rop3, pm2.meta_value as country, CONCAT(pm2.meta_value, '_', pm3.meta_value, '_', pm1.meta_value) as pg_unique_key
+                FROM $wpdb->posts p
+                LEFT JOIN $wpdb->postmeta pm1 ON p.ID=pm1.post_id AND pm1.meta_key = 'jp_rop3'
+                LEFT JOIN $wpdb->postmeta pm2 ON p.ID=pm2.post_id AND pm2.meta_key = 'jp_rog3'
+                LEFT JOIN $wpdb->postmeta pm3 ON p.ID=pm3.post_id AND pm3.meta_key = 'jp_peopleid3'
+                WHERE post_type = 'peoplegroups';
+             ", ARRAY_A);
+
+        $base_user = dt_get_base_user( true );
 
         if ( ! empty( $pg_not_upgraded ) ) {
-            foreach( $pg_not_upgraded as $id ) {
-                update_post_meta( $id['ID'], 'status', 'inactive' );
+            foreach( $pg_not_upgraded as $row ) {
+                $wpdb->insert(
+                    $wpdb->postmeta,
+                    [
+                        'post_id' => $row['ID'],
+                        'meta_key' => 'status',
+                        'meta_value' => 'inactive'
+                    ]
+                );
+                $wpdb->insert(
+                    $wpdb->postmeta,
+                    [
+                        'post_id' => $row['ID'],
+                        'meta_key' => 'rop3',
+                        'meta_value' => $row['rop3']
+                    ]
+                );
+                $wpdb->insert(
+                    $wpdb->postmeta,
+                    [
+                        'post_id' => $row['ID'],
+                        'meta_key' => 'country',
+                        'meta_value' => $row['country']
+                    ]
+                );
+                $wpdb->insert(
+                    $wpdb->postmeta,
+                    [
+                        'post_id' => $row['ID'],
+                        'meta_key' => 'pg_unique_key',
+                        'meta_value' => $row['pg_unique_key']
+                    ]
+                );
+                $wpdb->insert(
+                    $wpdb->postmeta,
+                    [
+                        'post_id' => $row['ID'],
+                        'meta_key' => 'assigned_to',
+                        'meta_value' => 'user-' . $base_user
+                    ]
+                );
 
-                $rop3 = get_post_meta( $id['ID'], 'jp_ROP3', true );
-                if ( ! empty( $rop3 ) ){
-                    update_post_meta( $id['ID'], 'rop3', $rop3 );
-                }
-            }
-        }
-
-        $pg_not_assigned = $wpdb->get_results("
-            SELECT ID
-            FROM $wpdb->posts p
-            WHERE post_type = 'peoplegroups'
-            AND p.ID NOT IN (
-                SELECT p1.ID
-                FROM $wpdb->posts p1
-                JOIN $wpdb->postmeta pm1 ON p1.ID=pm1.post_id AND meta_key = 'assigned_to'
-                WHERE p1.post_type = 'peoplegroups'
-             );", ARRAY_A);
-
-        if ( ! empty( $pg_not_assigned ) ) {
-            $base_user = dt_get_base_user();
-            foreach( $pg_not_assigned as $id ) {
-                update_post_meta( $id['ID'], 'assigned_to', 'user-' . $base_user->ID );
-                DT_Posts::add_shared( "peoplegroups", (int) $id['ID'], (int) $base_user->ID, null, false, false, false );
             }
         }
     }

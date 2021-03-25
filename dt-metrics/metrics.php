@@ -65,6 +65,11 @@ class Disciple_Tools_Metrics{
                 require_once( get_template_directory() . '/dt-metrics/groups/mapbox-maps.php' );
                 require_once( get_template_directory() . '/dt-metrics/groups/overview.php' );
 
+                if ( !empty( $modules["peoplegroups_ui"]["enabled"] ) ){
+                    require_once( get_template_directory() . '/dt-metrics/people-groups/mapbox-maps.php' );
+                    require_once( get_template_directory() . '/dt-metrics/people-groups/overview.php' );
+                }
+
                 // Combined
                 require_once( get_template_directory() . '/dt-metrics/combined/locations-list.php' );
                 require_once( get_template_directory() . '/dt-metrics/combined/hover-map.php' );

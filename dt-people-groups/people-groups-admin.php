@@ -21,7 +21,7 @@ class Disciple_Tools_People_Groups_Admin
      * Get JP csv file contents and return as array.
      * @return array
      */
-    public static function get_jp_source() {
+    public static function get_jp_source( $associative = true ) {
         if ( ! file_exists(__DIR__ . "/csv/jp-people-groups.csv" ) ) {
             $zip_file = __DIR__ . "/csv/jp-people-groups.csv.zip";
             $zip = new ZipArchive();
@@ -38,14 +38,22 @@ class Disciple_Tools_People_Groups_Admin
         $handle = fopen( __DIR__ . "/csv/jp-people-groups.csv", "r" );
         if ( $handle !== false ) {
             while (( $data = fgetcsv( $handle, 0, "," ) ) !== false) {
-                $jp_csv[] = $data;
+                $jp_csv_raw[] = $data;
             }
             fclose( $handle );
+            if ( $associative ) {
+                foreach( $jp_csv_raw as $row ) {
+                    $jp_csv[$row[16]] = $row;
+                }
+                unset($jp_csv['pg_unique_key']);
+            } else {
+                $jp_csv = $jp_csv_raw;
+            }
         }
         return $jp_csv;
     }
 
-    public static function get_jp_unreached() {
+    public static function get_jp_unreached(  ) {
         if ( ! file_exists(__DIR__ . "/csv/jp-unreached.csv" ) ) {
             $zip_file = __DIR__ . "/csv/jp-unreached.csv.zip";
             $zip = new ZipArchive();
@@ -66,21 +74,21 @@ class Disciple_Tools_People_Groups_Admin
             }
             fclose( $handle );
         }
-        unset($jp_csv[0]);
+
         return $jp_csv;
     }
 
-    public static function get_imb_source() {
-        $imb_csv = [];
-        $handle = fopen( __DIR__ . "/csv/imb.csv", "r" );
-        if ( $handle !== false ) {
-            while (( $data = fgetcsv( $handle, 0, "," ) ) !== false) {
-                $imb_csv[] = $data;
-            }
-            fclose( $handle );
-        }
-        return $imb_csv;
-    }
+//    public static function get_imb_source() {
+//        $imb_csv = [];
+//        $handle = fopen( __DIR__ . "/csv/imb.csv", "r" );
+//        if ( $handle !== false ) {
+//            while (( $data = fgetcsv( $handle, 0, "," ) ) !== false) {
+//                $imb_csv[] = $data;
+//            }
+//            fclose( $handle );
+//        }
+//        return $imb_csv;
+//    }
 
     public static function search_csv( $search ) { // gets a list by country
         if ( ! current_user_can( 'manage_dt' ) ) {
@@ -284,7 +292,6 @@ class Disciple_Tools_People_Groups_Admin
 
 
     public static function admin_tab_table() {
-//        $list = self::get_jp_source();
         ?>
         <table class="widefat">
             <thead>
@@ -307,7 +314,7 @@ class Disciple_Tools_People_Groups_Admin
                     jQuery('#install_unreached').prop('disabled', true )
                     let results = jQuery('#results')
 
-                    results.append(`Loading 7459 Unreached People Groups (3-9 minutes, don't close this window.)<br>`)
+                    results.append(`Loading 7459 Unreached People Groups (3-9 minutes, don't close this window.) <span class="loading-spinner active"></span><br>`)
 
                     /* build */
                     window.offsets = []
@@ -327,7 +334,7 @@ class Disciple_Tools_People_Groups_Admin
                         }
                         send_offset()
                         window.yint++
-                    }, 5000);
+                    }, 3000);
 
                     function send_offset(){
                         results.append(`Loading ${window.yint} <span class="loading-spinner active" id="load${window.yint}"></span><br>`)
@@ -343,7 +350,12 @@ class Disciple_Tools_People_Groups_Admin
                             },
                         })
                         .done(function (data) {
+                            let active = jQuery('.active')
                             jQuery('#load'+data).remove()
+                            if ( 37 === data ){
+                                active.removeClass('active')
+                                results.append('Finished!')
+                            }
                         })
                         .fail(function (err) {
                             console.log("error");
@@ -409,6 +421,7 @@ class Disciple_Tools_People_Groups_Endpoints
         global $wpdb;
         $data = [];
         $list = Disciple_Tools_People_Groups_Admin::get_jp_unreached();
+//        dt_write_log($list);
 
         $installed = $wpdb->get_results("SELECT post_id, meta_value FROM $wpdb->postmeta WHERE meta_key = 'pg_unique_key';", ARRAY_A );
         $keys = [];
@@ -418,7 +431,7 @@ class Disciple_Tools_People_Groups_Endpoints
 
         foreach( $list as $index => $row ) {
             if ( $index >= $start && $index <= $end ) {
-
+                dt_write_log('$unique_key');
                 $unique_key = $row[1] . '_'. $row[3] . '_'. $row[4]; // rog3+peopleid3+rop3
                 if ( isset( $keys[$unique_key] ) ) {
                     continue;
@@ -447,6 +460,8 @@ class Disciple_Tools_People_Groups_Endpoints
                 $fields['location_grid_meta'] = $value;
 
                 $data[] = DT_Posts::create_post( 'peoplegroups', $fields );
+
+                dt_write_log($unique_key);
             }
             if ( $index > $end  ){
                 break;

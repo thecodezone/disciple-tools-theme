@@ -344,8 +344,8 @@ class DT_People_Groups_UI extends DT_Module_Base {
                 DT_Posts::add_shared( $this->post_type, $post_id, (int) $fields['assigned_to'], null, false, false, true );
             }
             if ( isset( $fields['rop3'] ) && ! empty( $fields['rop3'] ) ){
-                dt_write_log('rop3 changed');
-                $this->add_details_with_rop3( $post_id, $fields['rop3'] );
+//                dt_write_log('rop3 changed');
+//                $this->add_details_with_rop3( $post_id, $fields['rop3'] );
 
 
             }
@@ -360,7 +360,7 @@ class DT_People_Groups_UI extends DT_Module_Base {
             $response = json_decode( $raw_response['body'], true );
             $response = dt_recursive_sanitize_array($response);
 
-            dt_write_log($response);
+//            dt_write_log($response);
         }
     }
 

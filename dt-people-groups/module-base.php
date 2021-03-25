@@ -116,7 +116,8 @@ class DT_People_Groups_Base extends DT_Module_Base {
         foreach ( $expected_roles as $role => $role_value ){
             if ( isset( $expected_roles[$role]["permissions"]['access_contacts'] ) && $expected_roles[$role]["permissions"]['access_contacts'] ){
                 $expected_roles[$role]["permissions"]['access_' . $this->post_type ] = true;
-                $expected_roles[$role]["permissions"]['create_' . $this->post_type] = true;
+//                $expected_roles[$role]["permissions"]['create_' . $this->post_type] = true;
+                $expected_roles[$role]["permissions"]['view_any_' . $this->post_type] = true;
             }
         }
 
@@ -135,8 +136,9 @@ class DT_People_Groups_Base extends DT_Module_Base {
         if ( isset( $expected_roles["peoplegroups_admin"] ) ){
             $expected_roles["peoplegroups_admin"]["permissions"]['view_any_'.$this->post_type ] = true;
             $expected_roles["peoplegroups_admin"]["permissions"]['update_any_'.$this->post_type ] = true;
-            $expected_roles["peoplegroups_admin"]["permissions"][ 'dt_all_admin_' . $this->post_type] = true;
+            $expected_roles["peoplegroups_admin"]["permissions"]['dt_all_admin_' . $this->post_type] = true;
             $expected_roles["peoplegroups_admin"]["permissions"]['list_'.$this->post_type ] = true;
+            $expected_roles["peoplegroups_admin"]["permissions"]['create_' . $this->post_type] = true;
         }
 
         return $expected_roles;

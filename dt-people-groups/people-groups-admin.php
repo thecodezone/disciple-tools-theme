@@ -78,17 +78,39 @@ class Disciple_Tools_People_Groups_Admin
         return $jp_csv;
     }
 
-//    public static function get_imb_source() {
-//        $imb_csv = [];
-//        $handle = fopen( __DIR__ . "/csv/imb.csv", "r" );
-//        if ( $handle !== false ) {
-//            while (( $data = fgetcsv( $handle, 0, "," ) ) !== false) {
-//                $imb_csv[] = $data;
-//            }
-//            fclose( $handle );
-//        }
-//        return $imb_csv;
-//    }
+    public static function get_jp_full_json( ) {
+        if ( ! file_exists(__DIR__ . "/json/jp-people-groups.json" ) ) {
+            $zip_file = __DIR__ . "/json/jp-people-groups.json.zip";
+            $zip = new ZipArchive();
+            $extract_path = __DIR__ . "/json/";
+            if ($zip->open( $zip_file ) != "true")
+            {
+                error_log( "Error :- Unable to open the Zip File" );
+            }
+            $zip->extractTo( $extract_path );
+            $zip->close();
+        }
+
+        $json = file_get_contents( __DIR__ . "/json/jp-people-groups.json" );
+        return json_decode($json);
+    }
+
+    public static function get_jp_unreached_json() {
+        if ( ! file_exists(__DIR__ . "/json/jp-unreached.json" ) ) {
+            $zip_file = __DIR__ . "/json/jp-unreached.json.zip";
+            $zip = new ZipArchive();
+            $extract_path = __DIR__ . "/json/";
+            if ($zip->open( $zip_file ) != "true")
+            {
+                error_log( "Error :- Unable to open the Zip File" );
+            }
+            $zip->extractTo( $extract_path );
+            $zip->close();
+        }
+
+        $json = file_get_contents( __DIR__ . "/json/jp-unreached.json" );
+        return json_decode($json, true);
+    }
 
     public static function search_csv( $search ) { // gets a list by country
         if ( ! current_user_can( 'manage_dt' ) ) {
@@ -327,21 +349,22 @@ class Disciple_Tools_People_Groups_Admin
 
                     /* set interval */
                     window.yint = 0
-                    window.xint = setInterval(() => {
-                        if ( window.yint >= window.offsets.length ){
-                            clearInterval();
-                            return
-                        }
-                        send_offset()
-                        window.yint++
-                    }, 3000);
+                    // window.xint = setInterval(() => {
+                    //     if ( window.yint >= window.offsets.length ){
+                    //         clearInterval();
+                    //         return
+                    //     }
+                    //     send_offset()
+                    //     window.yint++
+                    // }, 5000);
+                    send_offset()
 
                     function send_offset(){
                         results.append(`Loading ${window.yint} <span class="loading-spinner active" id="load${window.yint}"></span><br>`)
 
                         jQuery.ajax({
                             type: "POST",
-                            data: JSON.stringify({ action:'unreached', id: window.yint,  start: window.offsets[window.yint].start, end: window.offsets[window.yint].end }),
+                            data: JSON.stringify({ action:'unreached_json', id: window.yint,  start: window.offsets[window.yint].start, end: window.offsets[window.yint].end }),
                             contentType: "application/json; charset=utf-8",
                             dataType: "json",
                             url: '<?php echo esc_url_raw( rest_url() ) ?>dt/v1/people-groups/install',
@@ -409,9 +432,10 @@ class Disciple_Tools_People_Groups_Endpoints
         $params = $request->get_params();
 
         switch( $params['action'] ) {
+            case 'unreached_json':
+                return $this->add_unreached_json();
             case 'unreached';
                 return $this->add_unreached( $params['start'], $params['end'], $params['id'] );
-
             default:
                 return [];
         }
@@ -421,7 +445,6 @@ class Disciple_Tools_People_Groups_Endpoints
         global $wpdb;
         $data = [];
         $list = Disciple_Tools_People_Groups_Admin::get_jp_unreached();
-//        dt_write_log($list);
 
         $installed = $wpdb->get_results("SELECT post_id, meta_value FROM $wpdb->postmeta WHERE meta_key = 'pg_unique_key';", ARRAY_A );
         $keys = [];
@@ -431,7 +454,7 @@ class Disciple_Tools_People_Groups_Endpoints
 
         foreach( $list as $index => $row ) {
             if ( $index >= $start && $index <= $end ) {
-                dt_write_log('$unique_key');
+
                 $unique_key = $row[1] . '_'. $row[3] . '_'. $row[4]; // rog3+peopleid3+rop3
                 if ( isset( $keys[$unique_key] ) ) {
                     continue;
@@ -459,15 +482,110 @@ class Disciple_Tools_People_Groups_Endpoints
                 ];
                 $fields['location_grid_meta'] = $value;
 
-                $data[] = DT_Posts::create_post( 'peoplegroups', $fields );
+                $data[] = DT_Posts::create_post( 'peoplegroups', $fields, true, false );
 
-                dt_write_log($unique_key);
             }
             if ( $index > $end  ){
                 break;
             }
         }
         return $id;
+    }
+
+    public function add_unreached_json() {
+        global $wpdb;
+        $list = Disciple_Tools_People_Groups_Admin::get_jp_unreached_json();
+        $base_user = dt_get_base_user(true);
+
+        foreach( $list as $key => $value ) {
+
+            $id = wp_insert_post(
+                [
+                    'post_title' => $value['name'] . ' ('. $value['rop3'] .')',
+                    'post_type' => 'peoplegroups',
+                ]
+            );
+
+
+            if ( ! $id ) {
+                continue;
+            }
+            dt_write_log($id);
+            $wpdb->insert(
+                $wpdb->postmeta,
+                [
+                    'post_id' => $id,
+                    'meta_key' => 'rop3',
+                    'meta_value' => $value['rop3'],
+                ]
+            );
+            $wpdb->insert(
+                $wpdb->postmeta,
+                [
+                    'post_id' => $id,
+                    'meta_key' => 'peopleid3',
+                    'meta_value' => $value['peopleid3'],
+                ]
+            );
+            $wpdb->insert(
+                $wpdb->postmeta,
+                [
+                    'post_id' => $id,
+                    'meta_key' => 'status',
+                    'meta_value' => 'inactive',
+                ]
+            );
+            $wpdb->insert(
+                $wpdb->postmeta,
+                [
+                    'post_id' => $id,
+                    'meta_key' => 'assigned_to',
+                    'meta_value' => 'user-' . $base_user,
+                ]
+            );
+
+            foreach ( $value['locations'] as $locations ) {
+                $wpdb->insert(
+                    $wpdb->postmeta,
+                    [
+                        'post_id' => $id,
+                        'meta_key' => 'location_grid',
+                        'meta_value' => $locations['grid_id']
+                    ]
+                );
+
+                // create the location grid meta record
+                $location_grid_id = $wpdb->insert_id;
+                $wpdb->insert(
+                    $wpdb->dt_location_grid_meta,
+                    [
+                        'post_id' => $id,
+                        'post_type' => 'peoplegroups',
+                        'postmeta_id_location_grid' => $location_grid_id,
+                        'grid_id' => $locations['grid_id'],
+                        'lng' => $locations['lng'],
+                        'lat' => $locations['lat'],
+                        'level' => $locations['level'],
+                        'source' => 'jp',
+                        'label' => $locations['label']
+                    ]
+                );
+
+                // create the location grid meta postmeta record
+                $location_grid_meta_id = $wpdb->insert_id;;
+                $wpdb->insert(
+                    $wpdb->postmeta,
+                    [
+                        'post_id' => $id,
+                        'meta_key' => 'location_grid_meta',
+                        'meta_value' => $location_grid_meta_id
+                    ]
+                );
+
+                $data[] = $id;
+            } // foreach
+        }
+        return $data;
     }
 
     /**

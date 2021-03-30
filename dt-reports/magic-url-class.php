@@ -157,7 +157,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
             return $url;
         }
 
-        public function parse_url_parts(){
+        public function parse_url_parts( $wp_error = false ){
 
             // get required url elements
             $all_types = $this->registered_types();
@@ -186,7 +186,11 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
 
                     // test for valid root
                     if ( ! isset( $all_types[$elements['root']] ) ) {
-                        return false;
+                        if ( $wp_error ) {
+                            return new WP_Error(__METHOD__, 'Not a valid url root.', $parts );
+                        } else {
+                            return false;
+                        }
                     }
                 }
                 if ( isset( $parts[1] ) && ! empty( $parts[1] ) ){
@@ -194,7 +198,11 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
 
                     // test for valid type
                     if ( ! isset( $all_types[$elements['root']][$elements['type']] ) ) {
-                        return false;
+                        if ( $wp_error ) {
+                            return new WP_Error(__METHOD__, 'Not a valid url type.', $parts );
+                        } else {
+                            return false;
+                        }
                     }
                 }
                 if ( isset( $parts[2] ) && ! empty( $parts[2] ) ){
@@ -202,14 +210,22 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
 
                     // test that meta_key is set
                     if ( ! isset( $types[$elements['type']]['meta_key'] ) ) {
-                        return false;
+                        if ( $wp_error ) {
+                            return new WP_Error(__METHOD__, 'Not a valid meta_key.', $parts );
+                        } else {
+                            return false;
+                        }
                     }
                     $elements['meta_key'] = $types[$elements['type']]['meta_key'];
 
                     // get post_id
                     $post_id = self::get_post_id( $elements['meta_key'], $parts[2] );
                     if ( ! $post_id ){ // fail if no post id for public key
-                        return false;
+                        if ( $wp_error ) {
+                            return new WP_Error(__METHOD__, 'No post id for public key.', $parts );
+                        } else {
+                            return false;
+                        }
                     } else {
                         $elements['post_id'] = $post_id;
                     }
@@ -217,14 +233,22 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                 if ( isset( $parts[3] ) && ! empty( $parts[3] ) ){
                     $elements['action'] = $parts[3];
 
-                    // test for valid type
+                    // test for valid action
                     if ( ! isset( $all_types[$elements['root']][$elements['type']]['actions'][$elements['action']] ) ) {
-                        return false;
+                        if ( $wp_error ) {
+                            return new WP_Error(__METHOD__, 'Not a valid action for registered type', $parts );
+                        } else {
+                            return false;
+                        }
                     }
                 }
                 return $elements;
             }
-            return false;
+            if ( $wp_error ) {
+                return new WP_Error(__METHOD__, 'Not a correct root or approved type.', $parts );
+            } else {
+                return false;
+            }
         }
 
         public function get_post_id( string $meta_key, string $public_key ){
@@ -257,10 +281,10 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
 
         public function is_valid_key_url( string $type ) {
             $parts = self::parse_url_parts();
-            if ( empty( $parts ) ){ // fail if not prayer url
+            if ( empty( $parts ) ){ // fail if root is not set
                 return false;
             }
-            if ( $type !== $parts['type'] ){ // fail if not saturation type
+            if ( $type !== $parts['type'] ){ // fail if type is not set
                 return false;
             }
             if ( empty( $parts['public_key'] ) ) { // fail if not specific contact

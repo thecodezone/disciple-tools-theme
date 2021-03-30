@@ -17,7 +17,7 @@ class DT_Metrics_Mapbox_People_Groups_Maps extends DT_Metrics_Chart_Base
     public $js_file_name = '/dt-metrics/common/maps_library.js'; // should be full file name plus extension
     public $permissions = [ 'view_project_metrics' ];
     public $namespace = 'dt-metrics/peoplegroups/';
-    public $base_filter = [ ];
+    public $base_filter = [];
 
     public function __construct() {
         if ( ! DT_Mapbox_API::get_key() ) {

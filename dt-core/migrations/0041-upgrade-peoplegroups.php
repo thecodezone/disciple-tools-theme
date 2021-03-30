@@ -23,7 +23,7 @@ class Disciple_Tools_Migration_0041 extends Disciple_Tools_Migration {
         $base_user = dt_get_base_user( true );
 
         if ( ! empty( $pg_not_upgraded ) ) {
-            foreach( $pg_not_upgraded as $row ) {
+            foreach ( $pg_not_upgraded as $row ) {
                 $wpdb->insert(
                     $wpdb->postmeta,
                     [

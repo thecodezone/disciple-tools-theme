@@ -22,7 +22,7 @@ class Disciple_Tools_People_Groups_Admin
      * @return array
      */
     public static function get_jp_source( $associative = true ) {
-        if ( ! file_exists(__DIR__ . "/csv/jp-people-groups.csv" ) ) {
+        if ( ! file_exists( __DIR__ . "/csv/jp-people-groups.csv" ) ) {
             $zip_file = __DIR__ . "/csv/jp-people-groups.csv.zip";
             $zip = new ZipArchive();
             $extract_path = __DIR__ . "/csv/";
@@ -42,10 +42,10 @@ class Disciple_Tools_People_Groups_Admin
             }
             fclose( $handle );
             if ( $associative ) {
-                foreach( $jp_csv_raw as $row ) {
+                foreach ( $jp_csv_raw as $row ) {
                     $jp_csv[$row[16]] = $row;
                 }
-                unset($jp_csv['pg_unique_key']);
+                unset( $jp_csv['pg_unique_key'] );
             } else {
                 $jp_csv = $jp_csv_raw;
             }
@@ -53,8 +53,8 @@ class Disciple_Tools_People_Groups_Admin
         return $jp_csv;
     }
 
-    public static function get_jp_unreached(  ) {
-        if ( ! file_exists(__DIR__ . "/csv/jp-unreached.csv" ) ) {
+    public static function get_jp_unreached() {
+        if ( ! file_exists( __DIR__ . "/csv/jp-unreached.csv" ) ) {
             $zip_file = __DIR__ . "/csv/jp-unreached.csv.zip";
             $zip = new ZipArchive();
             $extract_path = __DIR__ . "/csv/";
@@ -78,8 +78,8 @@ class Disciple_Tools_People_Groups_Admin
         return $jp_csv;
     }
 
-    public static function get_jp_full_json( ) {
-        if ( ! file_exists(__DIR__ . "/json/jp-people-groups.json" ) ) {
+    public static function get_jp_full_json() {
+        if ( ! file_exists( __DIR__ . "/json/jp-people-groups.json" ) ) {
             $zip_file = __DIR__ . "/json/jp-people-groups.json.zip";
             $zip = new ZipArchive();
             $extract_path = __DIR__ . "/json/";
@@ -92,11 +92,11 @@ class Disciple_Tools_People_Groups_Admin
         }
 
         $json = file_get_contents( __DIR__ . "/json/jp-people-groups.json" );
-        return json_decode($json);
+        return json_decode( $json );
     }
 
     public static function get_jp_unreached_json() {
-        if ( ! file_exists(__DIR__ . "/json/jp-unreached.json" ) ) {
+        if ( ! file_exists( __DIR__ . "/json/jp-unreached.json" ) ) {
             $zip_file = __DIR__ . "/json/jp-unreached.json.zip";
             $zip = new ZipArchive();
             $extract_path = __DIR__ . "/json/";
@@ -109,7 +109,7 @@ class Disciple_Tools_People_Groups_Admin
         }
 
         $json = file_get_contents( __DIR__ . "/json/jp-unreached.json" );
-        return json_decode($json, true);
+        return json_decode( $json, true );
     }
 
     public static function search_csv( $search ) { // gets a list by country
@@ -431,7 +431,7 @@ class Disciple_Tools_People_Groups_Endpoints
         }
         $params = $request->get_params();
 
-        switch( $params['action'] ) {
+        switch ( $params['action'] ) {
             case 'unreached_json':
                 return $this->add_unreached_json();
             case 'unreached';
@@ -446,13 +446,13 @@ class Disciple_Tools_People_Groups_Endpoints
         $data = [];
         $list = Disciple_Tools_People_Groups_Admin::get_jp_unreached();
 
-        $installed = $wpdb->get_results("SELECT post_id, meta_value FROM $wpdb->postmeta WHERE meta_key = 'pg_unique_key';", ARRAY_A );
+        $installed = $wpdb->get_results( "SELECT post_id, meta_value FROM $wpdb->postmeta WHERE meta_key = 'pg_unique_key';", ARRAY_A );
         $keys = [];
-        foreach( $installed as $item ) {
+        foreach ( $installed as $item ) {
             $keys[$item['meta_value']] = $item['post_id'];
         }
 
-        foreach( $list as $index => $row ) {
+        foreach ( $list as $index => $row ) {
             if ( $index >= $start && $index <= $end ) {
 
                 $unique_key = $row[1] . '_'. $row[3] . '_'. $row[4]; // rog3+peopleid3+rop3
@@ -485,7 +485,7 @@ class Disciple_Tools_People_Groups_Endpoints
                 $data[] = DT_Posts::create_post( 'peoplegroups', $fields, true, false );
 
             }
-            if ( $index > $end  ){
+            if ( $index > $end ){
                 break;
             }
         }
@@ -495,9 +495,9 @@ class Disciple_Tools_People_Groups_Endpoints
     public function add_unreached_json() {
         global $wpdb;
         $list = Disciple_Tools_People_Groups_Admin::get_jp_unreached_json();
-        $base_user = dt_get_base_user(true);
+        $base_user = dt_get_base_user( true );
 
-        foreach( $list as $key => $value ) {
+        foreach ( $list as $key => $value ) {
 
             $id = wp_insert_post(
                 [
@@ -510,7 +510,7 @@ class Disciple_Tools_People_Groups_Endpoints
             if ( ! $id ) {
                 continue;
             }
-            dt_write_log($id);
+            dt_write_log( $id );
             $wpdb->insert(
                 $wpdb->postmeta,
                 [
@@ -572,7 +572,8 @@ class Disciple_Tools_People_Groups_Endpoints
                 );
 
                 // create the location grid meta postmeta record
-                $location_grid_meta_id = $wpdb->insert_id;;
+                $location_grid_meta_id = $wpdb->insert_id;
+                ;
                 $wpdb->insert(
                     $wpdb->postmeta,
                     [

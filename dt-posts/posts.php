@@ -1421,7 +1421,7 @@ class Disciple_Tools_Posts
                     }
 
                     // if preset values
-                    else if ( isset( $value['lng'], $value['lat'], $value['level'], $value['label'], $value['grid_id']) ){
+                    else if ( isset( $value['lng'], $value['lat'], $value['level'], $value['label'], $value['grid_id'] ) ){
                         $location_meta_grid = [];
 
                         Location_Grid_Meta::validate_location_grid_meta( $location_meta_grid );

@@ -304,7 +304,6 @@ class DT_People_Groups_UI extends DT_Module_Base {
                     </div>
                 </div>
             <?php }
-
         } // post type
     }
 
@@ -355,10 +354,10 @@ class DT_People_Groups_UI extends DT_Module_Base {
 
     public function add_details_with_rop3( $post_id, $rop3 ) {
         $key = dt_joshua_project_key();
-        $raw_response = wp_remote_get('https://joshuaproject.net/api/v2/people_groups?api_key='.$key.'&ROP3='. $rop3);
+        $raw_response = wp_remote_get( 'https://joshuaproject.net/api/v2/people_groups?api_key='.$key.'&ROP3='. $rop3 );
         if ( ! is_wp_error( $raw_response ) && isset( $raw_response['body'] ) ) {
             $response = json_decode( $raw_response['body'], true );
-            $response = dt_recursive_sanitize_array($response);
+            $response = dt_recursive_sanitize_array( $response );
 
 //            dt_write_log($response);
         }
@@ -433,7 +432,7 @@ class DT_People_Groups_UI extends DT_Module_Base {
                           AND assigned_to.meta_value = CONCAT( 'user-', %s )
             WHERE a.post_type = %s
             GROUP BY status.meta_value;
-        ",  $current_user, $post_type ), ARRAY_A);
+        ", $current_user, $post_type ), ARRAY_A);
 
         return $results;
     }

@@ -26,7 +26,7 @@ class Disciple_Tools_Migration_0042 extends Disciple_Tools_Migration {
                 return;
             }
 
-            foreach( $pg_not_upgraded as $record ) {
+            foreach ( $pg_not_upgraded as $record ) {
                 if ( isset( $list[$record['pg_unique_key'] ] ) ) {
                     $row = $list[$record['pg_unique_key'] ];
 
@@ -58,7 +58,8 @@ class Disciple_Tools_Migration_0042 extends Disciple_Tools_Migration {
                     );
 
                     // create the location grid meta postmeta record
-                    $location_grid_meta_id = $wpdb->insert_id;;
+                    $location_grid_meta_id = $wpdb->insert_id;
+                    ;
                     $wpdb->insert(
                         $wpdb->postmeta,
                         [

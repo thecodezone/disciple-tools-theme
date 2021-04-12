@@ -518,7 +518,7 @@ class Disciple_Tools_Posts
             SELECT p.ID, p.post_title, p.post_type, p.post_date
             FROM $wpdb->posts p
             INNER JOIN (
-                SELECT log.object_id
+                SELECT log.object_id, log.histid
                 FROM $wpdb->dt_activity_log log
                 INNER JOIN (
                     SELECT max(l.histid) as maxid FROM $wpdb->dt_activity_log l
@@ -529,10 +529,11 @@ class Disciple_Tools_Posts
             LIMIT %d
             ) as log
             ON log.object_id = p.ID
-            WHERE p.post_type = %s AND (p.post_status = 'publish' OR p.post_status = 'private')
+            WHERE p.post_type = %s AND (p.post_status = 'publish' OR p.post_status = 'private') ORDER BY log.histid DESC
         ", esc_sql( $user_id ), esc_sql( $post_type ), esc_sql( $limit ), esc_sql( $post_type ) ), OBJECT );
 
         $total_rows = min( $limit, sizeof( $posts ) );
+
         return [
             "posts" => $posts,
             "total" => $total_rows,
@@ -1971,7 +1972,13 @@ class Disciple_Tools_Posts
                         }
                     }
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'multi_select' ) {
-                    $fields[$key] = array_values( array_filter( array_map( 'trim', $value ), 'strlen' ) ); //remove empty values
+                    $multi_select_values = [];
+                    foreach ( $value as $value_key ){
+                        if ( !empty( $value_key ) && isset( $field_settings[$key]["default"][$value_key] ) ){
+                            $multi_select_values[] = $value_key;
+                        }
+                    }
+                    $fields[$key] = $multi_select_values;
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'boolean' ) {
                     $fields[$key] = $value[0] === "1";
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'array' ) {

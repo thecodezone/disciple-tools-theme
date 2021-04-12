@@ -18,10 +18,16 @@ function dt_print_details_bar(
     bool $disable_following_toggle_function = false,
     bool $task = false
 ) {
-    $dt_post_type = get_post_type();
-    $post_id = get_the_ID();
-    $post_settings = DT_Posts::get_post_settings( $dt_post_type );
-    $dt_post = DT_Posts::get_post( $dt_post_type, $post_id );
+    $dt_post_type     = get_post_type();
+    $post_id          = get_the_ID();
+    $post_settings    = DT_Posts::get_post_settings( $dt_post_type );
+    $dt_post          = DT_Posts::get_post( $dt_post_type, $post_id );
+    $shared_with      = DT_Posts::get_shared_with( $dt_post['post_type'], $post_id );
+    $shared_with_text = '';
+
+    foreach ( $shared_with as $shared ) {
+        $shared_with_text .= sprintf( ', %s', $shared['display_name'] );
+    }
     ?>
 
     <div data-sticky-container class="show-for-medium" style="z-index: 9">
@@ -38,6 +44,16 @@ function dt_print_details_bar(
                                 <input type="checkbox" id="update-needed-large" class="dt-switch update-needed" <?php echo ( $update_needed ? 'checked' : "" ) ?>/>
                                 <label class="dt-switch" for="update-needed-large" style="vertical-align: top;"></label>
                             <?php } ?>
+                        </div>
+                        <div style="width: 25px; margin-right: 0px;" class="cell grid-x shrink center-items">
+                            <a class="section-chevron navigation-left" style="display: none;" href="javascript:void(0)">
+                                <img width="25" height="20" title="<?php esc_attr_e( 'Previous record', 'disciple_tools' ); ?>" src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/chevron_left.svg" ) ?>">
+                            </a>
+                        </div>
+                        <div style="width: 25px; margin-left:0px;" class="cell shrink center-items">
+                            <a href="javascript:void(0)" style="display: none;" class="navigation-right section-chevron">
+                                <img width="25" height="20" title="<?php esc_attr_e( 'Next record', 'disciple_tools' ); ?>" src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/chevron_right.svg" ) ?>">
+                            </a>
                         </div>
                         <div class="cell grid-x shrink center-items">
                             <ul class="dropdown menu" data-dropdown-menu dropdownmenu-arrow-color="white">
@@ -62,13 +78,13 @@ function dt_print_details_bar(
                     </div>
                     <div class="cell small-4 center hide-for-small-only">
                             <?php $picture = apply_filters( 'dt_record_picture', null, $dt_post_type, $post_id );
+                            $icon = apply_filters( 'dt_record_icon', null, $dt_post_type, $dt_post );
+
                              $type_color = isset( $dt_post['type'], $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["color"] ) ? $post_settings["fields"]["type"]["default"][$dt_post['type']["key"]]["color"] : "#000000";
                             if ( !empty( $picture ) ) : ?>
                                 <img src="<?php echo esc_html( $picture )?>" style="height:30px; vertical-align:middle">
                             <?php else : ?>
-                                <?php
-                                    $gender = isset( $dt_post["gender"] ) ? $dt_post["gender"]["key"] : "male";?>
-                                <i class="fi-torso<?php echo esc_html( ( $gender == 'female' ) ? '-'.$gender : "" ) ?> medium" style=" color:<?php echo esc_html( $type_color ); ?>"></i>
+                                <i class="<?php echo esc_html( $icon ) ?> medium" style=" color:<?php echo esc_html( $type_color ); ?>"></i>
                             <?php endif; ?>
                             <span id="title" contenteditable="true" class="title dt_contenteditable"><?php the_title_attribute(); ?></span>
                             <br>
@@ -112,8 +128,8 @@ function dt_print_details_bar(
                         <?php if ( $share_button ): ?>
                         <div class="cell shrink center-items ">
                             <button class="center-items open-share">
-                                <img class="dt-blue-icon" src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/share.svg" ) ?>">
-                                <span style="margin:0 10px 2px 10px"><?php esc_html_e( "Share", "disciple_tools" ); ?></span>
+                                <img class="dt-blue-icon" src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/share.svg" ); ?>">
+                                <span data-tooltip title="<?php echo esc_html( sprintf( '%s', ltrim( $shared_with_text, ',' ) ) ); ?>" style="margin:0 10px 2px 10px"><?php esc_html_e( "Share", "disciple_tools" ); ?> (<?php echo esc_html( count( $shared_with ) ); ?>)</span>
                             </button>
                         </div>
                         <?php endif; ?>
@@ -131,6 +147,17 @@ function dt_print_details_bar(
         <?php if ( $comment_button ): ?>
             <div class="container-width">
             <div class="grid-x align-center" style="align-items: center">
+                <div class="cell shrink center-items">
+                    <a class="section-chevron navigation-left" style="display: none;" href="javascript:void(0)">
+                        <img width="15" height="10" title="<?php esc_attr_e( 'Previous record', 'disciple_tools' ); ?>" src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/chevron_left.svg" ) ?>">
+                    </a>
+                </div>
+                <div class="cell shrink center-items">
+                    <a href="javascript:void(0)" style="display: none;" class="navigation-right section-chevron">
+                        <img width="15" height="10" title="<?php esc_attr_e( 'Next record', 'disciple_tools' ); ?>" src="<?php echo esc_url( get_template_directory_uri() . "/dt-assets/images/chevron_right.svg" ) ?>">
+                    </a>
+                </div>
+
                 <div class="cell shrink">
                     <button  id="nav-view-comments" class="center-items">
                         <a href="#comment-activity-section" class="center-items" style="color:black">
@@ -184,8 +211,7 @@ function dt_print_details_bar(
                 if ( !empty( $picture ) ) : ?>
                     <img src="<?php echo esc_html( $picture )?>" style="height:30px; vertical-align:middle">
                 <?php else : ?>
-                    <?php $gender = isset( $dt_post["gender"] ) ? $dt_post["gender"]["key"] : "male";?>
-                    <i class="fi-torso<?php echo esc_html( ( $gender == 'female' ) ? '-'.$gender : "" ) ?> medium" style=" color:<?php echo esc_html( $type_color ); ?>"></i>
+                    <i class="<?php echo esc_html( $icon ) ?> medium" style=" color:<?php echo esc_html( $type_color ); ?>"></i>
                 <?php endif; ?>
                 <span id="title" contenteditable="true" class="title dt_contenteditable"><?php the_title_attribute(); ?></span>
             </div>

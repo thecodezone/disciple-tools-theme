@@ -7,12 +7,19 @@ jQuery(document).ready(function($) {
   window.post_type_fields = field_settings
   let rest_api = window.API
   let typeaheadTotals = {}
+  let current_record = -1;
+  let next_record    = -1;
+  let records_list   = window.SHAREDFUNCTIONS.get_json_cookie('records_list');
+
 
   window.masonGrid = $('.grid') // responsible for resizing and moving the tiles
 
   $('input.text-input').change(function(){
     const id = $(this).attr('id')
     const val = $(this).val()
+    if ( $(this).prop('required') && val === ''){
+      return;
+    }
     $(`#${id}-spinner`).addClass('active')
     rest_api.update_post(post_type, post_id, { [id]: val }).then((newPost)=>{
       $(`#${id}-spinner`).removeClass('active')
@@ -134,6 +141,9 @@ jQuery(document).ready(function($) {
   $('.dt_contenteditable').on('blur', function(){
     const id = $(this).attr('id')
     let val = $(this).text();
+    if ( id === "title" && val === '' ){
+      return;
+    }
     rest_api.update_post(post_type, post_id, { [id]: val }).then((resp)=>{
       $( document ).trigger( "contenteditable-updated", [ resp, id, val ] );
     }).catch(handleAjaxError)
@@ -901,7 +911,7 @@ jQuery(document).ready(function($) {
   $('#delete-record').on('click', function(){
     $(this).attr("disabled", true).addClass("loading");
     API.delete_post( post_type, post_id ).then(()=>{
-      window.location = '/' + post_type
+      window.location = window.wpApiShare.site_url + '/' + post_type
     })
   })
   $('#archive-record').on('click', function(){
@@ -929,6 +939,36 @@ jQuery(document).ready(function($) {
       firstField.focus();
     }
   });
+
+  if (records_list.length > 0) {
+    $.each(records_list, function(record_id, post_id_array) {
+      if (post_id === post_id_array.ID) {
+        current_record = record_id;
+        next_record    = record_id+1;
+      }
+    });
+
+    if ( current_record === 0 || typeof(records_list[current_record-1]) === 'undefined') {
+      $(document).find('.navigation-left').hide();
+    } else {
+      rest_api.get_post(records_list[current_record-1].POST_TYPE, records_list[current_record-1].ID).then((postResponse) =>{
+        $(document).find('.navigation-left').attr('href', postResponse.permalink);
+      }).catch(handleAjaxError);
+      $(document).find('.navigation-left').removeAttr('style');
+    }
+
+    if (typeof (records_list[next_record]) !== 'undefined') {
+      rest_api.get_post(records_list[next_record].POST_TYPE, records_list[next_record].ID).then((postResponse) =>{
+        $(document).find('.navigation-right').attr('href', postResponse.permalink);
+      }).catch(handleAjaxError);
+      $(document).find('.navigation-right').removeAttr('style');
+    } else {
+      $(document).find('.navigation-right').hide();
+    }
+
+  } else {
+    $(document).find('.navigation-right').removeAttr('style').attr('style', 'display: none;');
+  }
 
   //leave at the end of this file
   masonGrid.masonry({

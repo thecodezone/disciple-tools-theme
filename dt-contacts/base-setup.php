@@ -180,6 +180,7 @@ class DT_Contacts_Base {
                 'type' => 'multi_select',
                 'default' => dt_get_option( "dt_working_languages" ) ?: [],
                 'icon' => get_template_directory_uri() . "/dt-assets/images/languages.svg",
+                "tile" => "no_tile"
             ];
 
             //add communication channels
@@ -301,7 +302,7 @@ class DT_Contacts_Base {
                     ],
                     "closed" => [
                         "label" => __( "Archived", 'disciple_tools' ),
-                        "color" => "#F43636",
+                        "color" => "#808080",
                         "description" => _x( "This contact has made it known that they no longer want to continue or you have decided not to continue with him/her.", "Contact Status field description", 'disciple_tools' ),
                     ]
                 ]
@@ -603,7 +604,7 @@ class DT_Contacts_Base {
 
 
     public function scripts(){
-        if ( is_singular( "contacts" ) ){
+        if ( is_singular( "contacts" ) && get_the_ID() && DT_Posts::can_view( $this->post_type, get_the_ID() ) ){
             wp_enqueue_script( 'dt_contacts', get_template_directory_uri() . '/dt-contacts/contacts.js', [
                 'jquery',
             ], filemtime( get_theme_file_path() . '/dt-contacts/contacts.js' ), true );

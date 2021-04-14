@@ -152,7 +152,7 @@ class DT_Groups_Base extends DT_Module_Base {
                     'inactive' => [
                         'label' => __( 'Inactive', 'disciple_tools' ),
                         'description' => _x( 'The group is no longer meeting.', 'field description', 'disciple_tools' ),
-                        'color' => "#F43636"
+                        'color' => "#808080"
                     ],
                     'active'   => [
                         'label' => __( 'Active', 'disciple_tools' ),
@@ -1214,7 +1214,7 @@ class DT_Groups_Base extends DT_Module_Base {
     }
 
     public function scripts(){
-        if ( is_singular( "groups" ) ){
+        if ( is_singular( "groups" ) && get_the_ID() && DT_Posts::can_view( $this->post_type, get_the_ID() ) ){
             wp_enqueue_script( 'dt_groups', get_template_directory_uri() . '/dt-groups/groups.js', [
                 'jquery',
                 'details'

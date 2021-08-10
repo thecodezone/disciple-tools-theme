@@ -1,9 +1,10 @@
 language: php
 
 os: linux
-dist: focal
+dist: bionic
 group: edge
 arch: arm64-graviton2
+virt: lxd
 
 node_js:
   - '10'

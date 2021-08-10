@@ -1,10 +1,8 @@
 language: php
 
 os: linux
-dist: xenial
-group: edge
-arch: arm64-graviton2
-virt: lxd
+dist: focal
+
 
 node_js:
   - '10'

@@ -1,6 +1,11 @@
 language: php
 
-dist: xenial
+os: linux
+dist: focal
+group: edge
+arch: arm64-graviton2
+virt: lxd
+
 node_js:
   - '10'
 sudo: required # this seems to be required for some reason to get MySQL to work

@@ -61,6 +61,10 @@ class DT_Contacts_Base {
         if ( $post_type === $this->post_type ){
             $settings['label_singular'] = __( 'Contact', 'disciple_tools' );
             $settings['label_plural'] = __( 'Contacts', 'disciple_tools' );
+            $settings['status_field'] = [
+                "status_key" => "overall_status",
+                "archived_key" => "closed",
+            ];
         }
         return $settings;
     }
@@ -246,7 +250,7 @@ class DT_Contacts_Base {
                 'mapbox'    => false,
                 'hidden' => true,
                 "in_create_form" => true,
-                "icon" => get_template_directory_uri() . "/dt-assets/images/location.svg?v=2",
+                "icon" => get_template_directory_uri() . "/dt-assets/images/map-marker-multiple.svg?v=2",
             ];
             $fields["contact_address"] = [
                 "name" => __( 'Address', 'disciple_tools' ),
@@ -313,7 +317,7 @@ class DT_Contacts_Base {
                     'female'  => [ "label" => __( 'Female', 'disciple_tools' ) ],
                 ],
                 'tile'     => 'details',
-                "icon" => get_template_directory_uri() . "/dt-assets/images/gender.svg?v=2",
+                "icon" => get_template_directory_uri() . "/dt-assets/images/gender-male-female.svg",
             ];
 
             $fields['age'] = [
@@ -541,6 +545,9 @@ class DT_Contacts_Base {
                 ],
                 'query' => [
                     'sort' => '-post_date',
+                    'overall_status' => [
+                        '-closed'
+                    ]
                 ],
             ];
 

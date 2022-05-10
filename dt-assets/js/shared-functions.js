@@ -269,8 +269,12 @@ jQuery(document).on("click", ".help-button-tile", function () {
         field && field.tile === section && !field.hidden &&
         (field.description || window.lodash.isObject(field.default))
       ) {
-        let edit_link = `${window.wpApiShare.site_url}/wp-admin/admin.php?page=dt_options&tab=custom-fields&post_type=${window.wpApiShare.post_type}&field-select=${window.wpApiShare.post_type}_${field_key}`
-        html += `<h2>${window.lodash.escape(field.name)} <span style="font-size: 10px"><a href="${window.lodash.escape(edit_link)}" target="_blank">${window.wpApiShare.translations.edit}</a></span></h2>`;
+        let field_name = `<h2>${window.lodash.escape(field.name)}</h2>`;
+        if ( window.wpApiShare.can_manage_dt ){
+          let edit_link = `${window.wpApiShare.site_url}/wp-admin/admin.php?page=dt_options&tab=custom-fields&post_type=${window.wpApiShare.post_type}&field-select=${window.wpApiShare.post_type}_${field_key}`
+          field_name = `<h2>${window.lodash.escape(field.name)} <span style="font-size: 10px"><a href="${window.lodash.escape(edit_link)}" target="_blank">${window.wpApiShare.translations.edit}</a></span></h2>`;
+        }
+        html += field_name
         html += `<p>${window.lodash.escape(field.description)}</p>`;
 
         if (window.lodash.isObject(field.default)) {
@@ -568,9 +572,29 @@ window.SHAREDFUNCTIONS = {
     }
     document.cookie = `${cname}=${JSON.stringify(json)};path=${path}`;
   },
-  uriEncodeFilter(field, id, name) {
-    const filterLabel = { field, id, name }
-    return encodeURIComponent(JSON.stringify(filterLabel))
+  createCustomFilter(field, value) {
+    return ({
+      fields: [
+        {
+          [field]: value,
+        }
+      ]
+    })
+  },
+  create_url_for_list_query(postType, query, labels) {
+    const encodedQuery = window.SHAREDFUNCTIONS.encodeJSON(query);
+    const encodedLabels = window.SHAREDFUNCTIONS.encodeJSON(labels);
+    return window.wpApiShare.site_url + `/${postType}?query=${encodedQuery}&labels=${encodedLabels}`;
+  },
+  encodeJSON(json) {
+    return window.btoa(JSON.stringify(json))
+  },
+  decodeJSON(encodedJSON) {
+    try {
+      return JSON.parse(window.atob(encodedJSON))
+    } catch (error) {
+      return null
+    }
   },
   get_langcode() {
     let langcode = document.querySelector("html").getAttribute("lang")
